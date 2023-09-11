@@ -33,6 +33,7 @@ while turn <= total_turns:
             player.pay_rent(landlord, current_property.rent)
         # TODO: Improve display of below details.
         game_details.add_row([turn, player.name, throw, current_property, player.cash])
+        # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:
             break
     turn += 1
