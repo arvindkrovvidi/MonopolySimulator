@@ -1,7 +1,7 @@
 from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad
 from PropertyIterators import PropertyList, PropertyDict
 import pytest
-from Player_data import arvind, arun
+from Player import Player
 
 
 @pytest.fixture
@@ -32,13 +32,32 @@ def property_list(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_f
 
 @pytest.fixture
 def arvind_fx():
+    arvind = Player("Arvind", 200)
     return arvind
 
 
 @pytest.fixture
 def arun_fx():
+    arun = Player("Arun", 200)
     return arun
 
+
+@pytest.fixture
+def adityam_fx():
+    adityam = Player("Adityam", 200)
+    return adityam
+
+
+@pytest.fixture
+def padma_fx():
+    padma = Player("Padma", 200)
+    return padma
+
+
+@pytest.fixture
+def sree_fx():
+    sree = Player("Sree", 200)
+    return sree
 
 @pytest.fixture
 def property_dict(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx, arvind_fx,
