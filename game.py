@@ -1,9 +1,10 @@
 from Player import Player
 from Tile import all_properties_list
 from Property_data import property_tracker
-from utils import calculate_networth, find_winner
+from utils import calculate_networth, display_positions
 from prettytable import PrettyTable
 
+# TODO: Take all inputs for the program from a file
 total_turns = 100
 turn = 0
 
@@ -44,9 +45,11 @@ for player in players:
     player.networth = calculate_networth(player)
     print(f'{player.name} NW: {player.networth} ')
 
-
-winner = find_winner(players)[0]
-print(f'{winner} wins!')
+display_winners = PrettyTable()
+display_winners.field_names = ["Position", "Player", "Net Worth"]
+for pos, win, nw in display_positions(players):
+    display_winners.add_row([pos, win, nw])
+print(display_winners)
 
 # TODO: Add community chests
 # TODO: Add chance
