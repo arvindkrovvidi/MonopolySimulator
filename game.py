@@ -19,7 +19,8 @@ all_players_list.append(arun)
 all_players_list.append(adityam)
 all_players_list.append(padma)
 players = all_players_list
-
+game_details = PrettyTable()
+game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
 while turn <= total_turns:
     for player in players:
         throw = player.throw_dice()
@@ -31,10 +32,7 @@ while turn <= total_turns:
             landlord = property_tracker[current_property]
             player.pay_rent(landlord, current_property.rent)
         # TODO: Improve display of below details.
-        game_details = PrettyTable()
-        game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
         game_details.add_row([turn, player.name, throw, current_property, player.cash])
-        print(game_details)
         if player.cash < 0:
             break
     turn += 1
