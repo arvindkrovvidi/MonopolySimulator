@@ -45,7 +45,7 @@ for player in players:
     print(f'{player.name} NW: {player.networth} ')
 
 
-winner = find_winner(players)
+winner = find_winner(players)[0]
 print(f'{winner} wins!')
 
 # TODO: Add community chests
