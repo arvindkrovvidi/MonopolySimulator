@@ -5,13 +5,12 @@ from Property_data import property_tracker
 
 
 class Player:
-    def __init__(self, name, cash, tile_no=0, net_worth=0):
+    def __init__(self, name, cash, tile_no=0, networth=0):
         self._player_portfolio = PropertyList([])
         self.tile_no = tile_no
         self.name = name
         self.cash = cash
-        all_players_list.append(self)
-        self.networth = net_worth
+        self.networth = networth
 
     @property
     def player_portfolio(self):
@@ -44,4 +43,3 @@ class Player:
         player.cash += rent
 
 
-all_players_list = []
