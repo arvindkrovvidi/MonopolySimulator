@@ -38,12 +38,7 @@ while turn <= total_turns:
         if player.cash < 0:
             break
     turn += 1
-# TODO: improve display of details below
-# TODO: generalize below printing for multiple players
-for player in players:
-    print(f"{player} cash: {player.cash}")
-    player.networth = calculate_networth(player)
-    print(f'{player.name} NW: {player.networth} ')
+print(game_details)
 
 display_winners = PrettyTable()
 display_winners.field_names = ["Position", "Player", "Net Worth"]
