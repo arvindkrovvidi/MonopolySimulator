@@ -39,12 +39,11 @@ while turn <= total_turns:
     turn += 1
 # TODO: improve display of details below
 # TODO: generalize below printing for multiple players
-print(f"arvind cash: {arvind.cash}")
-print(f"arun cash: {arun.cash}")
-
 for player in players:
-    player.net_worth = calculate_networth(player)
-    print(f'{player.name} NW: {player.net_worth} ')
+    print(f"{player} cash: {player.cash}")
+    player.networth = calculate_networth(player)
+    print(f'{player.name} NW: {player.networth} ')
+
 
 winner = find_winner(players)
 print(f'{winner} wins!')
