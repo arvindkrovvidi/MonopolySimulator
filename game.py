@@ -1,4 +1,4 @@
-from Player_data import arvind, arun
+from Player import Player
 from Tile import all_properties_list
 from Property_data import property_tracker
 from utils import calculate_networth, find_winner
@@ -6,7 +6,18 @@ from prettytable import PrettyTable
 
 total_turns = 100
 turn = 0
-players = [arvind, arun]
+
+# TODO: Automate adding players to the all_players_list
+all_players_list = []
+arvind = Player("Arvind", 200)
+arun = Player("Arun", 200)
+adityam = Player("Adityam", 200)
+padma = Player("Padma", 200)
+all_players_list.append(arvind)
+all_players_list.append(arun)
+all_players_list.append(adityam)
+all_players_list.append(padma)
+players = all_players_list
 
 while turn <= total_turns:
     for player in players:
