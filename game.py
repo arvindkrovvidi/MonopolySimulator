@@ -2,6 +2,7 @@ from Player_data import arvind, arun
 from Tile import all_properties_list
 from Property_data import property_tracker
 from utils import calculate_networth, find_winner
+from prettytable import PrettyTable
 
 total_turns = 100
 turn = 0
@@ -18,8 +19,10 @@ while turn <= total_turns:
             landlord = property_tracker[current_property]
             player.pay_rent(landlord, current_property.rent)
         # TODO: Improve display of below details.
-        print(
-            f' Turn: {turn}    Player: {player.name}    throw: {throw}    current_property: {current_property}    cash: {player.cash}')
+        game_details = PrettyTable()
+        game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
+        game_details.add_row([turn, player.name, throw, current_property, player.cash])
+        print(game_details)
         if player.cash < 0:
             break
     turn += 1
