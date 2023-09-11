@@ -56,3 +56,4 @@ print(f'{winner} wins!')
 # TODO: Add tests for all functions
 # TODO: Check for code coverage
 # TODO: Push code to GIT
+# TODO: Add hotels
