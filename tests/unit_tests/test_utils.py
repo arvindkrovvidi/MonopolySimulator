@@ -1,7 +1,7 @@
 import pytest
-from game import arvind, arun
-from utils import calculate_networth, find_winner, display_positions
 from Player import Player
+from utils import calculate_networth, find_winner, display_positions
+
 
 def test_calculate_networth(st_charles_place_fx, states_avenue_fx, virginia_avenue_fx,
                             pennsylvania_railroad_fx):

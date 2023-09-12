@@ -1,6 +1,3 @@
-from Player import Player
-
-
 def calculate_networth(player):
     nw = 0
     for asset in player.player_portfolio:

@@ -1,11 +1,12 @@
-from Player import Player
-from Tile import all_properties_list
-from Property_data import property_tracker
-from utils import calculate_networth, display_positions
 from prettytable import PrettyTable
 
+from Player import Player
+from Property_data import property_tracker
+from Tile import all_properties_list
+from utils import display_positions
+
 # TODO: Take all inputs for the program from a file
-total_turns = 100
+total_turns = 3
 turn = 0
 
 # TODO: Automate adding players to the all_players_list
