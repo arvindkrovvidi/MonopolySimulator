@@ -1,9 +1,8 @@
 from prettytable import PrettyTable
-
 from Player import Player
 from Property_data import property_tracker
 from Tile import all_properties_list
-from utils import display_positions
+from utils import display_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
 total_turns = 3
@@ -40,12 +39,14 @@ while turn <= total_turns:
     turn += 1
 print(game_details)
 
+for player in players:
+    player.networth = calculate_networth(player)
+
 display_winners = PrettyTable()
 display_winners.field_names = ["Position", "Player", "Net Worth"]
 for pos, win, nw in display_positions(players):
-    display_winners.add_row([pos, win, nw])
+    display_winners.add_row((pos, str(win), nw))
 print(display_winners)
-
 # TODO: Add community chests
 # TODO: Add chance
 # TODO: Add corner tiles
