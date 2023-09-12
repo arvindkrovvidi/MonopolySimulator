@@ -5,7 +5,7 @@ from Property_data import property_tracker
 
 
 class Player:
-    def __init__(self, name, cash, tile_no=0, networth=0):
+    def __init__(self, name, cash=200, tile_no=0, networth=0):
         self._player_portfolio = PropertyList([])
         self.tile_no = tile_no
         self.name = name
