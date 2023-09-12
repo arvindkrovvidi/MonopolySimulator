@@ -56,3 +56,4 @@ print(display_winners)
 # TODO: Check for code coverage
 # TODO: Push code to GIT
 # TODO: Add hotels
+# TODO Add descriptions for functions
