@@ -1,4 +1,4 @@
-total_tiles = 21
+total_tiles = 29
 max_tile_no = total_tiles - 1
 max_throw = 12
 min_throw = 2
