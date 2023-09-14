@@ -49,7 +49,7 @@ class Player:
         """
         self.tile_no += throw
         if self.tile_no > max_tile_no:
-            self.tile_no -= max_tile_no + 1
+            self.tile_no -= (max_tile_no + 1)
             self.cash += go_cash
 
     def pay_rent(self, player: Player, rent: int) -> None:
