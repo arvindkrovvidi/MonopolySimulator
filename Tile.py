@@ -18,9 +18,6 @@ class Property(Tile):
         self.rent = rent
         all_properties_list.append(self)
 
-    def __int__(self):
-        return self.tile_no
-
     def __str__(self):
         return self.name
 
