@@ -1,8 +1,13 @@
-from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad
-from PropertyIterators import PropertyList, PropertyDict
 import pytest
-from Player import Player
 
+from Player import Player
+from PropertyIterators import PropertyList, PropertyDict
+from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, st_james_place
+
+
+@pytest.fixture
+def st_james_place_fx():
+    return st_james_place
 
 @pytest.fixture
 def states_avenue_fx():

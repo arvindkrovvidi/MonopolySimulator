@@ -1,3 +1,5 @@
+import pytest
+
 from Player import Player
 
 
@@ -28,13 +30,16 @@ def test_buy_property(states_avenue_fx, arvind_fx, st_charles_place_fx):
     assert arvind_fx.cash == 10
     assert st_charles_place_fx not in arvind_fx.player_portfolio
 
-def test_move(arvind_fx, states_avenue_fx):
-    arvind_fx.move(9)
-    assert arvind_fx.tile_no == 9
+@pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash",[
+    (0, 12, 200),
+    (28, 11, 400)
+])
+def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_tile, expected_current_tile, expected_cash):
+    arvind_fx.tile_no = current_tile
     arvind_fx.move(12)
-    arvind_fx.move(12)
-    assert arvind_fx.tile_no == 4
-    assert arvind_fx.cash == 400
+    assert arvind_fx.tile_no == expected_current_tile
+    assert arvind_fx.cash == expected_cash
+    assert arvind_fx.tile_no < 29
 
 def test_pay_rent(arvind_fx, arun_fx):
     arvind_fx.pay_rent(arun_fx, 20)
