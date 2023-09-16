@@ -1,14 +1,14 @@
 import random
 
 import Tile
-from PropertyIterators import PropertyList
 from Board import max_tile_no, go_cash
 from Property_data import property_tracker
+from TileIterators import TileList
 
 
 class Player:
     def __init__(self, name, cash=200, tile_no=0, networth=0):
-        self._player_portfolio = PropertyList([])
+        self._player_portfolio = TileList([])
         self.tile_no = tile_no
         self.name = name
         self.cash = cash
@@ -52,7 +52,7 @@ class Player:
             self.tile_no -= (max_tile_no + 1)
             self.cash += go_cash
 
-    def pay_rent(self, player: Player, rent: int) -> None:
+    def pay_rent(self, player, rent: int) -> None:
         self.cash -= rent
         player.cash += rent
 

@@ -1,11 +1,12 @@
 from prettytable import PrettyTable
+
 from Player import Player
 from Property_data import property_tracker
 from Tile import all_properties_list
 from utils import display_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
-total_turns = 3
+total_turns = 100
 turn = 0
 
 # TODO: Automate adding players to the all_players_list
@@ -26,12 +27,13 @@ while turn <= total_turns:
         throw = player.throw_dice()
         player.move(throw)
         current_property = all_properties_list[player.tile_no]
+        print(f'player: {player}')
+        print(f'player.tile_no: {player.tile_no}')
         if current_property not in property_tracker:
             player.buy_property(current_property)
         else:
             landlord = property_tracker[current_property]
             player.pay_rent(landlord, current_property.rent)
-        # TODO: Improve display of below details.
         game_details.add_row([turn, player.name, throw, current_property, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:

@@ -1,8 +1,8 @@
 from Tile import Property
-from PropertyIterators import PropertyDict
+from TileIterators import TileDict
 
 
-property_tracker = PropertyDict({})
+property_tracker = TileDict({})
 
 mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, 2)
 baltic_avenue = Property(2, 'Baltic Avenue', 60, 4)

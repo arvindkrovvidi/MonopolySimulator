@@ -1,4 +1,4 @@
-class PropertyList:
+class TileList:
     """
         A list of Properties. Data is a list.
     """
@@ -36,7 +36,7 @@ class PropertyList:
                 return item
 
 
-class PropertyDict:
+class TileDict:
     """
     A dictionary of properties and their owners. Data is a dictionary. assets are list of properties. Values are list of players.
     """

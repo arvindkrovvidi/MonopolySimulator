@@ -1,8 +1,8 @@
 import pytest
 
 from Player import Player
-from PropertyIterators import PropertyList, PropertyDict
 from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, st_james_place
+from TileIterators import TileList, TileDict
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def pennsylvania_railroad_fx():
 
 @pytest.fixture
 def property_list(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx):
-    ls = PropertyList([states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx])
+    ls = TileList([states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx])
     return ls
 
 
@@ -67,7 +67,7 @@ def sree_fx():
 @pytest.fixture
 def property_dict(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx, arvind_fx,
                   arun_fx):
-    return PropertyDict({
+    return TileDict({
         states_avenue_fx: arvind_fx,
         st_charles_place_fx: arun_fx,
         pennsylvania_railroad_fx: arvind_fx,

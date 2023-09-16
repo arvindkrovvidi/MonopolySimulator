@@ -1,4 +1,4 @@
-from PropertyIterators import PropertyList
+from TileIterators import TileList
 
 
 class Tile:
@@ -7,8 +7,7 @@ class Tile:
         self.name = name
 
 
-all_properties_list = PropertyList([])
-
+all_properties_list = TileList([])
 
 class Property(Tile):
 
