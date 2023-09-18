@@ -1,8 +1,7 @@
 from prettytable import PrettyTable
 
 from Player import Player
-from Property_data import property_tracker
-from Tile import all_properties_list
+from Property_data import all_properties_list, property_tracker
 from utils import display_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file

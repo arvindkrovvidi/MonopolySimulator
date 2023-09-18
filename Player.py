@@ -1,6 +1,5 @@
 import random
 
-import Tile
 from Board import max_tile_no, go_cash
 from Property_data import property_tracker
 from TileIterators import TileList
@@ -25,7 +24,7 @@ class Player:
     def __str__(self):
         return self.name
 
-    def buy_property(self, asset: Tile.Property) -> None:
+    def buy_property(self, asset) -> None:
         """
         Buy property that the player lands on.
         :param asset: Property

@@ -15,7 +15,6 @@ class Property(Tile):
         Tile.__init__(self, tile_no, name)
         self.cost = cost
         self.rent = rent
-        all_properties_list.append(self)
 
     def __str__(self):
         return self.name

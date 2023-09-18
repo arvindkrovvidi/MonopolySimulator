@@ -1,8 +1,5 @@
 from Tile import Property
-from TileIterators import TileDict
-
-
-property_tracker = TileDict({})
+from TileIterators import TileList, TileDict
 
 mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, 2)
 baltic_avenue = Property(2, 'Baltic Avenue', 60, 4)
@@ -33,3 +30,9 @@ short_line = Property(26, "Short Line", 200, 25)
 park_place = Property(27, "Park Place", 350, 35)
 boardwalk = Property(28, "Boardwalk", 400, 50)
 
+all_properties_list = TileList([mediterranean_avenue, baltic_avenue, reading_railroad, oriental_avenue, vermont_avenue, connecticut_avenue,
+                                electric_company, st_charles_place, states_avenue, virginia_avenue, pennsylvania_railroad, st_james_place,
+                                tennessee_avenue, new_york_avenue, kentucky_avenue, indiana_avenue, illinois_avenue, bo_railroad,
+                                atlantic_avenue, ventnor_avenue, water_works, marvin_gardens, pacific_avenue, north_carolina_avenue,
+                                pennsylvania_avenue, short_line, park_place, boardwalk])
+property_tracker = TileDict({})
