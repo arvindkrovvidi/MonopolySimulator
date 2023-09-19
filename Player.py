@@ -50,6 +50,10 @@ class Player:
         if self.tile_no > max_tile_no:
             self.tile_no -= (max_tile_no + 1)
             self.cash += go_cash
+    def move_to(self, tile, collect_go_cash: bool) -> None:
+        self.tile_no = tile.tile_no
+        if collect_go_cash:
+            self.cash += 200
 
     def pay_rent(self, player, rent: int) -> None:
         self.cash -= rent
