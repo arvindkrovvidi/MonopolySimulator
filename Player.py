@@ -47,9 +47,12 @@ class Player:
         :param throw: The dice throw
         """
         self.tile_no += throw
-        if self.tile_no > max_tile_no:
+        if self.tile_no  > max_tile_no:
             self.tile_no -= (max_tile_no + 1)
-            self.cash += go_cash
+            if self.tile_no == 0:
+                pass
+            else:
+                self.cash += go_cash
     def move_to(self, tile, collect_go_cash: bool) -> None:
         self.tile_no = tile.tile_no
         if collect_go_cash:

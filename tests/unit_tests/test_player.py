@@ -32,14 +32,19 @@ def test_buy_property(states_avenue_fx, arvind_fx, st_charles_place_fx):
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash",[
     (0, 12, 200),
-    (28, 11, 400)
+    (28, 0, 200),
+    (39, 11, 400)
 ])
 def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_tile, expected_current_tile, expected_cash):
     arvind_fx.tile_no = current_tile
     arvind_fx.move(12)
     assert arvind_fx.tile_no == expected_current_tile
     assert arvind_fx.cash == expected_cash
-    assert arvind_fx.tile_no < 29
+    assert arvind_fx.tile_no < 39
+
+# def test_move_to(arvind_fx, states_avenue_fx):
+#     arvind_fx.move_to(states_avenue_fx)
+#     assert arvind_fx.tile_no == 13
 
 def test_pay_rent(arvind_fx, arun_fx):
     arvind_fx.pay_rent(arun_fx, 20)
