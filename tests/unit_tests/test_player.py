@@ -51,4 +51,4 @@ def test_pay_rent(arvind_fx, arun_fx):
     assert arvind_fx.cash == 180
     assert arun_fx.cash == 220
 
-# testgit hook 5
+# testgit hook 6
