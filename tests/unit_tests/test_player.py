@@ -53,7 +53,7 @@ def test_move_to(arvind_fx, states_avenue_fx, destination, expected_cash, expect
     assert arvind_fx.tile_no == expected_destination_value.tile_no
     assert arvind_fx.cash == expected_cash
 
-def test_move_to_default_collect_go_cash(arvind_fx, states_avenue_fx):
+def test_move_to_default_collect_go_cash_flag(arvind_fx, states_avenue_fx):
     arvind_fx.move_to(states_avenue_fx)
     assert arvind_fx.tile_no == states_avenue_fx.tile_no
     assert arvind_fx.cash == 400
