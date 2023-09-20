@@ -42,13 +42,24 @@ def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_ti
     assert arvind_fx.cash == expected_cash
     assert arvind_fx.tile_no < 39
 
-# def test_move_to(arvind_fx, states_avenue_fx):
-#     arvind_fx.move_to(states_avenue_fx)
-#     assert arvind_fx.tile_no == 13
+@pytest.mark.parametrize("destination, collect_go_cash_flag, expected_destination, expected_cash",[
+    ("states_avenue_fx", True, "states_avenue_fx", 400),
+    ("states_avenue_fx", False, "states_avenue_fx", 200),
+])
+def test_move_to(arvind_fx, states_avenue_fx, destination, expected_cash, expected_destination, collect_go_cash_flag, request):
+    input_destination = request.getfixturevalue(destination)
+    expected_destination_value = request.getfixturevalue(expected_destination)
+    arvind_fx.move_to(input_destination, collect_go_cash=collect_go_cash_flag)
+    assert arvind_fx.tile_no == expected_destination_value.tile_no
+    assert arvind_fx.cash == expected_cash
+
+def test_move_to_default_collect_go_cash(arvind_fx, states_avenue_fx):
+    arvind_fx.move_to(states_avenue_fx)
+    assert arvind_fx.tile_no == states_avenue_fx.tile_no
+    assert arvind_fx.cash == 400
 
 def test_pay_rent(arvind_fx, arun_fx):
     arvind_fx.pay_rent(arun_fx, 20)
     assert arvind_fx.cash == 180
     assert arun_fx.cash == 220
 
-# testgit hook 6

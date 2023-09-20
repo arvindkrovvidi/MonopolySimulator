@@ -53,9 +53,9 @@ class Player:
                 pass
             else:
                 self.cash += go_cash
-    def move_to(self, tile, collect_go_cash: bool) -> None:
+    def move_to(self, tile, collect_go_cash_flag: bool=True) -> None:
         self.tile_no = tile.tile_no
-        if collect_go_cash:
+        if collect_go_cash_flag:
             self.cash += 200
 
     def pay_rent(self, player, rent: int) -> None:
