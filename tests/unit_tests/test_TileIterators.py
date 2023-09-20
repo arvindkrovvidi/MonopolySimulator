@@ -4,10 +4,10 @@ from TileIterators import TileDict, TileList
 
 def test_tile_list_get_item(property_list, st_charles_place_fx, states_avenue_fx, virginia_avenue_fx,
                             pennsylvania_railroad_fx):
-    assert property_list[8] == st_charles_place
-    assert property_list[9] == states_avenue
-    assert property_list[10] == virginia_avenue
-    assert property_list[11] == pennsylvania_railroad
+    assert property_list[11] == st_charles_place
+    assert property_list[13] == states_avenue
+    assert property_list[14] == virginia_avenue
+    assert property_list[15] == pennsylvania_railroad
 
 
 def test_tile_list_next(property_list, st_charles_place_fx, states_avenue_fx, virginia_avenue_fx,

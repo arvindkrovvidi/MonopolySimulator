@@ -49,7 +49,7 @@ def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_ti
 def test_move_to(arvind_fx, states_avenue_fx, destination, expected_cash, expected_destination, collect_go_cash_flag, request):
     input_destination = request.getfixturevalue(destination)
     expected_destination_value = request.getfixturevalue(expected_destination)
-    arvind_fx.move_to(input_destination, collect_go_cash=collect_go_cash_flag)
+    arvind_fx.move_to(input_destination, collect_go_cash_flag=collect_go_cash_flag)
     assert arvind_fx.tile_no == expected_destination_value.tile_no
     assert arvind_fx.cash == expected_cash
 
