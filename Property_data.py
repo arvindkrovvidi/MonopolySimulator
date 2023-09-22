@@ -1,4 +1,4 @@
-from Tile import Property
+from Property import Property
 from TileIterators import TileList, TileDict
 
 mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, 2)

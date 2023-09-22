@@ -1,4 +1,5 @@
-from Tile import SpecialTiles
+from ChanceTile import ChanceTile
+from SpecialTiles import SpecialTiles
 from TileIterators import TileList
 
 go = SpecialTiles(0, "Go")
