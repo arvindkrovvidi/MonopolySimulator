@@ -6,8 +6,8 @@ from SpecialTiles import SpecialTiles
 from TileIterators import TileList
 
 go = SpecialTiles(0, "Go")
-jail = SpecialTiles(30, "Jail")
-go_to_jail = SpecialTiles(10, "Go to jail")
+jail = SpecialTiles(10, "Jail")
+go_to_jail = SpecialTiles(30, "Go to jail")
 free_parking = SpecialTiles(20, "Free parking")
 chance_7 = ChanceTile(name="Chance", tile_no=7)
 chance_22 = ChanceTile(name="Chance", tile_no=22)

@@ -7,8 +7,8 @@ reading_railroad = Property(5, "Reading Railroad", 200, 25)
 oriental_avenue = Property(6, "Oriental Avenue", 100, 6)
 vermont_avenue = Property(8, "Vermont Avenue", 100, 6)
 connecticut_avenue = Property(9, "Connecticut Avenue", 120, 8)
-electric_company = Property(12, "Electric Company", 150, 4)
 st_charles_place = Property(11, "St. Charles Place", 140, 10)
+electric_company = Property(12, "Electric Company", 150, 4)
 states_avenue = Property(13, "States Avenue", 140, 10)
 virginia_avenue = Property(14, "Virginia Avenue", 160, 12)
 pennsylvania_railroad = Property(15, "Pennsylvania Railroad", 200, 25)
@@ -26,8 +26,8 @@ marvin_gardens = Property(29, "Marvin Gardens", 280, 24)
 pacific_avenue = Property(31, "Pacific Avenue", 300, 26)
 north_carolina_avenue = Property(32, "North Carolina Avenue", 300, 26)
 pennsylvania_avenue = Property(34, "Pennsylvania Avenue", 320, 28)
-short_line = Property(36, "Short Line", 200, 25)
-park_place = Property(38, "Park Place", 350, 35)
+short_line = Property(35, "Short Line", 200, 25)
+park_place = Property(37, "Park Place", 350, 35)
 boardwalk = Property(39, "Boardwalk", 400, 50)
 
 all_properties_list = TileList([mediterranean_avenue, baltic_avenue, reading_railroad, oriental_avenue, vermont_avenue, connecticut_avenue,
@@ -36,3 +36,5 @@ all_properties_list = TileList([mediterranean_avenue, baltic_avenue, reading_rai
                                 atlantic_avenue, ventnor_avenue, water_works, marvin_gardens, pacific_avenue, north_carolina_avenue,
                                 pennsylvania_avenue, short_line, park_place, boardwalk])
 property_tracker = TileDict({})
+
+raiload_properties_list = TileList([reading_railroad, bo_railroad, pennsylvania_railroad])
