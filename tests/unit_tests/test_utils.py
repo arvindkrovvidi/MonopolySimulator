@@ -1,6 +1,7 @@
 import pytest
+
 from Player import Player
-from utils import calculate_networth, find_winner, display_positions
+from utils import calculate_networth, find_winner, display_positions, check_passing_go
 
 
 def test_calculate_networth(st_charles_place_fx, states_avenue_fx, virginia_avenue_fx,
@@ -47,3 +48,15 @@ def test_display_positions(inputs, expected, sree_fx, padma_fx, adityam_fx, arun
     assert expected == actual
 
 
+@pytest.mark.parametrize("current_tile, destination_tile, expected", [
+    ("chance_7_fx", "st_james_place_fx", False),
+    ("chance_22_fx", "st_james_place_fx", True),
+    ("chance_36_fx", "st_james_place_fx", True)
+])
+def test_check_passing_go(arvind_fx, st_james_place_fx, request, current_tile, destination_tile, expected):
+    current = request.getfixturevalue(current_tile)
+    destination = request.getfixturevalue(destination_tile)
+    arvind_fx.tile_no = current.tile_no
+    actual = check_passing_go(arvind_fx, destination)
+
+    assert actual == expected
