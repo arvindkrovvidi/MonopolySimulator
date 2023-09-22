@@ -1,3 +1,7 @@
+from Player import Player
+from Tile import Tile
+
+
 def calculate_networth(player):
     nw = 0
     for asset in player.player_portfolio:
@@ -33,3 +37,15 @@ def display_positions(players):
             yield i + 1, winner, winner.networth
             prev = winner
         players.pop(winner_index)
+
+def check_passing_go(player: Player, tile: Tile) -> bool:
+    """
+    Check if moving to a tile requires crossing Go tile. This is required for Chance cards.
+    :param player: Player that is moving to tile
+    :param tile: The tile that the player is moving to.
+    :return: True if passing Go else False.
+    """
+    if player.tile_no < tile.tile_no:
+        return False
+    else:
+        return True
