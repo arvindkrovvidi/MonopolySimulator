@@ -1,4 +1,5 @@
 from ChanceTile import ChanceTile
+from CommunityChestTile import CommunityChestTile
 from SpecialTiles import SpecialTiles
 from TileIterators import TileList
 
@@ -9,5 +10,8 @@ free_parking = SpecialTiles(20, "Free parking")
 chance_7 = ChanceTile(name="Chance", tile_no=7)
 chance_22 = ChanceTile(name="Chance", tile_no=22)
 chance_36 = ChanceTile(name="Chance", tile_no=36)
+community_chest_2 = CommunityChestTile(name="Community Chest", tile_no=2)
+community_chest_17 = CommunityChestTile(name="Community Chest", tile_no=17)
+community_chest_33 = CommunityChestTile(name="Community Chest", tile_no=33)
 
 all_special_tiles_list = TileList([go, jail, go_to_jail, free_parking, chance_7, chance_22, chance_36])

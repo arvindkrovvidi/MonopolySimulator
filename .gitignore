@@ -1,6 +1,7 @@
 
 .idea/vcs.xml
-*.pyc
+*.xml
+.idea
 *.pyc
 *.pyc
 *.pyc
