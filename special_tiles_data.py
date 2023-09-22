@@ -1,5 +1,6 @@
 from ChanceTile import ChanceTile
 from CommunityChestTile import CommunityChestTile
+from IncomeTaxTile import IncomeTaxTile
 from SpecialTiles import SpecialTiles
 from TileIterators import TileList
 
@@ -13,5 +14,6 @@ chance_36 = ChanceTile(name="Chance", tile_no=36)
 community_chest_2 = CommunityChestTile(name="Community Chest", tile_no=2)
 community_chest_17 = CommunityChestTile(name="Community Chest", tile_no=17)
 community_chest_33 = CommunityChestTile(name="Community Chest", tile_no=33)
+income_tax = IncomeTaxTile(name="Income Tax", tile_no=4)
 
 all_special_tiles_list = TileList([go, jail, go_to_jail, free_parking, chance_7, chance_22, chance_36])
