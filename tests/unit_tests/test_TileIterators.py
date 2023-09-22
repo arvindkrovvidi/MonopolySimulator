@@ -69,3 +69,13 @@ def test_tile_dict_update(st_charles_place_fx, states_avenue_fx, virginia_avenue
     property_dict.update_dict({virginia_avenue_fx: arun_fx})
     assert virginia_avenue_fx in property_dict
     assert property_dict[virginia_avenue_fx] == arun_fx
+
+def test_add(arvind_fx, arun_fx, padma_fx, adityam_fx):
+    list1 = TileList([arvind_fx, arun_fx])
+    list2 = TileList([adityam_fx, padma_fx])
+    actual = list1 + list2
+    assert type(actual) == TileList
+    assert arvind_fx in actual
+    assert arun_fx in actual
+    assert adityam_fx in actual
+    assert padma_fx in actual
