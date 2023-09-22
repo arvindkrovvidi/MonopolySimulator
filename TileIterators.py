@@ -35,6 +35,10 @@ class TileList:
             if asset.tile_no == item.tile_no:
                 return item
 
+    def __add__(self, other):
+        for each in other:
+            self.append(each)
+        return self
 
 class TileDict:
     """
