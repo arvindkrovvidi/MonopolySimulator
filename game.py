@@ -1,12 +1,16 @@
 from prettytable import PrettyTable
 
 from Player import Player
+from Property import Property
 from Property_data import all_properties_list, property_tracker
+from special_tiles_data import all_special_tiles_list
 from utils import display_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
 total_turns = 100
 turn = 0
+
+all_tiles_list = all_properties_list + all_special_tiles_list
 
 # TODO: Automate adding players to the all_players_list
 all_players_list = []
@@ -14,26 +18,30 @@ arvind = Player("Arvind", 200)
 arun = Player("Arun", 200)
 adityam = Player("Adityam", 200)
 padma = Player("Padma", 200)
+
 all_players_list.append(arvind)
 all_players_list.append(arun)
 all_players_list.append(adityam)
 all_players_list.append(padma)
+
 players = all_players_list
+
 game_details = PrettyTable()
 game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
 while turn <= total_turns:
     for player in players:
         throw = player.throw_dice()
         player.move(throw)
-        current_property = all_properties_list[player.tile_no]
-        print(f'player: {player}')
-        print(f'player.tile_no: {player.tile_no}')
-        if current_property not in property_tracker:
-            player.buy_property(current_property)
+        current_tile = all_properties_list[player.tile_no]
+        if type(current_tile) == Property:
+            if current_tile not in property_tracker:
+                player.buy_property(current_tile)
+            else:
+                landlord = property_tracker[current_tile]
+                player.pay_rent(landlord, current_tile.rent)
         else:
-            landlord = property_tracker[current_property]
-            player.pay_rent(landlord, current_property.rent)
-        game_details.add_row([turn, player.name, throw, current_property, player.cash])
+            current_tile.execute()
+        game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:
             break

@@ -18,4 +18,6 @@ community_chest_33 = CommunityChestTile(name="Community Chest", tile_no=33)
 income_tax = IncomeTaxTile(name="Income Tax", tile_no=4)
 luxury_tax = LuxuryTaxTile(name="Luxury Tax", tile_no=38)
 
-all_special_tiles_list = TileList([go, jail, go_to_jail, free_parking, chance_7, chance_22, chance_36])
+all_special_tiles_list = TileList([go, jail, go_to_jail, free_parking, chance_7, chance_22, chance_36,
+                                   community_chest_33, community_chest_2, community_chest_17,
+                                   income_tax, luxury_tax])
