@@ -79,3 +79,14 @@ def test_add(arvind_fx, arun_fx, padma_fx, adityam_fx):
     assert arun_fx in actual
     assert adityam_fx in actual
     assert padma_fx in actual
+
+def test_keys(arvind_fx, arun_fx, adityam_fx, padma_fx, states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx):
+    tile_dict = TileDict({states_avenue_fx: arvind_fx,
+                          st_charles_place_fx: arun_fx,
+                          pennsylvania_railroad_fx: adityam_fx,
+                          virginia_avenue_fx: padma_fx})
+    keys = tile_dict.keys()
+    assert  states_avenue_fx in keys
+    assert st_charles_place_fx in keys
+    assert pennsylvania_railroad_fx in keys
+    assert virginia_avenue_fx in keys
