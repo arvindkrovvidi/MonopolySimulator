@@ -46,7 +46,13 @@ while turn <= total_turns:
                 landlord = property_tracker[current_tile]
                 player.pay_rent(landlord, current_tile.rent)
         else:
-            current_tile.execute()
+            if type(current_tile) == CommunityChestTile:
+                # TODO: Implement what to do when player lands on Community chest tile
+                pass
+            if type(current_tile) == ChanceTile:
+                # TODO: Change 5 to 16 after implementing all chance cards
+                card_no = randint(1,5)
+                ChanceTile.execute(player, card_no)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:
