@@ -16,7 +16,7 @@ from utils import display_positions, calculate_networth
 total_turns = 100
 turn = 0
 
-all_tiles_list = all_properties_list + all_special_tiles_list
+all_tiles_list = all_properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list
 
 # TODO: Automate adding players to the all_players_list
 all_players_list = []
