@@ -3,7 +3,8 @@ import pytest
 from Player import Player
 from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, st_james_place
 from TileIterators import TileList, TileDict
-from special_tiles_data import go, chance_36, chance_22, chance_7
+from chance_tiles_data import chance_7, chance_22, chance_36
+from special_tiles_data import go
 
 
 @pytest.fixture

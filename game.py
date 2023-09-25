@@ -1,9 +1,15 @@
+from random import randint
+
 from prettytable import PrettyTable
 
+from ChanceTile import ChanceTile
+from CommunityChestTile import CommunityChestTile
 from Player import Player
 from Property import Property
 from Property_data import all_properties_list, property_tracker
-from special_tiles_data import all_special_tiles_list
+from chance_tiles_data import chance_tiles_list
+from community_chest_tiles_data import community_chest_tiles_list
+from special_tiles_data import special_tiles_list
 from utils import display_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
