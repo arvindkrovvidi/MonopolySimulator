@@ -73,3 +73,6 @@ class TileDict:
     def update_dict(self, dictionary):
         self.data.update(dictionary)
         list(self.data.keys()).append(list(dictionary.keys())[0])
+
+    def keys(self):
+        return self.data.keys()
