@@ -8,5 +8,6 @@ class LuxuryTaxTile(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
 #    TODO: function to be implemented
-    def execute(self):
+    @staticmethod
+    def execute(player, card_no):
         pass

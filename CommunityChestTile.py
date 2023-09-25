@@ -8,5 +8,5 @@ class CommunityChestTile(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
     @staticmethod
-    def execute():
+    def execute(player, card_no):
         pass
