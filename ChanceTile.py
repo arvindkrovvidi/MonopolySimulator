@@ -13,6 +13,11 @@ class ChanceTile(SpecialTiles):
 
     @staticmethod
     def execute(player, _card_no):
+        """
+        Main function that executes chance tile cards based on card number.
+        :param player: Player who is picking up the chance card.
+        :param _card_no: The card number that the player picks. Ranges between 1 and 16.
+        """
         if _card_no == 1:
             player.move_to(boardwalk, collect_go_cash_flag=False)
         elif _card_no == 2:
@@ -26,6 +31,11 @@ class ChanceTile(SpecialTiles):
 
 
 def get_nearest_railroad(player):
+    """
+    Get the nearest railroad to the player based on which Chance tile they are in.
+    :param player: The player that picks chance card 5.
+    :return: The railroad tile nearest to the player.
+    """
     if player.tile_no == 7:
         nearest_railroad = raiload_properties_list[5]
     if player.tile_no == 22:
@@ -33,7 +43,14 @@ def get_nearest_railroad(player):
     if player.tile_no == 36:
         nearest_railroad = raiload_properties_list[35]
     return nearest_railroad
+
 def execute_chance_5(player, tracker):
+    """
+    Execute chance card no 5. Move the player to the nearest railroad. If the railroad is not owned, buy the property.
+    If the railroad is owned by someone, pay twice the rent to them.
+    :param player: The player who landed on Chance and picked chance card no 5.
+    :param tracker: The property tracker that tracks properties and their owners.
+    """
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad, collect_go_cash_flag=False)
     if nearest_railroad not in tracker.keys():
