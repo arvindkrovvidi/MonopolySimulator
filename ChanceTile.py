@@ -35,6 +35,7 @@ def get_nearest_railroad(player):
     return nearest_railroad
 def execute_chance_5(player, tracker):
     nearest_railroad = get_nearest_railroad(player)
+    player.move_to(nearest_railroad, collect_go_cash_flag=False)
     if nearest_railroad not in tracker.keys():
         player.buy_property(nearest_railroad)
     else:

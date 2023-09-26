@@ -21,6 +21,7 @@ def test_execute_chance_5_railroad_free(arvind_fx, mocker, pennsylvania_railroad
     mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad_fx)
     execute_chance_5(arvind_fx, property_tracker)
     assert pennsylvania_railroad_fx in arvind_fx.player_portfolio
+    assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
 
 def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylvania_railroad_fx):
     arvind_fx.tile_no = 36
@@ -29,3 +30,4 @@ def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylv
     execute_chance_5(arvind_fx, property_tracker)
     assert arun_fx.cash == 200 + (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.cash == 200 - (pennsylvania_railroad_fx.rent * 2)
+    assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
