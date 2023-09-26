@@ -22,18 +22,21 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 4:
             player.move_to(st_charles_place, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5:
-            execute_chance_5(player)
+            execute_chance_5(player, property_tracker)
 
 
-def execute_chance_5(player):
+def get_nearest_railroad(player):
     if player.tile_no == 7:
         nearest_railroad = raiload_properties_list[5]
     if player.tile_no == 22:
         nearest_railroad = raiload_properties_list[25]
     if player.tile_no == 36:
         nearest_railroad = raiload_properties_list[35]
-    if nearest_railroad not in property_tracker.keys():
+    return nearest_railroad
+def execute_chance_5(player, tracker):
+    nearest_railroad = get_nearest_railroad(player)
+    if nearest_railroad not in tracker.keys():
         player.buy_property(nearest_railroad)
     else:
-        landlord = property_tracker[nearest_railroad]
+        landlord = tracker[nearest_railroad]
         player.pay_rent(landlord, nearest_railroad.rent*2)
