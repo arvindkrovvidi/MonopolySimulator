@@ -40,6 +40,11 @@ class TileList:
             self.append(each)
         return self
 
+    def get(self, value):
+        for asset in self.data:
+            if asset == value:
+                return asset
+
 class TileDict:
     """
     A dictionary of properties and their owners. Data is a dictionary. assets are list of properties. Values are list of players.
