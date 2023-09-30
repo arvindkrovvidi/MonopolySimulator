@@ -1,4 +1,4 @@
-from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, property_tracker, utilities_list
+from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, property_tracker, utilities_list, reading_railroad
 from SpecialTiles import SpecialTiles
 from Tile import Tile
 from special_tiles_data import go
@@ -32,6 +32,24 @@ class ChanceTile(SpecialTiles):
             execute_chance_5(player, property_tracker)
         elif _card_no == 7:
             execute_chance_7(player, property_tracker)
+        elif _card_no == 8:
+            player.cash += 50
+        elif _card_no == 9:
+            pass
+        elif _card_no == 10:
+            pass
+        elif _card_no == 11:
+            pass
+        elif _card_no == 12:
+            pass
+        elif _card_no == 13:
+            player.cash -= 15
+        elif _card_no == 14:
+            player.move_to(reading_railroad, collect_go_cash_flag=True)
+        elif _card_no == 15:
+            pass
+        elif _card_no == 16:
+            pass
 
 
 
