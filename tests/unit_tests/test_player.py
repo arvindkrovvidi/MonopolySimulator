@@ -63,3 +63,16 @@ def test_pay_rent(arvind_fx, arun_fx):
     assert arvind_fx.cash == 180
     assert arun_fx.cash == 220
 
+def test_pay_one_player(arvind_fx, arun_fx):
+    arvind_fx.pay_player(arun_fx, 100)
+    assert arvind_fx.cash == 100
+    assert arun_fx.cash == 300
+
+def test_pay_multiple_players(arvind_fx, arun_fx, adityam_fx, padma_fx):
+    player_list = [arun_fx, adityam_fx, padma_fx]
+    for player in player_list:
+        arvind_fx.pay_player(player, 10)
+    assert arvind_fx.cash == 170
+    assert arun_fx.cash == 210
+    assert adityam_fx.cash == 210
+    assert padma_fx.cash == 210
