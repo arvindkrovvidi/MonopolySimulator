@@ -1,4 +1,6 @@
-from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, property_tracker, utilities_list, reading_railroad
+from Player_data import all_players_list
+from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, property_tracker, \
+    utilities_list, reading_railroad
 from SpecialTiles import SpecialTiles
 from Tile import Tile
 from special_tiles_data import go

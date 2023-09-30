@@ -90,3 +90,9 @@ def test_keys(arvind_fx, arun_fx, adityam_fx, padma_fx, states_avenue_fx, st_cha
     assert st_charles_place_fx in keys
     assert pennsylvania_railroad_fx in keys
     assert virginia_avenue_fx in keys
+
+def test_get(pennsylvania_railroad_fx, states_avenue_fx, st_charles_place_fx):
+    tile_list = TileList([pennsylvania_railroad_fx, states_avenue_fx, st_charles_place_fx])
+    assert tile_list.get(states_avenue_fx) == states_avenue_fx
+    assert tile_list.get(pennsylvania_railroad_fx) == pennsylvania_railroad
+    assert tile_list.get(states_avenue_fx) == states_avenue_fx
