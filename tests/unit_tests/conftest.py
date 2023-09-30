@@ -1,11 +1,16 @@
 import pytest
 
 from Player import Player
-from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, st_james_place
+from Property_data import states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, st_james_place, \
+    electric_company
 from TileIterators import TileList, TileDict
 from chance_tiles_data import chance_7, chance_22, chance_36
 from special_tiles_data import go
 
+
+@pytest.fixture
+def electric_company_fx():
+    return electric_company
 
 @pytest.fixture
 def chance_7_fx():

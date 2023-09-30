@@ -1,7 +1,7 @@
 import pytest
 
-from ChanceTile import get_nearest_railroad, execute_chance_5
-from Property_data import raiload_properties_list
+from ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility
+from Property_data import railroad_properties_list, utilities_list
 from TileIterators import TileDict
 
 
@@ -12,7 +12,7 @@ from TileIterators import TileDict
 ])
 def test_get_nearest_railroad(arvind_fx, input_tile_no, expected):
     arvind_fx.tile_no = input_tile_no
-    assert get_nearest_railroad(arvind_fx) == raiload_properties_list[expected]
+    assert get_nearest_railroad(arvind_fx) == railroad_properties_list[expected]
 
 
 def test_execute_chance_5_railroad_free(arvind_fx, mocker, pennsylvania_railroad_fx):
@@ -31,3 +31,30 @@ def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylv
     assert arun_fx.cash == 200 + (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.cash == 200 - (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
+
+@pytest.mark.parametrize("input_tile_no, expected", [
+    (7, 12),
+    (22, 28),
+    (36, 28)
+])
+def test_get_nearest_utility(arvind_fx, input_tile_no, expected):
+    arvind_fx.tile_no = input_tile_no
+    assert get_nearest_utility(arvind_fx) == utilities_list[expected]
+
+
+def test_execute_chance_7_utility_free(arvind_fx, mocker, electric_company_fx):
+    arvind_fx.tile_no = 36
+    property_tracker = TileDict({})
+    mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company_fx)
+    execute_chance_7(arvind_fx, property_tracker)
+    assert electric_company_fx in arvind_fx.player_portfolio
+    assert arvind_fx.tile_no == electric_company_fx.tile_no
+
+def test_execute_chance_7_utility_occupied(arvind_fx, arun_fx, mocker, electric_company_fx):
+    arvind_fx.tile_no = 36
+    property_tracker = TileDict({electric_company_fx: arun_fx})
+    mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company_fx)
+    execute_chance_7(arvind_fx, property_tracker)
+    assert arun_fx.cash == 200 + (electric_company_fx.rent * 2)
+    assert arvind_fx.cash == 200 - (electric_company_fx.rent * 2)
+    assert arvind_fx.tile_no == electric_company_fx.tile_no
