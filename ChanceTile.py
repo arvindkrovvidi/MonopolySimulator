@@ -1,4 +1,4 @@
-from Property_data import boardwalk, illinois_avenue, st_charles_place, raiload_properties_list, property_tracker
+from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, property_tracker, utilities_list
 from SpecialTiles import SpecialTiles
 from Tile import Tile
 from special_tiles_data import go
@@ -28,6 +28,11 @@ class ChanceTile(SpecialTiles):
             player.move_to(st_charles_place, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5:
             execute_chance_5(player, property_tracker)
+        elif _card_no == 6:
+            execute_chance_5(player, property_tracker)
+        elif _card_no == 7:
+            execute_chance_7(player, property_tracker)
+
 
 
 def get_nearest_railroad(player):
@@ -37,11 +42,11 @@ def get_nearest_railroad(player):
     :return: The railroad tile nearest to the player.
     """
     if player.tile_no == 7:
-        nearest_railroad = raiload_properties_list[5]
+        nearest_railroad = railroad_properties_list[5]
     if player.tile_no == 22:
-        nearest_railroad = raiload_properties_list[25]
+        nearest_railroad = railroad_properties_list[25]
     if player.tile_no == 36:
-        nearest_railroad = raiload_properties_list[35]
+        nearest_railroad = railroad_properties_list[35]
     return nearest_railroad
 
 def execute_chance_5(player, tracker):
@@ -58,3 +63,32 @@ def execute_chance_5(player, tracker):
     else:
         landlord = tracker[nearest_railroad]
         player.pay_rent(landlord, nearest_railroad.rent*2)
+
+def get_nearest_utility(player):
+    """
+    Get the nearest utility to the player based on which Chance tile they are in.
+    :param player: The player that picks chance card 5.
+    :return: The utility tile nearest to the player.
+    """
+    if player.tile_no == 7:
+        nearest_utility = utilities_list[12]
+    if player.tile_no == 22:
+        nearest_utility = utilities_list[28]
+    if player.tile_no == 36:
+        nearest_utility = utilities_list[28]
+    return nearest_utility
+
+def execute_chance_7(player, tracker):
+    """
+    Execute chance card no 5. Move the player to the nearest utility. If the utility is not owned, buy the property.
+    If the utility is owned by someone, pay twice the rent to them.
+    :param player: The player who landed on Chance and picked chance card no 5.
+    :param tracker: The property tracker that tracks properties and their owners.
+    """
+    nearest_utility = get_nearest_utility(player)
+    player.move_to(nearest_utility, collect_go_cash_flag=False)
+    if nearest_utility not in tracker.keys():
+        player.buy_property(nearest_utility)
+    else:
+        landlord = tracker[nearest_utility]
+        player.pay_rent(landlord, nearest_utility.rent*2)

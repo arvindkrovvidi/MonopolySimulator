@@ -37,4 +37,6 @@ all_properties_list = TileList([mediterranean_avenue, baltic_avenue, reading_rai
                                 pennsylvania_avenue, short_line, park_place, boardwalk])
 property_tracker = TileDict({})
 
-raiload_properties_list = TileList([reading_railroad, bo_railroad, pennsylvania_railroad, short_line])
+railroad_properties_list = TileList([reading_railroad, bo_railroad, pennsylvania_railroad, short_line])
+
+utilities_list = TileList([electric_company, water_works])
