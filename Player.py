@@ -62,4 +62,12 @@ class Player:
         self.cash -= rent
         player.cash += rent
 
+    def pay_player(self, player, amount):
+        """
+        Pay a player a specified amount
+        :param player: The player paying
+        :param amount: The amount being paid
+        """
+        self.cash -= amount
+        player.cash += amount
 
