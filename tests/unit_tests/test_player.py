@@ -87,6 +87,10 @@ def test_pay_multiple_players(arvind_fx, arun_fx, adityam_fx, padma_fx):
     assert padma_fx.cash == 210
 
 
-def test_bank_transaction(arvind_fx):
-    arvind_fx.bank_transaction(100)
-    assert arvind_fx.cash == 300
+@pytest.mark.parametrize("input_amount, expected",[
+    (100, 300),
+    (-100, 100)
+])
+def test_bank_transaction(arvind_fx, input_amount, expected):
+    arvind_fx.bank_transaction(input_amount)
+    assert arvind_fx.cash == expected
