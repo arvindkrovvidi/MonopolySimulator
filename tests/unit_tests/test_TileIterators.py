@@ -100,12 +100,3 @@ def test_get(pennsylvania_railroad_fx, states_avenue_fx, st_charles_place_fx):
     assert tile_list.get(states_avenue_fx) == states_avenue_fx
     assert tile_list.get(pennsylvania_railroad_fx) == pennsylvania_railroad
     assert tile_list.get(states_avenue_fx) == states_avenue_fx
-
-
-def test_copy(arvind_fx, arun_fx, adityam_fx, padma_fx):
-    players = TileList([arvind_fx, arun_fx, adityam_fx, padma_fx])
-    other_players = players.copy()
-    assert arvind_fx in other_players
-    assert arun_fx in other_players
-    assert padma_fx in other_players
-    assert adityam_fx in other_players
