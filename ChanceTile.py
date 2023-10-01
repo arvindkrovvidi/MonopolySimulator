@@ -35,7 +35,7 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 7:
             execute_chance_7(player, property_tracker)
         elif _card_no == 8:
-            player.cash += 50
+            player.bank_transaction(50)
         elif _card_no == 9:
             pass
         elif _card_no == 10:
@@ -45,13 +45,13 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 12:
             pass
         elif _card_no == 13:
-            player.cash -= 15
+            player.bank_transaction(-15)
         elif _card_no == 14:
             player.move_to(reading_railroad, collect_go_cash_flag=True)
         elif _card_no == 15:
             execute_chance_15(player, all_players_list)
         elif _card_no == 16:
-            pass
+            player.bank_transaction(150)
 
 
 def execute_chance_15(player, players):
