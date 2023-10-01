@@ -49,11 +49,16 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 14:
             player.move_to(reading_railroad, collect_go_cash_flag=True)
         elif _card_no == 15:
-            pass
+            execute_chance_15(player, all_players_list)
         elif _card_no == 16:
             pass
 
 
+def execute_chance_15(player, players):
+    other_players = players.copy()
+    other_players.remove(player)
+    for each_player in other_players:
+        player.pay_player(each_player, 50)
 
 def get_nearest_railroad(player):
     """
