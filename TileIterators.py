@@ -45,6 +45,9 @@ class TileList:
             if asset == value:
                 return asset
 
+    def copy(self):
+        return TileList(self.data)
+
 class TileDict:
     """
     A dictionary of properties and their owners. Data is a dictionary. assets are list of properties. Values are list of players.
