@@ -70,6 +70,7 @@ def test_tile_dict_update(st_charles_place_fx, states_avenue_fx, virginia_avenue
     assert virginia_avenue_fx in property_dict
     assert property_dict[virginia_avenue_fx] == arun_fx
 
+
 def test_add(arvind_fx, arun_fx, padma_fx, adityam_fx):
     list1 = TileList([arvind_fx, arun_fx])
     list2 = TileList([adityam_fx, padma_fx])
@@ -80,19 +81,31 @@ def test_add(arvind_fx, arun_fx, padma_fx, adityam_fx):
     assert adityam_fx in actual
     assert padma_fx in actual
 
-def test_keys(arvind_fx, arun_fx, adityam_fx, padma_fx, states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx):
+
+def test_keys(arvind_fx, arun_fx, adityam_fx, padma_fx, states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx,
+              virginia_avenue_fx):
     tile_dict = TileDict({states_avenue_fx: arvind_fx,
                           st_charles_place_fx: arun_fx,
                           pennsylvania_railroad_fx: adityam_fx,
                           virginia_avenue_fx: padma_fx})
     keys = tile_dict.keys()
-    assert  states_avenue_fx in keys
+    assert states_avenue_fx in keys
     assert st_charles_place_fx in keys
     assert pennsylvania_railroad_fx in keys
     assert virginia_avenue_fx in keys
+
 
 def test_get(pennsylvania_railroad_fx, states_avenue_fx, st_charles_place_fx):
     tile_list = TileList([pennsylvania_railroad_fx, states_avenue_fx, st_charles_place_fx])
     assert tile_list.get(states_avenue_fx) == states_avenue_fx
     assert tile_list.get(pennsylvania_railroad_fx) == pennsylvania_railroad
     assert tile_list.get(states_avenue_fx) == states_avenue_fx
+
+
+def test_copy(arvind_fx, arun_fx, adityam_fx, padma_fx):
+    players = TileList([arvind_fx, arun_fx, adityam_fx, padma_fx])
+    other_players = players.copy()
+    assert arvind_fx in other_players
+    assert arun_fx in other_players
+    assert padma_fx in other_players
+    assert adityam_fx in other_players
