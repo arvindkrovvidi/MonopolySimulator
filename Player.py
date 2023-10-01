@@ -13,6 +13,10 @@ class Player:
         self.cash = cash
         self.networth = networth
 
+    # @property
+    # def tile_no(self):
+    #     return self._tile_no
+
     @property
     def player_portfolio(self):
         return self._player_portfolio
@@ -70,4 +74,11 @@ class Player:
         """
         self.cash -= amount
         player.cash += amount
+
+    def bank_transaction(self, amount):
+        """
+        Collect or pay the bank a certain amount
+        :param amount: The amount being paid or collected
+        """
+        self.cash += amount
 
