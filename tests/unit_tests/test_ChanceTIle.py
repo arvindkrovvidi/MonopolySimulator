@@ -1,6 +1,6 @@
 import pytest
 
-from ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility
+from ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility, execute_chance_15
 from Property_data import railroad_properties_list, utilities_list
 from TileIterators import TileDict
 
@@ -23,6 +23,7 @@ def test_execute_chance_5_railroad_free(arvind_fx, mocker, pennsylvania_railroad
     assert pennsylvania_railroad_fx in arvind_fx.player_portfolio
     assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
 
+
 def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylvania_railroad_fx):
     arvind_fx.tile_no = 36
     property_tracker = TileDict({pennsylvania_railroad_fx: arun_fx})
@@ -31,6 +32,7 @@ def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylv
     assert arun_fx.cash == 200 + (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.cash == 200 - (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
+
 
 @pytest.mark.parametrize("input_tile_no, expected", [
     (7, 12),
@@ -50,6 +52,7 @@ def test_execute_chance_7_utility_free(arvind_fx, mocker, electric_company_fx):
     assert electric_company_fx in arvind_fx.player_portfolio
     assert arvind_fx.tile_no == electric_company_fx.tile_no
 
+
 def test_execute_chance_7_utility_occupied(arvind_fx, arun_fx, mocker, electric_company_fx):
     arvind_fx.tile_no = 36
     property_tracker = TileDict({electric_company_fx: arun_fx})
@@ -58,3 +61,13 @@ def test_execute_chance_7_utility_occupied(arvind_fx, arun_fx, mocker, electric_
     assert arun_fx.cash == 200 + (electric_company_fx.rent * 2)
     assert arvind_fx.cash == 200 - (electric_company_fx.rent * 2)
     assert arvind_fx.tile_no == electric_company_fx.tile_no
+
+
+def test_execute_chance_15(arvind_fx, arun_fx, adityam_fx, padma_fx):
+    arvind_fx.cash = 500
+    all_players_list = [arvind_fx, arun_fx, adityam_fx, padma_fx]
+    execute_chance_15(arvind_fx, all_players_list)
+    assert arvind_fx.cash == 350
+    assert arun_fx.cash == 250
+    assert adityam_fx.cash == 250
+    assert padma_fx.cash == 250
