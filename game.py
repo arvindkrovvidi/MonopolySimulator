@@ -37,10 +37,9 @@ while turn <= total_turns:
                 player.pay_rent(landlord, current_tile.rent)
         else:
             if type(current_tile) == CommunityChestTile:
-                # TODO: Implement what to do when player lands on Community chest tile
-                pass
+                card_no = randint(1, 16)
+                CommunityChestTile.execute(player, card_no)
             if type(current_tile) == ChanceTile:
-                # TODO: Change 5 to 16 after implementing all chance cards
                 card_no = randint(1,16)
                 ChanceTile.execute(player, card_no)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
@@ -66,7 +65,7 @@ print(display_winners)
 # TODO: Add tests for all functions
 # TODO: Check for code coverage
 # TODO: Push code to GIT
-# TODO: Add hotels
+# TODO: Add hotels and houses
 # TODO Add descriptions for functions
 # TODO: Automatically create test functions and give suggestions to create test functions when a function is selected.
 # TODO: Calculate probabilities for each person winning the game
