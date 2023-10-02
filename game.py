@@ -10,7 +10,7 @@ from Property_data import all_properties_list, property_tracker
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
 from special_tiles_data import special_tiles_list
-from utils import display_positions, calculate_networth
+from utils import get_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
 total_turns = 100
@@ -54,7 +54,7 @@ for player in players:
 
 display_winners = PrettyTable()
 display_winners.field_names = ["Position", "Player", "Net Worth"]
-for pos, win, nw in display_positions(players):
+for pos, win, nw in get_positions(players):
     display_winners.add_row((pos, str(win), nw))
 print(display_winners)
 # TODO: Add community chests

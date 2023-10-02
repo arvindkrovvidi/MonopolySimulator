@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from utils import calculate_networth, find_winner, display_positions, check_passing_go
+from utils import calculate_networth, find_winner, get_positions, check_passing_go
 
 
 def test_calculate_networth(st_charles_place_fx, states_avenue_fx, virginia_avenue_fx,
@@ -42,7 +42,7 @@ def test_display_positions(inputs, expected, sree_fx, padma_fx, adityam_fx, arun
     sree_fx.networth = inputs[4]
 
     actual = []
-    for pos, win, nw in display_positions([arvind_fx, arun_fx, adityam_fx, padma_fx, sree_fx]):
+    for pos, win, nw in get_positions([arvind_fx, arun_fx, adityam_fx, padma_fx, sree_fx]):
         actual.append((pos, str(win), nw))
 
     assert expected == actual
