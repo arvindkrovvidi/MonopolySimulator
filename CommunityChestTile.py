@@ -10,7 +10,12 @@ class CommunityChestTile(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
     @staticmethod
-    def execute(player, _card_no):
+    def execute(player, _card_no: int) -> None:
+        """
+        Execute community chest card function based on card number.
+        :param player: The player using the community chest card
+        :param _card_no: The card number picked randomly by the player
+        """
         if _card_no == 1:
             player.move_to(go)
             player.bank_transaction(200)
@@ -45,6 +50,11 @@ class CommunityChestTile(SpecialTiles):
         if _card_no == 16:
             player.bank_transaction(100)
 
-def execute_chest_9(player, players):
+def execute_chest_9(player, players) -> None:
+    """
+    Execute community chest card number 9. It's your birthday. Collect $10 from every player.
+    :param player: The player that picked the card. The player that collects the amount.
+    :param players: The players paying the amount.
+    """
     for each_player in players:
         player.player_transaction(each_player, 10)
