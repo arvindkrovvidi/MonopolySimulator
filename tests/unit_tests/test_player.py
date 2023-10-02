@@ -70,21 +70,28 @@ def test_pay_rent(arvind_fx, arun_fx):
     assert arvind_fx.cash == 180
     assert arun_fx.cash == 220
 
+@pytest.mark.parametrize("input_amount, expected_cash_1, expected_cash_2", [
+    (100, 300, 100),
+    (-50, 150, 250)
+])
+def test_transact_with_one_player(arvind_fx, arun_fx, input_amount, expected_cash_1, expected_cash_2):
+    arvind_fx.player_transaction(arun_fx, input_amount)
+    assert arvind_fx.cash == expected_cash_1
+    assert arun_fx.cash == expected_cash_2
 
-def test_pay_one_player(arvind_fx, arun_fx):
-    arvind_fx.pay_player(arun_fx, 100)
-    assert arvind_fx.cash == 100
-    assert arun_fx.cash == 300
 
-
-def test_pay_multiple_players(arvind_fx, arun_fx, adityam_fx, padma_fx):
+@pytest.mark.parametrize("input_amount, expected_cash_1, expected_cash_2, expected_cash_3, expected_cash_4", [
+    (10, 230, 190, 190, 190),
+     (-50, 50, 250, 250, 250)
+])
+def test_transact_with_multiple_players(arvind_fx, arun_fx, adityam_fx, padma_fx, input_amount, expected_cash_1, expected_cash_2, expected_cash_3, expected_cash_4):
     player_list = [arun_fx, adityam_fx, padma_fx]
     for player in player_list:
-        arvind_fx.pay_player(player, 10)
-    assert arvind_fx.cash == 170
-    assert arun_fx.cash == 210
-    assert adityam_fx.cash == 210
-    assert padma_fx.cash == 210
+        arvind_fx.player_transaction(player, input_amount)
+    assert arvind_fx.cash == expected_cash_1
+    assert arun_fx.cash == expected_cash_2
+    assert adityam_fx.cash == expected_cash_3
+    assert padma_fx.cash == expected_cash_4
 
 
 @pytest.mark.parametrize("input_amount, expected",[
