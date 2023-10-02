@@ -41,7 +41,7 @@ while turn <= total_turns:
                 pass
             if type(current_tile) == ChanceTile:
                 # TODO: Change 5 to 16 after implementing all chance cards
-                card_no = randint(1,7)
+                card_no = randint(1,16)
                 ChanceTile.execute(player, card_no)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.

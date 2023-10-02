@@ -58,7 +58,7 @@ def execute_chance_15(player, players):
     other_players = players.copy()
     other_players.remove(player)
     for each_player in other_players:
-        player.pay_player(each_player, 50)
+        player.player_transaction(each_player, 50)
 
 def get_nearest_railroad(player):
     """
