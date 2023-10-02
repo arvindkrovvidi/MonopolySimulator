@@ -55,6 +55,11 @@ class ChanceTile(SpecialTiles):
 
 
 def execute_chance_15(player, players):
+    """
+    Execute chance card number 15. You have been elected Chairman of the Board. Pay each player $50.
+    :param player: The player that picks chance card 15
+    :param players: The players being paid the amount.
+    """
     other_players = players.copy()
     other_players.remove(player)
     for each_player in other_players:
