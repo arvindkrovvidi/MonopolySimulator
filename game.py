@@ -6,7 +6,7 @@ from ChanceTile import ChanceTile
 from CommunityChestTile import CommunityChestTile
 from Player_data import all_players_list
 from Property import Property
-from Property_data import all_properties_list, property_tracker
+from Property_data import all_properties_list
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
 from special_tiles_data import special_tiles_list
@@ -30,10 +30,10 @@ while turn <= total_turns:
         player.move(throw)
         current_tile = all_properties_list[player.tile_no]
         if type(current_tile) == Property:
-            if current_tile not in property_tracker:
+            if current_tile.owner is None:
                 player.buy_property(current_tile)
             else:
-                landlord = property_tracker[current_tile]
+                landlord = current_tile.owner
                 player.pay_rent(landlord, current_tile.rent)
         else:
             if type(current_tile) == CommunityChestTile:

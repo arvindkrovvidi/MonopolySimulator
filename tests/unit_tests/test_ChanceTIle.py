@@ -2,7 +2,6 @@ import pytest
 
 from ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility, execute_chance_15
 from Property_data import railroad_properties_list, utilities_list
-from TileIterators import TileDict
 
 
 @pytest.mark.parametrize("input_tile_no, expected", [
@@ -17,18 +16,17 @@ def test_get_nearest_railroad(arvind_fx, input_tile_no, expected):
 
 def test_execute_chance_5_railroad_free(arvind_fx, mocker, pennsylvania_railroad_fx):
     arvind_fx.tile_no = 36
-    property_tracker = TileDict({})
     mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad_fx)
-    execute_chance_5(arvind_fx, property_tracker)
+    execute_chance_5(arvind_fx)
     assert pennsylvania_railroad_fx in arvind_fx.player_portfolio
     assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
 
 
 def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylvania_railroad_fx):
     arvind_fx.tile_no = 36
-    property_tracker = TileDict({pennsylvania_railroad_fx: arun_fx})
+    pennsylvania_railroad_fx.owner = arun_fx
     mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad_fx)
-    execute_chance_5(arvind_fx, property_tracker)
+    execute_chance_5(arvind_fx)
     assert arun_fx.cash == 200 + (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.cash == 200 - (pennsylvania_railroad_fx.rent * 2)
     assert arvind_fx.tile_no == pennsylvania_railroad_fx.tile_no
@@ -46,18 +44,17 @@ def test_get_nearest_utility(arvind_fx, input_tile_no, expected):
 
 def test_execute_chance_7_utility_free(arvind_fx, mocker, electric_company_fx):
     arvind_fx.tile_no = 36
-    property_tracker = TileDict({})
     mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company_fx)
-    execute_chance_7(arvind_fx, property_tracker)
+    execute_chance_7(arvind_fx)
     assert electric_company_fx in arvind_fx.player_portfolio
     assert arvind_fx.tile_no == electric_company_fx.tile_no
 
 
 def test_execute_chance_7_utility_occupied(arvind_fx, arun_fx, mocker, electric_company_fx):
     arvind_fx.tile_no = 36
-    property_tracker = TileDict({electric_company_fx: arun_fx})
+    electric_company_fx.owner = arun_fx
     mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company_fx)
-    execute_chance_7(arvind_fx, property_tracker)
+    execute_chance_7(arvind_fx)
     assert arun_fx.cash == 200 + (electric_company_fx.rent * 2)
     assert arvind_fx.cash == 200 - (electric_company_fx.rent * 2)
     assert arvind_fx.tile_no == electric_company_fx.tile_no

@@ -1,7 +1,6 @@
 import random
 
 from Board import max_tile_no, go_cash
-from Property_data import property_tracker
 from TileIterators import TileList
 
 
@@ -36,7 +35,7 @@ class Player:
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
-            property_tracker.update_dict({asset: self})
+            asset.owner = self
 
     def throw_dice(self) -> int:
         """

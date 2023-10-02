@@ -7,6 +7,15 @@ class Property(Tile):
         Tile.__init__(self, tile_no, name)
         self.cost = cost
         self.rent = rent
+        self._owner = None
 
-    def __str__(self):
-        return self.name
+    @property
+    def owner(self):
+        return self._owner
+
+    @owner.setter
+    def owner(self, value):
+        self._owner = value
+
+
+
