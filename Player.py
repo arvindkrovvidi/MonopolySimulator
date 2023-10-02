@@ -76,7 +76,7 @@ class Player:
         self.cash -= rent
         player.cash += rent
 
-    def player_transaction(self, player, amount: int):
+    def player_transaction(self, player, amount: int) -> None:
         """
         Collect or pay a player a specified amount. Positive means collect from player. Negative means pay player.
         :param player: The player paying
@@ -85,7 +85,7 @@ class Player:
         self.cash += amount
         player.cash -= amount
 
-    def bank_transaction(self, amount: int):
+    def bank_transaction(self, amount: int) -> None:
         """
         Collect or pay the bank a certain amount
         :param amount: The amount being paid or collected
