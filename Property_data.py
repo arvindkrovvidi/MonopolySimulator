@@ -1,5 +1,6 @@
 from Property import Property
 from TileIterators import TileList, TileDict
+from TileIterators import TileList
 
 mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, 2)
 baltic_avenue = Property(3, 'Baltic Avenue', 60, 4)
