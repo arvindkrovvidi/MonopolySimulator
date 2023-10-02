@@ -2,7 +2,12 @@ from Player import Player
 from Tile import Tile
 
 
-def calculate_networth(player):
+def calculate_networth(player) -> int:
+    """
+    Calculate networth of a player
+    :param player: Player who's networth is being calculated
+    :return: Networth
+    """
     nw = 0
     for asset in player.player_portfolio:
         nw += asset.cost
@@ -11,6 +16,11 @@ def calculate_networth(player):
 
 
 def find_winner(players):
+    """
+    Find the winner of the game based on networths
+    :param players: List of all the players in the game
+    :return: Winner and their index in the list
+    """
     nw_list = [player.networth for player in players]
     max_nw = max(nw_list)
     winner_index = nw_list.index(max_nw)
@@ -18,7 +28,11 @@ def find_winner(players):
     return winner, winner_index
 
 
-def display_positions(players):
+def get_positions(players):
+    """
+    Generator that yields the position, winner and their networth
+    :param players: List of all players in the game
+    """
     j = 0
     for i in range(len(players)):
         winner, winner_index = find_winner(players)
