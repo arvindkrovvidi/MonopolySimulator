@@ -12,9 +12,9 @@ class CommunityChestTile(SpecialTiles):
     @staticmethod
     def execute(player, _card_no: int) -> None:
         """
-        Execute community chest card function based on card number.
-        :param player: The player using the community chest card
-        :param _card_no: The card number picked randomly by the player
+        Main function that executes chance tile cards based on card number.
+        :param player: Player who is picking up the chance card.
+        :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
         if _card_no == 1:
             player.move_to(go)
