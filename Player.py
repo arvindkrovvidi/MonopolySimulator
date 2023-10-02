@@ -58,15 +58,25 @@ class Player:
             else:
                 self.cash += go_cash
     def move_to(self, tile, collect_go_cash_flag: bool=True) -> None:
+        """
+        Move to a specific Tile with or without collecting salary. This occurs through Chance, Community chest cards and Jail tiles.
+        :param tile: The tile to move to
+        :param collect_go_cash_flag: True if salary is to be collected. Else False.
+        """
         self.tile_no = tile.tile_no
         if collect_go_cash_flag:
             self.cash += 200
 
     def pay_rent(self, player, rent: int) -> None:
+        """
+        Pay rent to the specified player
+        :param player: The player to whom the rent has to be paid
+        :param rent: The rent to be paid to the player
+        """
         self.cash -= rent
         player.cash += rent
 
-    def player_transaction(self, player, amount):
+    def player_transaction(self, player, amount: int):
         """
         Collect or pay a player a specified amount. Positive means collect from player. Negative means pay player.
         :param player: The player paying
@@ -75,7 +85,7 @@ class Player:
         self.cash += amount
         player.cash -= amount
 
-    def bank_transaction(self, amount):
+    def bank_transaction(self, amount: int):
         """
         Collect or pay the bank a certain amount
         :param amount: The amount being paid or collected
