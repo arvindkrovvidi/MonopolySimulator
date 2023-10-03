@@ -41,21 +41,21 @@ def go_fx():
 
 @pytest.fixture
 def st_james_place(property_rent_data):
-    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"])
+    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange")
 
 @pytest.fixture
 def states_avenue(property_rent_data):
-    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"])
+    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink")
 
 
 @pytest.fixture
 def st_charles_place(property_rent_data):
-    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"])
+    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"], "Pink")
 
 
 @pytest.fixture
 def virginia_avenue(property_rent_data):
-    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"])
+    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink")
 
 
 @pytest.fixture
