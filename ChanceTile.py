@@ -1,8 +1,10 @@
 from Player_data import all_players_list
-from Property_data import boardwalk, illinois_avenue, st_charles_place, railroad_properties_list, utilities_list, reading_railroad
+from Property_data import boardwalk, illinois_avenue, st_charles_place
 from SpecialTiles import SpecialTiles
 from Tile import Tile
+from railroad_property_data import reading_railroad, railroad_properties_list
 from special_tiles_data import go
+from utilities_data import utilities_list
 from utils import check_passing_go
 
 

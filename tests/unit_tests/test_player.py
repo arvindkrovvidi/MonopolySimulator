@@ -18,18 +18,18 @@ def test_init_correct_values():
     assert arvind.cash == 500
 
 
-def test_buy_property(states_avenue_fx, arvind_fx, st_charles_place_fx):
+def test_buy_property(states_avenue, arvind_fx, st_charles_place):
     arvind_fx.cash = 500
-    arvind_fx.buy_property(states_avenue_fx)
+    arvind_fx.buy_property(states_avenue)
 
     assert arvind_fx.cash == 360
-    assert states_avenue_fx in arvind_fx.player_portfolio
+    assert states_avenue in arvind_fx.player_portfolio
 
     arvind_fx.cash = 10
-    arvind_fx.buy_property(st_charles_place_fx)
+    arvind_fx.buy_property(st_charles_place)
 
     assert arvind_fx.cash == 10
-    assert st_charles_place_fx not in arvind_fx.player_portfolio
+    assert st_charles_place not in arvind_fx.player_portfolio
 
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash", [
@@ -37,7 +37,7 @@ def test_buy_property(states_avenue_fx, arvind_fx, st_charles_place_fx):
     (28, 0, 200),
     (39, 11, 400)
 ])
-def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_tile, expected_current_tile,
+def test_move(arvind_fx, pennsylvania_railroad, st_james_place, current_tile, expected_current_tile,
               expected_cash):
     arvind_fx.tile_no = current_tile
     arvind_fx.move(12)
@@ -47,10 +47,10 @@ def test_move(arvind_fx, pennsylvania_railroad_fx, st_james_place_fx, current_ti
 
 
 @pytest.mark.parametrize("destination, collect_go_cash_flag, expected_destination, expected_cash", [
-    ("states_avenue_fx", True, "states_avenue_fx", 400),
-    ("states_avenue_fx", False, "states_avenue_fx", 200),
+    ("states_avenue", True, "states_avenue", 400),
+    ("states_avenue", False, "states_avenue", 200),
 ])
-def test_move_to(arvind_fx, states_avenue_fx, destination, expected_cash, expected_destination, collect_go_cash_flag,
+def test_move_to(arvind_fx, states_avenue, destination, expected_cash, expected_destination, collect_go_cash_flag,
                  request):
     input_destination = request.getfixturevalue(destination)
     expected_destination_value = request.getfixturevalue(expected_destination)
@@ -59,9 +59,9 @@ def test_move_to(arvind_fx, states_avenue_fx, destination, expected_cash, expect
     assert arvind_fx.cash == expected_cash
 
 
-def test_move_to_default_collect_go_cash_flag(arvind_fx, states_avenue_fx):
-    arvind_fx.move_to(states_avenue_fx)
-    assert arvind_fx.tile_no == states_avenue_fx.tile_no
+def test_move_to_default_collect_go_cash_flag(arvind_fx, states_avenue):
+    arvind_fx.move_to(states_avenue)
+    assert arvind_fx.tile_no == states_avenue.tile_no
     assert arvind_fx.cash == 400
 
 

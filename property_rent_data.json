@@ -1,0 +1,196 @@
+{
+  "Mediterranean Avenue": {
+    "Rent": {
+      "Site": 2,
+      "Color Set": 4,
+      "House": [10, 30, 90, 160],
+      "Hotel": 250
+    }
+  },
+  "Baltic Avenue": {
+    "Rent": {
+      "Site": 4,
+      "Color Set": 8,
+      "House": [20, 60, 180, 320],
+      "Hotel": 450
+    }
+  },
+  "Reading Railroad": {
+    "Rent": [25, 50, 100, 200]
+  },
+  "Oriental Avenue": {
+    "Rent": {
+      "Site": 6,
+      "Color Set": 12,
+      "House": [30, 90, 270, 400],
+      "Hotel": 550
+    }
+  },
+  "Vermont Avenue": {
+    "Rent": {
+      "Site": 6,
+      "Color Set": 12,
+      "House": [30, 90, 270, 400],
+      "Hotel": 550
+    }
+  },
+  "Connecticut Avenue": {
+    "Rent": {
+      "Site": 8,
+      "Color Set": 16,
+      "House": [40, 100, 300, 450],
+      "Hotel": 600
+    }
+  },
+  "St. Charles Place": {
+    "Rent": {
+      "Site": 10,
+      "Color Set": 20,
+      "House": [50, 150, 450, 625],
+      "Hotel": 750
+    }
+  },
+  "Electric Company": {
+    "Rent": [0]
+},
+  "States Avenue": {
+  "Rent": {
+    "Site": 10,
+    "Color Set": 20,
+    "House": [50, 150, 450, 625],
+    "Hotel": 750
+  }
+  },
+  "Virginia Avenue": {
+    "Rent": {
+      "Site": 12,
+      "Color Set": 24,
+      "House": [60, 180, 500, 700],
+      "Hotel": 900
+    }
+  },
+  "Pennsylvania Railroad": {
+    "Rent": [25, 50, 100, 200]
+},
+  "St. James Place": {
+    "Rent": {
+      "Site": 14,
+      "Color Set": 28,
+      "House": [70, 200, 550, 750],
+      "Hotel": 950
+    }
+  },
+  "Tennessee Avenue": {
+    "Rent": {
+      "Site": 14,
+      "Color Set": 28,
+      "House": [70, 200, 550, 750],
+      "Hotel": 950
+    }
+  },
+  "New York Avenue": {
+    "Rent": {
+      "Site": 16,
+      "Color Set": 32,
+      "House": [80, 220, 600, 800],
+      "Hotel": 1000
+    }
+  },
+  "Kentucky Avenue": {
+    "Rent": {
+      "Site": 18,
+      "Color Set": 36,
+      "House": [90, 250, 700, 875],
+      "Hotel": 1050
+    }
+  },
+  "Indiana Avenue": {
+    "Rent": {
+      "Site": 18,
+      "Color Set": 36,
+      "House": [90, 250, 700, 875],
+      "Hotel": 1050
+    }
+  },
+  "Illinois Avenue": {
+    "Rent": {
+      "Site": 20,
+      "Color Set": 40,
+      "House": [100, 300, 750, 925],
+      "Hotel": 1100
+    }
+  },
+  "B & O Railroad": {
+    "Rent": [25, 50, 100, 200]
+  },
+  "Atlantic Avenue": {
+    "Rent": {
+      "Site": 22,
+      "Color Set": 44,
+      "House": [110, 330, 800, 975],
+      "Hotel": 1150
+    }
+  },
+  "Ventnor Avenue": {
+    "Rent": {
+      "Site": 22,
+      "Color Set": 44,
+      "House": [110, 330, 800, 975],
+      "Hotel": 1150
+    }
+  },
+  "Water Works": {
+    "Rent": [0]
+},
+  "Marvin Gardens": {
+    "Rent": {
+      "Site": 24,
+      "Color Set": 48,
+      "House": [120, 360, 850, 1025],
+      "Hotel": 1200
+    }
+  },
+  "Pacific Avenue": {
+    "Rent": {
+      "Site": 26,
+      "Color Set": 52,
+      "House": [130, 390, 900, 1100],
+      "Hotel": 1275
+    }
+  },
+  "North Carolina Avenue": {
+    "Rent": {
+      "Site": 26,
+      "Color Set": 52,
+      "House": [130, 390, 900, 1100],
+      "Hotel": 1275
+    }
+  },
+  "Pennsylvania Avenue": {
+    "Rent": {
+      "Site": 28,
+      "Color Set": 56,
+      "House": [150, 450, 1000, 1200],
+      "Hotel": 1400
+    }
+  },
+  "Short Line": {
+    "Rent": [25, 50, 100, 200]
+  },
+  "Park Place": {
+    "Rent": {
+      "Site": 35,
+      "Color Set": 70,
+      "House": [175, 500, 1100, 1300],
+      "Hotel": 1500
+    }
+  },
+  "Boardwalk": {
+    "Rent": {
+      "Site": 50,
+      "Color Set": 100,
+      "House": [200, 600, 1400, 1700],
+      "Hotel": 2000
+    }
+  }
+}

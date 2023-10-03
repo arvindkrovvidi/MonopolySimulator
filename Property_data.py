@@ -1,43 +1,40 @@
+import json
+from pathlib import Path
+
 from Property import Property
-from TileIterators import TileList, TileDict
 from TileIterators import TileList
 
-mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, 2)
-baltic_avenue = Property(3, 'Baltic Avenue', 60, 4)
-reading_railroad = Property(5, "Reading Railroad", 200, 25)
-oriental_avenue = Property(6, "Oriental Avenue", 100, 6)
-vermont_avenue = Property(8, "Vermont Avenue", 100, 6)
-connecticut_avenue = Property(9, "Connecticut Avenue", 120, 8)
-st_charles_place = Property(11, "St. Charles Place", 140, 10)
-electric_company = Property(12, "Electric Company", 150, 4)
-states_avenue = Property(13, "States Avenue", 140, 10)
-virginia_avenue = Property(14, "Virginia Avenue", 160, 12)
-pennsylvania_railroad = Property(15, "Pennsylvania Railroad", 200, 25)
-st_james_place = Property(16, "St. James Place", 180, 14)
-tennessee_avenue = Property(18, "Tennessee Avenue", 180, 14)
-new_york_avenue = Property(19, "New York Avenue", 200, 16)
-kentucky_avenue = Property(21, "Kentucky Avenue", 220, 18)
-indiana_avenue = Property(23, "Indiana Avenue", 220, 18)
-illinois_avenue = Property(24, "Illinois Avenue", 240, 20)
-bo_railroad = Property(25, "B & O Railroad", 200, 25)
-atlantic_avenue = Property(26, "Atlantic Avenue", 260, 22)
-ventnor_avenue = Property(27, "Ventnor Avenue", 260, 22)
-water_works = Property(28, "Water Works", 150, 4)
-marvin_gardens = Property(29, "Marvin Gardens", 280, 24)
-pacific_avenue = Property(31, "Pacific Avenue", 300, 26)
-north_carolina_avenue = Property(32, "North Carolina Avenue", 300, 26)
-pennsylvania_avenue = Property(34, "Pennsylvania Avenue", 320, 28)
-short_line = Property(35, "Short Line", 200, 25)
-park_place = Property(37, "Park Place", 350, 35)
-boardwalk = Property(39, "Boardwalk", 400, 50)
+property_rent_data_file = Path(Path.cwd() / "property_rent_data.json")
+with open(property_rent_data_file) as f:
+    property_rent_data = json.load(f)
 
-all_properties_list = TileList([mediterranean_avenue, baltic_avenue, reading_railroad, oriental_avenue, vermont_avenue, connecticut_avenue,
-                                electric_company, st_charles_place, states_avenue, virginia_avenue, pennsylvania_railroad, st_james_place,
-                                tennessee_avenue, new_york_avenue, kentucky_avenue, indiana_avenue, illinois_avenue, bo_railroad,
-                                atlantic_avenue, ventnor_avenue, water_works, marvin_gardens, pacific_avenue, north_carolina_avenue,
-                                pennsylvania_avenue, short_line, park_place, boardwalk])
-property_tracker = TileDict({})
+mediterranean_avenue = Property(1, "Mediterranean Avenue", 60, property_rent_data["Mediterranean Avenue"]["Rent"])
+baltic_avenue = Property(3, 'Baltic Avenue', 60, property_rent_data["Baltic Avenue"]["Rent"])
+oriental_avenue = Property(6, "Oriental Avenue", 100, property_rent_data["Oriental Avenue"]["Rent"])
+vermont_avenue = Property(8, "Vermont Avenue", 100, property_rent_data["Vermont Avenue"]["Rent"])
+connecticut_avenue = Property(9, "Connecticut Avenue", 120, property_rent_data["Connecticut Avenue"]["Rent"])
+st_charles_place = Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"])
+states_avenue = Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"])
+virginia_avenue = Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"])
+st_james_place = Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"])
+tennessee_avenue = Property(18, "Tennessee Avenue", 180, property_rent_data["Tennessee Avenue"]["Rent"])
+new_york_avenue = Property(19, "New York Avenue", 200, property_rent_data["New York Avenue"]["Rent"])
+kentucky_avenue = Property(21, "Kentucky Avenue", 220, property_rent_data["Kentucky Avenue"]["Rent"])
+indiana_avenue = Property(23, "Indiana Avenue", 220, property_rent_data["Indiana Avenue"]["Rent"])
+illinois_avenue = Property(24, "Illinois Avenue", 240, property_rent_data["Illinois Avenue"]["Rent"])
+atlantic_avenue = Property(26, "Atlantic Avenue", 260, property_rent_data["Atlantic Avenue"]["Rent"])
+ventnor_avenue = Property(27, "Ventnor Avenue", 260, property_rent_data["Ventnor Avenue"]["Rent"])
+marvin_gardens = Property(29, "Marvin Gardens", 280, property_rent_data["Marvin Gardens"]["Rent"])
+pacific_avenue = Property(31, "Pacific Avenue", 300, property_rent_data["Pacific Avenue"]["Rent"])
+north_carolina_avenue = Property(32, "North Carolina Avenue", 300, property_rent_data["North Carolina Avenue"]["Rent"])
+pennsylvania_avenue = Property(34, "Pennsylvania Avenue", 320, property_rent_data["Pennsylvania Avenue"]["Rent"])
+park_place = Property(37, "Park Place", 350, property_rent_data["Park Place"]["Rent"])
+boardwalk = Property(39, "Boardwalk", 400, property_rent_data["Boardwalk"]["Rent"])
 
-railroad_properties_list = TileList([reading_railroad, bo_railroad, pennsylvania_railroad, short_line])
+properties_list = TileList([mediterranean_avenue, baltic_avenue, oriental_avenue, vermont_avenue, connecticut_avenue,
+                            st_charles_place, states_avenue, virginia_avenue,
+                            st_james_place,
+                            tennessee_avenue, new_york_avenue, kentucky_avenue, indiana_avenue, illinois_avenue,
+                            atlantic_avenue, ventnor_avenue, marvin_gardens, pacific_avenue, north_carolina_avenue,
+                            pennsylvania_avenue, park_place, boardwalk])
 
-utilities_list = TileList([electric_company, water_works])
