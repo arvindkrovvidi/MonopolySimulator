@@ -13,5 +13,5 @@ color_data = {
     "Green": 3,
     "Blue": 2,
     "Railroad": 4,
-    "Utilities": 2
+    "Utility": 2
 }
