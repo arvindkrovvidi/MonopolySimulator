@@ -3,9 +3,10 @@ from Tile import Tile
 
 class Property(Tile):
 
-    def __init__(self, tile_no, name, cost, rent):
+    def __init__(self, tile_no, name, cost, rent, color):
         Tile.__init__(self, tile_no, name)
         self.cost = cost
+        self.color = color
         self._rent = rent
         self._owner = None
         self._color_set = True
