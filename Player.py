@@ -2,6 +2,7 @@ import random
 
 from Board import max_tile_no, go_cash
 from TileIterators import TileList
+from utils import check_player_has_color_set
 
 
 class Player:
@@ -36,6 +37,9 @@ class Player:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
             asset.owner = self
+            if check_player_has_color_set(self, asset.color):
+                asset._color_set = True
+
 
     def throw_dice(self) -> int:
         """

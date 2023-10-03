@@ -1,5 +1,4 @@
 from Board import color_data
-from Player import Player
 from Tile import Tile
 
 
@@ -53,7 +52,7 @@ def get_positions(players):
             prev = winner
         players.pop(winner_index)
 
-def check_passing_go(player: Player, tile: Tile) -> bool:
+def check_passing_go(player, tile: Tile) -> bool:
     """
     Check if moving to a tile requires crossing Go tile. This is required for Chance cards.
     :param player: Player that is moving to tile
