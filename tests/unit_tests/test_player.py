@@ -70,6 +70,15 @@ def test_pay_rent(arvind_fx, arun_fx):
     assert arvind_fx.cash == 180
     assert arun_fx.cash == 220
 
+def test_pay_rent_color_set(arvind_fx, arun_fx, virginia_avenue, states_avenue, st_charles_place):
+    arvind_fx.tile_no = 14
+    arun_fx.player_portfolio.append(virginia_avenue)
+    arun_fx.player_portfolio.append(states_avenue)
+    arun_fx.player_portfolio.append(st_charles_place)
+    arvind_fx.pay_rent(arun_fx, virginia_avenue.rent)
+    assert arvind_fx.cash == 176
+    assert arun_fx.cash == 224
+
 @pytest.mark.parametrize("input_amount, expected_cash_1, expected_cash_2", [
     (100, 300, 100),
     (-50, 150, 250)
