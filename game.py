@@ -7,16 +7,21 @@ from CommunityChestTile import CommunityChestTile
 from Player_data import all_players_list
 from Property import Property
 from Property_data import properties_list
+from Railroad import Railroad
+from Utility import Utility
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
+from railroad_property_data import railroad_properties_list
 from special_tiles_data import special_tiles_list
+from utilities_data import electric_company, water_works
+from utilities_data import utilities_list
 from utils import get_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
 total_turns = 100
 turn = 0
 
-all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list
+all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list + railroad_properties_list + utilities_list
 
 # TODO: Automate adding players to the all_players_list
 
@@ -35,13 +40,27 @@ while turn <= total_turns:
             else:
                 landlord = current_tile.owner
                 player.pay_rent(landlord, current_tile.rent)
-        else:
-            if type(current_tile) == CommunityChestTile:
-                card_no = randint(1, 16)
-                CommunityChestTile.execute(player, card_no)
-            if type(current_tile) == ChanceTile:
-                card_no = randint(1,16)
-                ChanceTile.execute(player, card_no)
+        elif type(current_tile) == Railroad:
+            if current_tile.owner is None:
+                player.buy_property(current_tile)
+            else:
+                landlord = current_tile.owner
+                player.pay_rent(landlord, current_tile.rent)
+        elif type(current_tile) == Utility:
+            if current_tile.owner is None:
+                player.buy_property(current_tile)
+            else:
+                landlord = current_tile.owner
+                if electric_company in landlord.player_portfolio and water_works in landlord.player_portfolio:
+                    player.pay_rent(landlord, throw * 10)
+                else:
+                    player.pay_rent(landlord, throw * 4)
+        elif type(current_tile) == CommunityChestTile:
+            card_no = randint(1, 16)
+            CommunityChestTile.execute(player, card_no)
+        elif type(current_tile) == ChanceTile:
+            card_no = randint(1,16)
+            ChanceTile.execute(player, card_no)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:
