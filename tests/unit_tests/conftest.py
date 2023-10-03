@@ -5,7 +5,9 @@ import pytest
 
 from Player import Player
 from Property import Property
+from Railroad import Railroad
 from TileIterators import TileList, TileDict
+from Utility import Utility
 from chance_tiles_data import chance_7, chance_22, chance_36
 from special_tiles_data import go
 
@@ -19,7 +21,7 @@ def property_rent_data():
 
 @pytest.fixture
 def electric_company(property_rent_data):
-    return Property(12, "Electric Company", 150, property_rent_data["Electric Company"]["Rent"])
+    return Utility(12, "Electric Company", 150, property_rent_data["Electric Company"]["Rent"])
 
 @pytest.fixture
 def chance_7_fx():
@@ -38,32 +40,32 @@ def go_fx():
     return go
 
 @pytest.fixture
-def st_james_place_fx():
-    return st_james_place
+def st_james_place(property_rent_data):
+    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"])
 
 @pytest.fixture
-def states_avenue_fx():
-    return states_avenue
-
-
-@pytest.fixture
-def st_charles_place_fx():
-    return st_charles_place
+def states_avenue(property_rent_data):
+    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"])
 
 
 @pytest.fixture
-def virginia_avenue_fx():
-    return virginia_avenue
+def st_charles_place(property_rent_data):
+    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"])
 
 
 @pytest.fixture
-def pennsylvania_railroad_fx():
-    return pennsylvania_railroad
+def virginia_avenue(property_rent_data):
+    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"])
 
 
 @pytest.fixture
-def property_list(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx):
-    ls = TileList([states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx])
+def pennsylvania_railroad(property_rent_data):
+    return Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"])
+
+
+@pytest.fixture
+def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue):
+    ls = TileList([states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue])
     return ls
 
 
@@ -97,11 +99,11 @@ def sree_fx():
     return sree
 
 @pytest.fixture
-def property_dict(states_avenue_fx, st_charles_place_fx, pennsylvania_railroad_fx, virginia_avenue_fx, arvind_fx,
+def property_dict(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue, arvind_fx,
                   arun_fx):
     return TileDict({
-        states_avenue_fx: arvind_fx,
-        st_charles_place_fx: arun_fx,
-        pennsylvania_railroad_fx: arvind_fx,
-        virginia_avenue_fx: arun_fx
+        states_avenue: arvind_fx,
+        st_charles_place: arun_fx,
+        pennsylvania_railroad: arvind_fx,
+        virginia_avenue: arun_fx
     })

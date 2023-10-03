@@ -6,7 +6,7 @@ from ChanceTile import ChanceTile
 from CommunityChestTile import CommunityChestTile
 from Player_data import all_players_list
 from Property import Property
-from Property_data import all_properties_list
+from Property_data import properties_list
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
 from special_tiles_data import special_tiles_list
@@ -16,7 +16,7 @@ from utils import get_positions, calculate_networth
 total_turns = 100
 turn = 0
 
-all_tiles_list = all_properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list
+all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list
 
 # TODO: Automate adding players to the all_players_list
 
@@ -28,7 +28,7 @@ while turn <= total_turns:
     for player in players:
         throw = player.throw_dice()
         player.move(throw)
-        current_tile = all_properties_list[player.tile_no]
+        current_tile = properties_list[player.tile_no]
         if type(current_tile) == Property:
             if current_tile.owner is None:
                 player.buy_property(current_tile)
