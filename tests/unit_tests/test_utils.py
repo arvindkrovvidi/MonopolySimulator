@@ -7,11 +7,12 @@ from utils import calculate_networth, find_winner, get_positions, check_passing_
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
                             pennsylvania_railroad):
     arvind_fx = Player("Arvind", 1000)
-    arvind_fx.buy_property(st_charles_place)
-    arvind_fx.buy_property(states_avenue)
-    arvind_fx.buy_property(virginia_avenue)
-    arvind_fx.buy_property(pennsylvania_railroad)
-    assert calculate_networth(arvind_fx) == 1000
+    arvind_fx.player_portfolio.append(st_charles_place)
+    arvind_fx.player_portfolio.append(states_avenue)
+    arvind_fx.player_portfolio.append(virginia_avenue)
+    arvind_fx.player_portfolio.append(pennsylvania_railroad)
+    assert arvind_fx.cash == 1000
+    assert calculate_networth(arvind_fx) == 1640
 
 
 def test_find_winner(st_charles_place, states_avenue, virginia_avenue,
