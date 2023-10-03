@@ -1,3 +1,4 @@
+from Board import color_data
 from Player import Player
 from Tile import Tile
 
@@ -63,3 +64,13 @@ def check_passing_go(player: Player, tile: Tile) -> bool:
         return False
     else:
         return True
+
+def check_player_has_color_set(player, color):
+    count = 0
+    for tile in player.player_portfolio:
+        if tile.color == color:
+            count += 1
+    if count == color_data[color]:
+        return True
+    else:
+        return False

@@ -1,11 +1,12 @@
 from Tile import Tile
 class Railroad(Tile):
-    def __init__(self, tile_no, name, cost, rent):
+    def __init__(self, tile_no, name, cost, rent, color):
         Tile.__init__(self, tile_no, name)
         self.cost = cost
         self._rent = rent
         self._owner = None
         self._colors_owned = 0
+        self.color = color
 
     @property
     def owner(self):

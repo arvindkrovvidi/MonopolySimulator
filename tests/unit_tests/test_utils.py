@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from utils import calculate_networth, find_winner, get_positions, check_passing_go
+from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -27,12 +27,18 @@ def test_find_winner(st_charles_place, states_avenue, virginia_avenue,
 
 
 @pytest.mark.parametrize("inputs, expected", [
-    ((100, 200, 300, 400, 500), ([(1, 'Sree', 500), (2, 'Padma', 400), (3, 'Adityam', 300), (4, 'Arun', 200), (5, 'Arvind', 100)])),
-    ((100, 200, 300, 500, 500), ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Adityam', 300), (4, 'Arun', 200), (5, 'Arvind', 100)])),
-    ((100, 100, 300, 500, 500), ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Adityam', 300), (4, 'Arvind', 100), (4, 'Arun', 100)])),
-    ((500, 500, 500, 500, 500), ([(1, 'Arvind', 500), (1, 'Arun', 500), (1, 'Adityam', 500), (1, 'Padma', 500), (1, 'Sree', 500)])),
-    ((100, 500, 500, 500, 500), ([(1, 'Arun', 500), (1, 'Adityam', 500), (1, 'Padma', 500), (1, 'Sree', 500), (5, 'Arvind', 100)])),
-    ((100, 100, 100, 500, 500), ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Arvind', 100), (3, 'Arun', 100), (3, 'Adityam', 100)]))
+    ((100, 200, 300, 400, 500),
+     ([(1, 'Sree', 500), (2, 'Padma', 400), (3, 'Adityam', 300), (4, 'Arun', 200), (5, 'Arvind', 100)])),
+    ((100, 200, 300, 500, 500),
+     ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Adityam', 300), (4, 'Arun', 200), (5, 'Arvind', 100)])),
+    ((100, 100, 300, 500, 500),
+     ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Adityam', 300), (4, 'Arvind', 100), (4, 'Arun', 100)])),
+    ((500, 500, 500, 500, 500),
+     ([(1, 'Arvind', 500), (1, 'Arun', 500), (1, 'Adityam', 500), (1, 'Padma', 500), (1, 'Sree', 500)])),
+    ((100, 500, 500, 500, 500),
+     ([(1, 'Arun', 500), (1, 'Adityam', 500), (1, 'Padma', 500), (1, 'Sree', 500), (5, 'Arvind', 100)])),
+    ((100, 100, 100, 500, 500),
+     ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Arvind', 100), (3, 'Arun', 100), (3, 'Adityam', 100)]))
 ])
 def test_display_positions(inputs, expected, sree_fx, padma_fx, adityam_fx, arun_fx, arvind_fx):
     arvind_fx.networth = inputs[0]
@@ -60,3 +66,17 @@ def test_check_passing_go(arvind_fx, st_james_place, request, current_tile, dest
     actual = check_passing_go(arvind_fx, destination)
 
     assert actual == expected
+
+
+def test_check_player_has_color_set_pink(arvind_fx, st_charles_place, states_avenue, virginia_avenue):
+    arvind_fx.player_portfolio.append(st_charles_place)
+    arvind_fx.player_portfolio.append(states_avenue)
+    arvind_fx.player_portfolio.append(virginia_avenue)
+    assert check_player_has_color_set(arvind_fx, "Pink") ==  True
+
+def test_check_player_has_color_set_railroad(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad, short_line):
+    arvind_fx.player_portfolio.append(pennsylvania_railroad)
+    arvind_fx.player_portfolio.append(bo_railroad)
+    arvind_fx.player_portfolio.append(reading_railroad)
+    arvind_fx.player_portfolio.append(short_line)
+    assert check_player_has_color_set()
