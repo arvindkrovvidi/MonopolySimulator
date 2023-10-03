@@ -68,6 +68,12 @@ def test_check_passing_go(arvind_fx, st_james_place, request, current_tile, dest
     assert actual == expected
 
 
+def test_check_player_has_color_set_false(arvind_fx, st_james_place, electric_company):
+    arvind_fx.player_portfolio.append(st_james_place)
+    arvind_fx.player_portfolio.append(electric_company)
+    assert check_player_has_color_set(arvind_fx, "Pink") == False
+    assert check_player_has_color_set(arvind_fx, "Utility") == False
+
 def test_check_player_has_color_set_pink(arvind_fx, st_charles_place, states_avenue, virginia_avenue):
     arvind_fx.player_portfolio.append(st_charles_place)
     arvind_fx.player_portfolio.append(states_avenue)
