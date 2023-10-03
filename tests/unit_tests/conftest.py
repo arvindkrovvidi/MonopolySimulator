@@ -19,9 +19,31 @@ def property_rent_data():
         property_rent_data = json.load(f)
         return property_rent_data
 
+
+@pytest.fixture
+def reading_railroad(property_rent_data):
+    return Railroad(5, "Reading Railroad", 200, property_rent_data["Reading Railroad"]["Rent"], "Railroad")
+
+@pytest.fixture
+def bo_railroad(property_rent_data):
+    return Railroad(25, "B & O Railroad", 200, property_rent_data["B & O Railroad"]["Rent"], "Railroad")
+
+@pytest.fixture
+def short_line(property_rent_data):
+    return Railroad(35, "Short Line", 200, property_rent_data["Short Line"]["Rent"], "Railroad")
+
+@pytest.fixture
+def pennsylvania_railroad(property_rent_data):
+    return Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"], "Railroad")
+
 @pytest.fixture
 def electric_company(property_rent_data):
-    return Utility(12, "Electric Company", 150, property_rent_data["Electric Company"]["Rent"])
+    return Utility(12, "Electric Company", 150, property_rent_data["Electric Company"]["Rent"], "Utility")
+
+@pytest.fixture
+def water_works(property_rent_data):
+    return Utility(28, "Water Works", 150, property_rent_data["Water Works"]["Rent"], "Utility")
+
 
 @pytest.fixture
 def chance_7_fx():
@@ -56,12 +78,6 @@ def st_charles_place(property_rent_data):
 @pytest.fixture
 def virginia_avenue(property_rent_data):
     return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink")
-
-
-@pytest.fixture
-def pennsylvania_railroad(property_rent_data):
-    return Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"])
-
 
 @pytest.fixture
 def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue):

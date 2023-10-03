@@ -79,4 +79,9 @@ def test_check_player_has_color_set_railroad(arvind_fx, pennsylvania_railroad, b
     arvind_fx.player_portfolio.append(bo_railroad)
     arvind_fx.player_portfolio.append(reading_railroad)
     arvind_fx.player_portfolio.append(short_line)
-    assert check_player_has_color_set()
+    assert check_player_has_color_set(arvind_fx, "Railroad")
+
+def test_check_player_has_color_set_utility(arvind_fx, electric_company, water_works):
+    arvind_fx.player_portfolio.append(electric_company)
+    arvind_fx.player_portfolio.append(water_works)
+    assert check_player_has_color_set(arvind_fx, "Utility")
