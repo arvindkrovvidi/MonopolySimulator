@@ -1,7 +1,6 @@
 import random
 
 from Board import max_tile_no, go_cash
-from Railroad import Railroad
 from TileIterators import TileList
 from Utility import Utility
 from utils import check_player_has_color_set
@@ -69,7 +68,7 @@ class Player:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
             asset.owner = self
-            if type(asset) == Railroad and self.railroads_owned < 4:
+            if self.railroads_owned < 4:
                 self.railroads_owned += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
