@@ -31,6 +31,29 @@ def test_buy_property(states_avenue, arvind_fx, st_charles_place):
     assert arvind_fx.cash == 10
     assert st_charles_place not in arvind_fx.player_portfolio
 
+def test_buy_railroad_one(arvind_fx, pennsylvania_railroad):
+    arvind_fx.buy_railroad(pennsylvania_railroad)
+    assert arvind_fx.cash == 0
+    assert pennsylvania_railroad in arvind_fx.player_portfolio
+    assert arvind_fx.railroads_owned == 1
+
+def test_buy_railroad_multiple(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad,
+                                         short_line_railroad):
+    arvind_fx.cash = 1500
+    arvind_fx.buy_railroad(pennsylvania_railroad)
+    arvind_fx.buy_railroad(bo_railroad)
+    arvind_fx.buy_railroad(reading_railroad)
+    arvind_fx.buy_railroad(short_line_railroad)
+
+    assert arvind_fx.cash == 700
+    assert pennsylvania_railroad in arvind_fx.player_portfolio
+    assert bo_railroad in arvind_fx.player_portfolio
+    assert reading_railroad in arvind_fx.player_portfolio
+    assert short_line_railroad in arvind_fx.player_portfolio
+    assert arvind_fx.railroads_owned == 4
+
+    arvind_fx.buy_railroad(pennsylvania_railroad)
+    assert arvind_fx.railroads_owned == 4
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash", [
     (0, 12, 200),
@@ -116,3 +139,6 @@ def test_build_house(arvind_fx, st_charles_place):
     arvind_fx.build_house(st_charles_place)
     assert st_charles_place._houses == 1
     assert arvind_fx.cash == 100
+
+
+
