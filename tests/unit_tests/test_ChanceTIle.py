@@ -18,7 +18,7 @@ def test_get_nearest_railroad(arvind, input_tile_no, expected):
 
 def test_execute_chance_5_railroad_free(arvind, mocker, pennsylvania_railroad):
     arvind.tile_no = 36
-    mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
+    mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
     execute_chance_5(arvind)
     assert pennsylvania_railroad in arvind.player_portfolio
     assert arvind.tile_no == pennsylvania_railroad.tile_no
@@ -28,7 +28,7 @@ def test_execute_chance_5_railroad_occupied(arvind, arun, mocker, short_line_rai
     arvind.tile_no = 36
     short_line_railroad.owner = arun
     arun.railroads_owned = 2
-    mocker.patch("ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
+    mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
     execute_chance_5(arvind)
     assert arun.cash == 300
     assert arvind.cash == 100
@@ -47,7 +47,7 @@ def test_get_nearest_utility(arvind, input_tile_no, expected):
 
 def test_execute_chance_7_utility_free(arvind, mocker, electric_company):
     arvind.tile_no = 36
-    mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company)
+    mocker.patch("Tiles.ChanceTile.get_nearest_utility", return_value=electric_company)
     execute_chance_7(arvind, 5)
     assert electric_company in arvind.player_portfolio
     assert arvind.tile_no == electric_company.tile_no
@@ -56,7 +56,7 @@ def test_execute_chance_7_utility_free(arvind, mocker, electric_company):
 def test_execute_chance_7_utility_occupied(arvind, arun, mocker, electric_company):
     arvind.tile_no = 36
     electric_company.owner = arun
-    mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company)
+    mocker.patch("Tiles.ChanceTile.get_nearest_utility", return_value=electric_company)
     execute_chance_7(arvind, 5)
     assert arun.cash == 220
     assert arvind.cash == 180
