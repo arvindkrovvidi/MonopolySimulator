@@ -38,17 +38,15 @@ while turn <= total_turns:
                 player.buy_property(current_tile)
             elif current_tile in player.player_portfolio and check_player_has_color_set(player, current_tile.color):
                 player.build_house(current_tile)
-            else:
+            elif current_tile.owner != player:
                 landlord = current_tile.owner
                 player.pay_rent(landlord, current_tile.rent)
         elif type(current_tile) == Railroad:
             if current_tile.owner is None:
                 player.buy_railroad(current_tile)
-                player.railroads_owned += 1
             else:
                 landlord = current_tile.owner
-                current_tile.rent = player.railroads_owned * 25
-                player.pay_rent(landlord, current_tile.rent)
+                player.pay_rent(landlord, current_tile.rent[landlord.railroads_owned - 1])
         elif type(current_tile) == Utility:
             if current_tile.owner is None:
                 player.buy_utility(current_tile)
@@ -63,7 +61,7 @@ while turn <= total_turns:
             CommunityChestTile.execute(player, card_no)
         elif type(current_tile) == ChanceTile:
             card_no = randint(1,16)
-            ChanceTile.execute(player, card_no)
+            ChanceTile.execute(player, card_no, throw=throw)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:

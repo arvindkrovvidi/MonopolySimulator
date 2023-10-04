@@ -19,5 +19,5 @@ class Utility(Tile):
 
     @property
     def rent(self):
-        return self._rent[0]
+        return self._rent
 

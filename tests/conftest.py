@@ -38,11 +38,11 @@ def pennsylvania_railroad(property_rent_data):
 
 @pytest.fixture
 def electric_company(property_rent_data):
-    return Utility(12, "Electric Company", 150, property_rent_data["Electric Company"]["Rent"], "Utility")
+    return Utility(12, "Electric Company", 150, None, "Utility")
 
 @pytest.fixture
 def water_works(property_rent_data):
-    return Utility(28, "Water Works", 150, property_rent_data["Water Works"]["Rent"], "Utility")
+    return Utility(28, "Water Works", 150, None, "Utility")
 
 
 @pytest.fixture

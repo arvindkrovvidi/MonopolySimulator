@@ -50,9 +50,7 @@
       "Hotel": 750
     }
   },
-  "Electric Company": {
-    "Rent": [0]
-},
+  "Electric Company": {},
   "States Avenue": {
   "Rent": {
     "Site": 10,

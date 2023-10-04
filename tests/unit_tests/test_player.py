@@ -106,7 +106,6 @@ def test_move_to_default_collect_go_cash_flag(arvind_fx, states_avenue):
     assert arvind_fx.tile_no == states_avenue.tile_no
     assert arvind_fx.cash == 400
 
-
 def test_pay_rent(arvind_fx, arun_fx):
     arvind_fx.pay_rent(arun_fx, 20)
     assert arvind_fx.cash == 180

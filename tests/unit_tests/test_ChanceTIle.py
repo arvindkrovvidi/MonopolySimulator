@@ -23,14 +23,15 @@ def test_execute_chance_5_railroad_free(arvind_fx, mocker, pennsylvania_railroad
     assert arvind_fx.tile_no == pennsylvania_railroad.tile_no
 
 
-def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylvania_railroad):
+def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, short_line_railroad):
     arvind_fx.tile_no = 36
-    pennsylvania_railroad.owner = arun_fx
-    mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
+    short_line_railroad.owner = arun_fx
+    arun_fx.railroads_owned = 2
+    mocker.patch("ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
     execute_chance_5(arvind_fx)
-    assert arun_fx.cash == 200 + (pennsylvania_railroad.rent[arvind_fx.railroads_owned] * 2)
-    assert arvind_fx.cash == 200 - (pennsylvania_railroad.rent[arvind_fx.railroads_owned] * 2)
-    assert arvind_fx.tile_no == pennsylvania_railroad.tile_no
+    assert arun_fx.cash == 300
+    assert arvind_fx.cash == 100
+    assert arvind_fx.tile_no == short_line_railroad.tile_no
 
 
 @pytest.mark.parametrize("input_tile_no, expected", [
@@ -46,7 +47,7 @@ def test_get_nearest_utility(arvind_fx, input_tile_no, expected):
 def test_execute_chance_7_utility_free(arvind_fx, mocker, electric_company):
     arvind_fx.tile_no = 36
     mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company)
-    execute_chance_7(arvind_fx)
+    execute_chance_7(arvind_fx, 5)
     assert electric_company in arvind_fx.player_portfolio
     assert arvind_fx.tile_no == electric_company.tile_no
 
@@ -55,9 +56,9 @@ def test_execute_chance_7_utility_occupied(arvind_fx, arun_fx, mocker, electric_
     arvind_fx.tile_no = 36
     electric_company.owner = arun_fx
     mocker.patch("ChanceTile.get_nearest_utility", return_value=electric_company)
-    execute_chance_7(arvind_fx)
-    assert arun_fx.cash == 200 + (electric_company.rent * 2)
-    assert arvind_fx.cash == 200 - (electric_company.rent * 2)
+    execute_chance_7(arvind_fx, 5)
+    assert arun_fx.cash == 220
+    assert arvind_fx.cash == 180
     assert arvind_fx.tile_no == electric_company.tile_no
 
 

@@ -18,7 +18,3 @@ class Railroad(Tile):
     @property
     def rent(self):
         return self._rent
-
-    @rent.setter
-    def rent(self, value):
-        self._rent = value
