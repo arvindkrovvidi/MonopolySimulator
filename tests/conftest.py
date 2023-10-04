@@ -29,7 +29,7 @@ def bo_railroad(property_rent_data):
     return Railroad(25, "B & O Railroad", 200, property_rent_data["B & O Railroad"]["Rent"], "Railroad")
 
 @pytest.fixture
-def short_line(property_rent_data):
+def short_line_railroad(property_rent_data):
     return Railroad(35, "Short Line", 200, property_rent_data["Short Line"]["Rent"], "Railroad")
 
 @pytest.fixture

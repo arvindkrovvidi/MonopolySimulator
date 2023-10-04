@@ -81,11 +81,12 @@ def test_check_player_has_color_set_pink(arvind_fx, st_charles_place, states_ave
     arvind_fx.player_portfolio.append(virginia_avenue)
     assert check_player_has_color_set(arvind_fx, "Pink") ==  True
 
-def test_check_player_has_color_set_railroad(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad, short_line):
+def test_check_player_has_color_set_railroad(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad,
+                                             short_line_railroad):
     arvind_fx.player_portfolio.append(pennsylvania_railroad)
     arvind_fx.player_portfolio.append(bo_railroad)
     arvind_fx.player_portfolio.append(reading_railroad)
-    arvind_fx.player_portfolio.append(short_line)
+    arvind_fx.player_portfolio.append(short_line_railroad)
     assert check_player_has_color_set(arvind_fx, "Railroad")
 
 def test_check_player_has_color_set_utility(arvind_fx, electric_company, water_works):
