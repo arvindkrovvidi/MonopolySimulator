@@ -5,7 +5,6 @@ class Railroad(Tile):
         self.cost = cost
         self._rent = rent
         self._owner = None
-        self._colors_owned = 0
         self.color = color
 
     @property

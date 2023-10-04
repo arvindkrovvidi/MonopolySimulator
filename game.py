@@ -13,9 +13,8 @@ from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
 from railroad_property_data import railroad_properties_list
 from special_tiles_data import special_tiles_list
-from utilities_data import electric_company, water_works
 from utilities_data import utilities_list
-from utils import get_positions, calculate_networth
+from utils import get_positions, calculate_networth, check_player_has_color_set
 
 # TODO: Take all inputs for the program from a file
 total_turns = 100
@@ -37,6 +36,8 @@ while turn <= total_turns:
         if type(current_tile) == Property:
             if current_tile.owner is None:
                 player.buy_property(current_tile)
+            elif current_tile in player.player_portfolio and check_player_has_color_set(player, current_tile.color):
+                player.build_house(current_tile)
             else:
                 landlord = current_tile.owner
                 player.pay_rent(landlord, current_tile.rent)

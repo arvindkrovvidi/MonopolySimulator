@@ -95,3 +95,12 @@ class Player:
         """
         self.cash += amount
 
+
+    def build_house(self, asset):
+        """
+        Build a house in a property
+        :param asset: A property where house is being built
+        """
+        if asset.building_cost <= self.cash:
+            asset._houses += 1
+            self.cash -= asset.building_cost

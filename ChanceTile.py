@@ -92,7 +92,7 @@ def execute_chance_5(player):
         player.buy_property(nearest_railroad)
     else:
         landlord = nearest_railroad.owner
-        player.pay_rent(landlord, nearest_railroad.rent*2)
+        player.pay_rent(landlord, nearest_railroad.rent[player.railroads_owned] * 2)
 
 def get_nearest_utility(player):
     """

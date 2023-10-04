@@ -5,7 +5,7 @@ min_throw = 2
 go_cash = 200
 color_data = {
     "Brown": 2,
-    "Sky Blue": 3,
+    "Light Blue": 3,
     "Orange": 3,
     "Pink": 3,
     "Red": 3,
