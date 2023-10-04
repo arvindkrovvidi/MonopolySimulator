@@ -6,25 +6,25 @@ from utils import calculate_networth, find_winner, get_positions, check_passing_
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
                             pennsylvania_railroad):
-    arvind_fx = Player("Arvind", 1000)
-    arvind_fx.player_portfolio.append(st_charles_place)
-    arvind_fx.player_portfolio.append(states_avenue)
-    arvind_fx.player_portfolio.append(virginia_avenue)
-    arvind_fx.player_portfolio.append(pennsylvania_railroad)
-    assert arvind_fx.cash == 1000
-    assert calculate_networth(arvind_fx) == 1640
+    arvind = Player("Arvind", 1000)
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    arvind.player_portfolio.append(pennsylvania_railroad)
+    assert arvind.cash == 1000
+    assert calculate_networth(arvind) == 1640
 
 
 def test_find_winner(st_charles_place, states_avenue, virginia_avenue,
                      pennsylvania_railroad):
-    arvind_fx = Player("Arvind", 1000)
-    arun_fx = Player("Arun", 1000)
-    arvind_fx.networth = 150
-    arun_fx.networth = 300
-    assert find_winner([arvind_fx, arun_fx])[0] == arun_fx
-    arvind_fx.networth = 300
-    arun_fx.networth = 150
-    assert find_winner([arvind_fx, arun_fx])[0] == arvind_fx
+    arvind = Player("Arvind", 1000)
+    arun= Player("Arun", 1000)
+    arvind.networth = 150
+    arun.networth = 300
+    assert find_winner([arvind, arun])[0] == arun
+    arvind.networth = 300
+    arun.networth = 150
+    assert find_winner([arvind, arun])[0] == arvind
 
 
 @pytest.mark.parametrize("inputs, expected", [
@@ -41,55 +41,55 @@ def test_find_winner(st_charles_place, states_avenue, virginia_avenue,
     ((100, 100, 100, 500, 500),
      ([(1, 'Padma', 500), (1, 'Sree', 500), (3, 'Arvind', 100), (3, 'Arun', 100), (3, 'Adityam', 100)]))
 ])
-def test_display_positions(inputs, expected, sree_fx, padma_fx, adityam_fx, arun_fx, arvind_fx):
-    arvind_fx.networth = inputs[0]
-    arun_fx.networth = inputs[1]
-    adityam_fx.networth = inputs[2]
-    padma_fx.networth = inputs[3]
-    sree_fx.networth = inputs[4]
+def test_display_positions(inputs, expected, sree, padma, adityam, arun, arvind):
+    arvind.networth = inputs[0]
+    arun.networth = inputs[1]
+    adityam.networth = inputs[2]
+    padma.networth = inputs[3]
+    sree.networth = inputs[4]
 
     actual = []
-    for pos, win, nw in get_positions([arvind_fx, arun_fx, adityam_fx, padma_fx, sree_fx]):
+    for pos, win, nw in get_positions([arvind, arun, adityam, padma, sree]):
         actual.append((pos, str(win), nw))
 
     assert expected == actual
 
 
 @pytest.mark.parametrize("current_tile, destination_tile, expected", [
-    ("chance_7_fx", "st_james_place", False),
-    ("chance_22_fx", "st_james_place", True),
-    ("chance_36_fx", "st_james_place", True)
+    ("chance_7", "st_james_place", False),
+    ("chance_22", "st_james_place", True),
+    ("chance_36", "st_james_place", True)
 ])
-def test_check_passing_go(arvind_fx, st_james_place, request, current_tile, destination_tile, expected):
+def test_check_passing_go(arvind, st_james_place, request, current_tile, destination_tile, expected):
     current = request.getfixturevalue(current_tile)
     destination = request.getfixturevalue(destination_tile)
-    arvind_fx.tile_no = current.tile_no
-    actual = check_passing_go(arvind_fx, destination)
+    arvind.tile_no = current.tile_no
+    actual = check_passing_go(arvind, destination)
 
     assert actual == expected
 
 
-def test_check_player_has_color_set_false(arvind_fx, st_james_place, electric_company):
-    arvind_fx.player_portfolio.append(st_james_place)
-    arvind_fx.player_portfolio.append(electric_company)
-    assert check_player_has_color_set(arvind_fx, "Pink") == False
-    assert check_player_has_color_set(arvind_fx, "Utility") == False
+def test_check_player_has_color_set_false(arvind, st_james_place, electric_company):
+    arvind.player_portfolio.append(st_james_place)
+    arvind.player_portfolio.append(electric_company)
+    assert check_player_has_color_set(arvind, "Pink") == False
+    assert check_player_has_color_set(arvind, "Utility") == False
 
-def test_check_player_has_color_set_pink(arvind_fx, st_charles_place, states_avenue, virginia_avenue):
-    arvind_fx.player_portfolio.append(st_charles_place)
-    arvind_fx.player_portfolio.append(states_avenue)
-    arvind_fx.player_portfolio.append(virginia_avenue)
-    assert check_player_has_color_set(arvind_fx, "Pink") ==  True
+def test_check_player_has_color_set_pink(arvind, st_charles_place, states_avenue, virginia_avenue):
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    assert check_player_has_color_set(arvind, "Pink") == True
 
-def test_check_player_has_color_set_railroad(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad,
+def test_check_player_has_color_set_railroad(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
                                              short_line_railroad):
-    arvind_fx.player_portfolio.append(pennsylvania_railroad)
-    arvind_fx.player_portfolio.append(bo_railroad)
-    arvind_fx.player_portfolio.append(reading_railroad)
-    arvind_fx.player_portfolio.append(short_line_railroad)
-    assert check_player_has_color_set(arvind_fx, "Railroad")
+    arvind.player_portfolio.append(pennsylvania_railroad)
+    arvind.player_portfolio.append(bo_railroad)
+    arvind.player_portfolio.append(reading_railroad)
+    arvind.player_portfolio.append(short_line_railroad)
+    assert check_player_has_color_set(arvind, "Railroad")
 
-def test_check_player_has_color_set_utility(arvind_fx, electric_company, water_works):
-    arvind_fx.player_portfolio.append(electric_company)
-    arvind_fx.player_portfolio.append(water_works)
-    assert check_player_has_color_set(arvind_fx, "Utility")
+def test_check_player_has_color_set_utility(arvind, electric_company, water_works):
+    arvind.player_portfolio.append(electric_company)
+    arvind.player_portfolio.append(water_works)
+    assert check_player_has_color_set(arvind, "Utility")

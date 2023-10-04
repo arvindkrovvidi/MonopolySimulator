@@ -3,12 +3,12 @@ from pathlib import Path
 
 import pytest
 
+from ChanceTile import ChanceTile
 from Player import Player
 from Property import Property
 from Railroad import Railroad
 from TileIterators import TileList, TileDict
 from Utility import Utility
-from chance_tiles_data import chance_7, chance_22, chance_36
 from special_tiles_data import go
 
 
@@ -46,16 +46,16 @@ def water_works(property_rent_data):
 
 
 @pytest.fixture
-def chance_7_fx():
-    return chance_7
+def chance_7():
+    return ChanceTile(name="Chance", tile_no=7)
 
 @pytest.fixture
-def chance_22_fx():
-    return chance_22
+def chance_22():
+    return ChanceTile(name="Chance", tile_no=22)
 
 @pytest.fixture
-def chance_36_fx():
-    return chance_36
+def chance_36():
+    return ChanceTile(name="Chance", tile_no=36)
 
 @pytest.fixture
 def go_fx():
@@ -86,40 +86,35 @@ def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virgin
 
 
 @pytest.fixture
-def arvind_fx():
-    arvind = Player("Arvind", 200)
-    return arvind
+def arvind():
+    return Player("Arvind", 200)
 
 
 @pytest.fixture
-def arun_fx():
-    arun = Player("Arun", 200)
-    return arun
+def arun():
+    return Player("Arun", 200)
 
 
 @pytest.fixture
-def adityam_fx():
-    adityam = Player("Adityam", 200)
-    return adityam
+def adityam():
+    return Player("Adityam", 200)
 
 
 @pytest.fixture
-def padma_fx():
-    padma = Player("Padma", 200)
-    return padma
+def padma():
+    return Player("Padma", 200)
 
 
 @pytest.fixture
-def sree_fx():
-    sree = Player("Sree", 200)
-    return sree
+def sree():
+    return Player("Sree", 200)
 
 @pytest.fixture
-def property_dict(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue, arvind_fx,
-                  arun_fx):
+def property_dict(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue, arvind,
+                  arun):
     return TileDict({
-        states_avenue: arvind_fx,
-        st_charles_place: arun_fx,
-        pennsylvania_railroad: arvind_fx,
-        virginia_avenue: arun_fx
+        states_avenue: arvind,
+        st_charles_place: arun,
+        pennsylvania_railroad: arvind,
+        virginia_avenue: arun
     })
