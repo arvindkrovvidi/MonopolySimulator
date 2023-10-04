@@ -1,20 +1,14 @@
-from random import randint
-
 from prettytable import PrettyTable
 
-from ChanceTile import ChanceTile
-from CommunityChestTile import CommunityChestTile
 from Player_data import all_players_list
-from Property import Property
 from Property_data import properties_list
-from Railroad import Railroad
-from Utility import Utility
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
+from player_turn import play_turn
 from railroad_property_data import railroad_properties_list
 from special_tiles_data import special_tiles_list
 from utilities_data import utilities_list
-from utils import get_positions, calculate_networth, check_player_has_color_set
+from utils import get_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file
 total_turns = 100
@@ -33,35 +27,7 @@ while turn <= total_turns:
         throw = player.throw_dice()
         player.move(throw)
         current_tile = properties_list[player.tile_no]
-        if type(current_tile) == Property:
-            if current_tile.owner is None:
-                player.buy_property(current_tile)
-            elif current_tile in player.player_portfolio and check_player_has_color_set(player, current_tile.color):
-                player.build_house(current_tile)
-            elif current_tile.owner != player:
-                landlord = current_tile.owner
-                player.pay_rent(landlord, current_tile.rent)
-        elif type(current_tile) == Railroad:
-            if current_tile.owner is None:
-                player.buy_railroad(current_tile)
-            else:
-                landlord = current_tile.owner
-                player.pay_rent(landlord, current_tile.rent[landlord.railroads_owned - 1])
-        elif type(current_tile) == Utility:
-            if current_tile.owner is None:
-                player.buy_utility(current_tile)
-            else:
-                landlord = current_tile.owner
-                if check_player_has_color_set(landlord, "Utility"):
-                    player.pay_rent(landlord, throw * 10)
-                else:
-                    player.pay_rent(landlord, throw * 4)
-        elif type(current_tile) == CommunityChestTile:
-            card_no = randint(1, 16)
-            CommunityChestTile.execute(player, card_no)
-        elif type(current_tile) == ChanceTile:
-            card_no = randint(1,16)
-            ChanceTile.execute(player, card_no, throw=throw)
+        play_turn(current_tile, player, throw)
         game_details.add_row([turn, player.name, throw, current_tile, player.cash])
         # TODO: Game did not stop after one player's cash went negative. Check rules to see what happens when player is unable to pay rent.
         if player.cash < 0:
@@ -77,6 +43,7 @@ display_winners.field_names = ["Position", "Player", "Net Worth"]
 for pos, win, nw in get_positions(players):
     display_winners.add_row((pos, str(win), nw))
 print(display_winners)
+
 # TODO: Add community chests
 # TODO: Add chance
 # TODO: Add corner tiles
