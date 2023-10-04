@@ -37,6 +37,25 @@ def test_buy_railroad_one(arvind_fx, pennsylvania_railroad):
     assert pennsylvania_railroad in arvind_fx.player_portfolio
     assert arvind_fx.railroads_owned == 1
 
+def test_buy_utility_one(arvind_fx, electric_company):
+    arvind_fx.buy_utility(electric_company)
+    assert arvind_fx.cash == 50
+    assert electric_company in arvind_fx.player_portfolio
+    assert arvind_fx.utilities_owned == 1
+
+def test_buy_utility_multiple(arvind_fx, electric_company, water_works):
+    arvind_fx.cash = 500
+    arvind_fx.buy_utility(electric_company)
+    arvind_fx.buy_utility(water_works)
+
+    assert arvind_fx.cash == 200
+    assert electric_company in arvind_fx.player_portfolio
+    assert water_works in arvind_fx.player_portfolio
+    assert arvind_fx.utilities_owned == 2
+
+    arvind_fx.buy_utility(electric_company)
+    assert arvind_fx.utilities_owned == 2
+
 def test_buy_railroad_multiple(arvind_fx, pennsylvania_railroad, bo_railroad, reading_railroad,
                                          short_line_railroad):
     arvind_fx.cash = 1500
