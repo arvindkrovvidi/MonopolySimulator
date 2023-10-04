@@ -1,4 +1,4 @@
-from Tile import Tile
+from Tiles.Tile import Tile
 
 class Utility(Tile):
     def __init__(self, tile_no, name, cost, rent, color):

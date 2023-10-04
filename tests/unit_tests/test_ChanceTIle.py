@@ -1,6 +1,7 @@
 import pytest
 
-from ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility, execute_chance_15
+from Tiles.ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility, \
+    execute_chance_15
 from railroad_property_data import railroad_properties_list
 from utilities_data import utilities_list
 

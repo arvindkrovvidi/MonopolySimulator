@@ -1,5 +1,5 @@
 from TileIterators import TileList
-from Utility import Utility
+from Tiles.Utility import Utility
 
 electric_company = Utility(12, "Electric Company", 150, None, "Utility")
 water_works = Utility(28, "Water Works", 150, None, "Utility")

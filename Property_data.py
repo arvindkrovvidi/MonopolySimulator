@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from Property import Property
 from TileIterators import TileList
+from Tiles.Property import Property
 
 property_rent_data_file = Path(Path.cwd() / "property_rent_data.json")
 with open(property_rent_data_file) as f:

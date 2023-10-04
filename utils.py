@@ -1,6 +1,6 @@
 from Board import color_data
-from Railroad import Railroad
-from Tile import Tile
+from Tiles.Railroad import Railroad
+from Tiles.Tile import Tile
 
 
 def calculate_networth(player) -> int:

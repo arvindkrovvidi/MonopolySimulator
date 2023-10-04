@@ -1,4 +1,4 @@
-from CommunityChestTile import execute_chest_9
+from Tiles.CommunityChestTile import execute_chest_9
 def test_execute_chest_9(arvind, arun, adityam, padma):
     all_players = [arvind, arun, adityam, padma]
     execute_chest_9(arvind, all_players)

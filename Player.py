@@ -2,7 +2,7 @@ import random
 
 from Board import max_tile_no, go_cash
 from TileIterators import TileList
-from Utility import Utility
+from Tiles.Utility import Utility
 from utils import check_player_has_color_set
 
 

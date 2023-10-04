@@ -1,5 +1,5 @@
-from SpecialTiles import SpecialTiles
-from Tile import Tile
+from Tiles.SpecialTiles import SpecialTiles
+from Tiles.Tile import Tile
 class Jail(SpecialTiles):
     def __init__(self, name, tile_no, description=None):
         self._description = description

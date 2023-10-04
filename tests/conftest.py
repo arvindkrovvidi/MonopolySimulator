@@ -3,12 +3,12 @@ from pathlib import Path
 
 import pytest
 
-from ChanceTile import ChanceTile
 from Player import Player
-from Property import Property
-from Railroad import Railroad
 from TileIterators import TileList, TileDict
-from Utility import Utility
+from Tiles.ChanceTile import ChanceTile
+from Tiles.Property import Property
+from Tiles.Railroad import Railroad
+from Tiles.Utility import Utility
 from special_tiles_data import go
 
 

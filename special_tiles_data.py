@@ -1,8 +1,8 @@
-from IncomeTaxTile import IncomeTaxTile
-from Jail import Jail
-from LuxuryTaxTile import LuxuryTaxTile
-from SpecialTiles import SpecialTiles
 from TileIterators import TileList
+from Tiles.IncomeTaxTile import IncomeTaxTile
+from Tiles.Jail import Jail
+from Tiles.LuxuryTaxTile import LuxuryTaxTile
+from Tiles.SpecialTiles import SpecialTiles
 
 go = SpecialTiles(0, "Go")
 just_visiting_jail = SpecialTiles(10, "Just visiting")

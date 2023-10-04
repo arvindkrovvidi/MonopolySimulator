@@ -1,10 +1,10 @@
 from random import randint
 
-from ChanceTile import ChanceTile
-from CommunityChestTile import CommunityChestTile
-from Property import Property
-from Railroad import Railroad
-from Utility import Utility
+from Tiles.ChanceTile import ChanceTile
+from Tiles.CommunityChestTile import CommunityChestTile
+from Tiles.Property import Property
+from Tiles.Railroad import Railroad
+from Tiles.Utility import Utility
 from utils import check_player_has_color_set
 
 
