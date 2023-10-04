@@ -50,20 +50,43 @@ class Player:
 
     def buy_property(self, asset) -> None:
         """
-        Buy property that the player lands on.
+        Buy property that the player lands on (excluding railroads and utilities).
         :param asset: Property
         """
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
             asset.owner = self
-            if type(asset) == Railroad:
-                self.railroads_owned += 1
-            if type(asset) == Utility:
-                self.utilities_owned += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
 
+    def buy_railroad(self, asset):
+        """
+        Buy railroad that the player lands on
+        :param asset: Railroad
+        """
+        if asset.cost <= self.cash:
+            self.cash -= asset.cost
+            self.player_portfolio.append(asset)
+            asset.owner = self
+            if type(asset) == Railroad and self.railroads_owned < 4:
+                self.railroads_owned += 1
+            if check_player_has_color_set(self, asset.color):
+                asset._color_set = True
+
+    def buy_utility(self, asset):
+        """
+        Buy the utility that the player lands on
+        :param asset: Utility
+        """
+        if asset.cost <= self.cash:
+            self.cash -= asset.cost
+            self.player_portfolio.append(asset)
+            asset.owner = self
+            if type(asset) == Utility and self.utilities_owned < 2:
+                self.utilities_owned += 1
+            if check_player_has_color_set(self, asset.color):
+                asset._color_set = True
 
     def throw_dice(self) -> int:
         """

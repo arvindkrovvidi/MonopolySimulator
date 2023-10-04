@@ -43,7 +43,7 @@ while turn <= total_turns:
                 player.pay_rent(landlord, current_tile.rent)
         elif type(current_tile) == Railroad:
             if current_tile.owner is None:
-                player.buy_property(current_tile)
+                player.buy_railroad(current_tile)
                 player.railroads_owned += 1
             else:
                 landlord = current_tile.owner
@@ -51,7 +51,7 @@ while turn <= total_turns:
                 player.pay_rent(landlord, current_tile.rent)
         elif type(current_tile) == Utility:
             if current_tile.owner is None:
-                player.buy_property(current_tile)
+                player.buy_utility(current_tile)
             else:
                 landlord = current_tile.owner
                 if check_player_has_color_set(landlord, "Utility"):
