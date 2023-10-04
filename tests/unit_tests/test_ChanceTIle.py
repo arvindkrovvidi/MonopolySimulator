@@ -28,8 +28,8 @@ def test_execute_chance_5_railroad_occupied(arvind_fx, arun_fx, mocker, pennsylv
     pennsylvania_railroad.owner = arun_fx
     mocker.patch("ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
     execute_chance_5(arvind_fx)
-    assert arun_fx.cash == 200 + (pennsylvania_railroad.rent * 2)
-    assert arvind_fx.cash == 200 - (pennsylvania_railroad.rent * 2)
+    assert arun_fx.cash == 200 + (pennsylvania_railroad.rent[arvind_fx.railroads_owned] * 2)
+    assert arvind_fx.cash == 200 - (pennsylvania_railroad.rent[arvind_fx.railroads_owned] * 2)
     assert arvind_fx.tile_no == pennsylvania_railroad.tile_no
 
 

@@ -1,4 +1,5 @@
 from Board import color_data
+from Railroad import Railroad
 from Tile import Tile
 
 
@@ -73,3 +74,11 @@ def check_player_has_color_set(player, color):
         return True
     else:
         return False
+
+def get_railroads_owned(player):
+    count = 0
+    for asset in player.player_portfolio:
+        if type(asset) == Railroad:
+            count += 1
+
+    return count

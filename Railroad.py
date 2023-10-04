@@ -17,4 +17,8 @@ class Railroad(Tile):
 
     @property
     def rent(self):
-        return self._rent[self._colors_owned - 1]
+        return self._rent
+
+    @rent.setter
+    def rent(self, value):
+        self._rent = value
