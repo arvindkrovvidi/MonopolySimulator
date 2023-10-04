@@ -54,7 +54,7 @@ while turn <= total_turns:
                 player.buy_property(current_tile)
             else:
                 landlord = current_tile.owner
-                if electric_company in landlord.player_portfolio and water_works in landlord.player_portfolio:
+                if check_player_has_color_set(landlord, "Utility"):
                     player.pay_rent(landlord, throw * 10)
                 else:
                     player.pay_rent(landlord, throw * 4)
