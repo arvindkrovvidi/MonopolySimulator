@@ -1,6 +1,6 @@
-from Property_data import property_rent_data
 from TileIterators import TileList
 from Tiles.Railroad import Railroad
+from Tiles_data.Property_data import property_rent_data
 
 reading_railroad = Railroad(5, "Reading Railroad", 200, property_rent_data["Reading Railroad"]["Rent"], "Railroad")
 pennsylvania_railroad = Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"], "Railroad")

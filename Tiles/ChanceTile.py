@@ -1,10 +1,10 @@
 from Player_data import all_players_list
-from Property_data import boardwalk, illinois_avenue, st_charles_place
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
-from railroad_property_data import reading_railroad, railroad_properties_list
-from special_tiles_data import go
-from utilities_data import utilities_list
+from Tiles_data.Property_data import boardwalk, illinois_avenue, st_charles_place
+from Tiles_data.railroad_property_data import reading_railroad, railroad_properties_list
+from Tiles_data.special_tiles_data import go
+from Tiles_data.utilities_data import utilities_list
 from utils import check_passing_go, check_player_has_color_set
 
 

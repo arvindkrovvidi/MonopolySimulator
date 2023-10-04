@@ -1,13 +1,13 @@
 from prettytable import PrettyTable
 
 from Player_data import all_players_list
-from Property_data import properties_list
+from Tiles_data.Property_data import properties_list
+from Tiles_data.railroad_property_data import railroad_properties_list
+from Tiles_data.special_tiles_data import special_tiles_list
+from Tiles_data.utilities_data import utilities_list
 from chance_tiles_data import chance_tiles_list
 from community_chest_tiles_data import community_chest_tiles_list
 from player_turn import play_turn
-from railroad_property_data import railroad_properties_list
-from special_tiles_data import special_tiles_list
-from utilities_data import utilities_list
 from utils import get_positions, calculate_networth
 
 # TODO: Take all inputs for the program from a file

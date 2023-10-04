@@ -1,7 +1,7 @@
 from Player_data import all_players_list
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
-from special_tiles_data import go
+from Tiles_data.special_tiles_data import go
 
 
 class CommunityChestTile(SpecialTiles):
