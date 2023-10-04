@@ -110,3 +110,9 @@ def test_transact_with_multiple_players(arvind_fx, arun_fx, adityam_fx, padma_fx
 def test_bank_transaction(arvind_fx, input_amount, expected):
     arvind_fx.bank_transaction(input_amount)
     assert arvind_fx.cash == expected
+
+
+def test_build_house(arvind_fx, st_charles_place):
+    arvind_fx.build_house(st_charles_place)
+    assert st_charles_place._houses == 1
+    assert arvind_fx.cash == 100
