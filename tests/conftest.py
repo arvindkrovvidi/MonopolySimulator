@@ -12,6 +12,19 @@ from Tiles.Utility import Utility
 from Tiles_data.special_tiles_data import go
 
 
+# @pytest.fixture
+# def property_data_by_color():
+#     return {
+#     "Brown": TileList([mediterranean_avenue, baltic_avenue]),
+#     "Light Blue": TileList([oriental_avenue, vermont_avenue, connecticut_avenue]),
+#     "Pink": TileList([st_charles_place, states_avenue, virginia_avenue]),
+#     "Orange": TileList([st_james_place, tennessee_avenue, new_york_avenue]),
+#     "Red": TileList([kentucky_avenue, indiana_avenue, illinois_avenue]),
+#     "Yellow": TileList([atlantic_avenue, ventnor_avenue, marvin_gardens]),
+#     "Green": TileList([pacific_avenue, north_carolina_avenue, pennsylvania_avenue]),
+#     "Blue": TileList([park_place, boardwalk])
+# }
+
 @pytest.fixture
 def property_rent_data():
     property_rent_data_file = Path(Path.cwd() / "Tiles_data" / "property_rent_data.json")
