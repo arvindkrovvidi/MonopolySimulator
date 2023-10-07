@@ -1,8 +1,8 @@
 import pytest
 
 from Player import Player
-from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set
-
+from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
+    check_property_can_be_developed
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
                             pennsylvania_railroad):
@@ -18,7 +18,7 @@ def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
 def test_find_winner(st_charles_place, states_avenue, virginia_avenue,
                      pennsylvania_railroad):
     arvind = Player("Arvind", 1000)
-    arun= Player("Arun", 1000)
+    arun = Player("Arun", 1000)
     arvind.networth = 150
     arun.networth = 300
     assert find_winner([arvind, arun])[0] == arun
@@ -72,6 +72,8 @@ def test_check_passing_go(arvind, st_james_place, request, current_tile, destina
 def test_check_player_has_color_set_false(arvind, st_james_place, electric_company):
     arvind.player_portfolio.append(st_james_place)
     arvind.player_portfolio.append(electric_company)
+    arvind.player_color_data[st_james_place.color] += 1
+    arvind.player_color_data[electric_company.color] += 1
     assert check_player_has_color_set(arvind, "Pink") == False
     assert check_player_has_color_set(arvind, "Utility") == False
 
@@ -79,6 +81,9 @@ def test_check_player_has_color_set_pink(arvind, st_charles_place, states_avenue
     arvind.player_portfolio.append(st_charles_place)
     arvind.player_portfolio.append(states_avenue)
     arvind.player_portfolio.append(virginia_avenue)
+    arvind.player_color_data[st_charles_place.color] += 1
+    arvind.player_color_data[states_avenue.color] += 1
+    arvind.player_color_data[virginia_avenue.color] += 1
     assert check_player_has_color_set(arvind, "Pink") == True
 
 def test_check_player_has_color_set_railroad(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
@@ -87,9 +92,15 @@ def test_check_player_has_color_set_railroad(arvind, pennsylvania_railroad, bo_r
     arvind.player_portfolio.append(bo_railroad)
     arvind.player_portfolio.append(reading_railroad)
     arvind.player_portfolio.append(short_line_railroad)
+    arvind.player_color_data[pennsylvania_railroad.color] += 1
+    arvind.player_color_data[bo_railroad.color] += 1
+    arvind.player_color_data[reading_railroad.color] += 1
+    arvind.player_color_data[short_line_railroad.color] += 1
     assert check_player_has_color_set(arvind, "Railroad")
 
 def test_check_player_has_color_set_utility(arvind, electric_company, water_works):
     arvind.player_portfolio.append(electric_company)
     arvind.player_portfolio.append(water_works)
+    arvind.player_color_data[electric_company.color] += 1
+    arvind.player_color_data[water_works.color] += 1
     assert check_player_has_color_set(arvind, "Utility")
