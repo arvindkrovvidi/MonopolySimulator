@@ -153,10 +153,18 @@ def test_bank_transaction(arvind, input_amount, expected):
     assert arvind.cash == expected
 
 
-def test_build_house(arvind, st_charles_place):
+def test_build_house_true(arvind, st_charles_place, mocker):
+    arvind._player_portfolio.append(st_charles_place)
+    mocker.patch('Player.check_player_has_color_set', return_value=True)
+    mocker.patch('Player.check_property_can_be_developed', return_value=True)
     arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 1
     assert arvind.cash == 100
 
-
+def test_build_house_false(arvind, st_charles_place, mocker):
+    mocker.patch('Player.check_player_has_color_set', return_value=False)
+    mocker.patch('Player.check_property_can_be_developed', return_value=True)
+    arvind.build_house(st_charles_place)
+    assert st_charles_place._houses == 0
+    assert arvind.cash == 200
 
