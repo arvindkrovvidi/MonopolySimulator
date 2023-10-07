@@ -4,7 +4,7 @@ from Tiles.Tile import Tile
 class Property(Tile):
 
     def __init__(self, tile_no, name, cost, rent, color, building_cost):
-        Tile.__init__(self, tile_no, name)
+        super().__init__(tile_no, name)
         self.cost = cost
         self.color = color
         self._rent = rent
@@ -13,9 +13,6 @@ class Property(Tile):
         self._houses = 0
         self._hotel = False
         self._building_cost = building_cost
-
-    def __str__(self):
-        return self.name
 
     def __eq__(self, other):
         if self.name == other.name and self.tile_no == other.tile_no and self.cost == other.cost and self.color == other.color:

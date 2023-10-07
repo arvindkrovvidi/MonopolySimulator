@@ -3,4 +3,7 @@ class Tile:
         self.tile_no = tile_no
         self.name = name
 
+    def __str__(self):
+        return self.name
+
 
