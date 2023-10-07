@@ -69,6 +69,8 @@ class Player:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
             asset.owner = self
+            if self.player_color_data[asset.color] < color_data[asset.color]:
+                self.player_color_data[asset.color] += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
 
