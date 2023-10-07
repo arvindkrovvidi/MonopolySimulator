@@ -4,6 +4,7 @@ from Player import Player
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
     check_property_can_be_developed
 
+
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
                             pennsylvania_railroad):
     arvind = Player("Arvind", 1000)
@@ -104,3 +105,35 @@ def test_check_player_has_color_set_utility(arvind, electric_company, water_work
     arvind.player_color_data[electric_company.color] += 1
     arvind.player_color_data[water_works.color] += 1
     assert check_player_has_color_set(arvind, "Utility")
+
+
+@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected",[
+    (2, 1, 1, False)
+])
+def test_check_property_can_be_developed_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house, property_2_house, property_3_house, expected):
+    st_charles_place._houses = property_1_house
+    states_avenue._houses = property_2_house
+    virginia_avenue._houses = property_3_house
+
+    assert check_property_can_be_developed(st_charles_place) == expected
+
+@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected",[
+    (2, 2, 2, False)
+])
+def test_check_property_can_be_developed_2(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house, property_2_house, property_3_house, expected):
+    st_charles_place._houses = property_1_house
+    states_avenue._houses = property_2_house
+    virginia_avenue._houses = property_3_house
+
+    assert check_property_can_be_developed(st_charles_place) == expected
+
+@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected",[
+    (2, 2, 1, False)
+])
+def test_check_property_can_be_developed_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house, property_2_house, property_3_house, expected):
+    st_charles_place._houses = property_1_house
+    states_avenue._houses = property_2_house
+    virginia_avenue._houses = property_3_house
+
+    assert check_property_can_be_developed(st_charles_place) == expected
+
