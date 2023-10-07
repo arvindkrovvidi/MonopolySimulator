@@ -96,6 +96,15 @@ def test_keys(arvind, arun, adityam, padma, states_avenue, st_charles_place, pen
 
 def test_get(pennsylvania_railroad, states_avenue, st_charles_place):
     tile_list = TileList([pennsylvania_railroad, states_avenue, st_charles_place])
-    assert tile_list.get(states_avenue) == states_avenue
-    assert tile_list.get(pennsylvania_railroad) == pennsylvania_railroad
-    assert tile_list.get(states_avenue) == states_avenue
+    assert tile_list.get_by_name(str(states_avenue)) == states_avenue
+    assert tile_list.get_by_name(str(pennsylvania_railroad)) == pennsylvania_railroad
+    assert tile_list.get_by_name(str(states_avenue)) == states_avenue
+
+
+def test_remove(st_charles_place, states_avenue, virginia_avenue):
+    tile_list = TileList([st_charles_place,states_avenue, virginia_avenue])
+    tile_list.remove(st_charles_place)
+    assert type(tile_list) == TileList
+    assert st_charles_place not in tile_list
+    assert states_avenue in tile_list
+    assert virginia_avenue in tile_list
