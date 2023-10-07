@@ -1,7 +1,9 @@
+import copy
+
 from Board import color_data
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
-
+from Tiles_data.Property_data import property_data_by_color
 
 def calculate_networth(player) -> int:
     """
@@ -82,3 +84,18 @@ def get_railroads_owned(player):
             count += 1
 
     return count
+
+def check_property_can_be_developed(asset):
+    """
+    A house can be built in a property only if the property had the same number of houses as or less number of houses than the other properties in the color set.
+    :param asset: The asset being tested for development
+    :return: True if the property can be developed. False if the propert cannot be developed.
+    """
+    data = copy.deepcopy(property_data_by_color)
+    asset_to_be_removed = data[asset.color][asset]
+    data[asset.color].remove(asset_to_be_removed)
+    remaining_list = data[asset.color]
+    for each in remaining_list:
+        if asset._houses > each._houses:
+            return False
+    return True
