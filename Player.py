@@ -157,9 +157,10 @@ class Player:
 
     def build_house(self, asset):
         """
-        Build a house in a property
+        Build a house in a property if player has the color set and the property can be developed.
         :param asset: A property where house is being built
         """
-        if asset.building_cost <= self.cash:
+        if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset):
             asset._houses += 1
+            self.player_color_data[asset.color] += 1
             self.cash -= asset.building_cost
