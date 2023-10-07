@@ -1,9 +1,9 @@
 import random
 
-from Board import max_tile_no, go_cash
+from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
-from utils import check_player_has_color_set
+from utils import check_player_has_color_set, check_property_can_be_developed
 
 
 class Player:
@@ -15,6 +15,19 @@ class Player:
         self.networth = networth
         self._railroads_owned = 0
         self._utilities_owned = 0
+        self.player_color_data = {
+            "Brown": 0,
+            "Light Blue": 0,
+            "Orange": 0,
+            "Pink": 0,
+            "Red": 0,
+            "Yellow": 0,
+            "Green": 0,
+            "Blue": 0,
+            "Railroad": 0,
+            "Utility": 0
+        }
+
 
     # @property
     # def tile_no(self):
