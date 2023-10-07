@@ -14,6 +14,13 @@ class Property(Tile):
         self._hotel = False
         self._building_cost = building_cost
 
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        if self.name == other.name and self.tile_no == other.tile_no and self.cost == other.cost and self.color == other.color:
+            return True
+
     @property
     def owner(self):
         return self._owner
