@@ -5,6 +5,7 @@ from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles_data.Property_data import property_data_by_color
 
+
 def calculate_networth(player) -> int:
     """
     Calculate networth of a player
@@ -68,11 +69,13 @@ def check_passing_go(player, tile: Tile) -> bool:
         return True
 
 def check_player_has_color_set(player, color):
-    count = 0
-    for tile in player.player_portfolio:
-        if tile.color == color:
-            count += 1
-    if count == color_data[color]:
+    """
+    Check if the player has all the properties in the color set.
+    :param player: The player who is being tested for owning the color set.
+    :param color: The color which is being tested.
+    :return: True if the player has the color set. False if they do not.
+    """
+    if player.player_color_data[color] == color_data[color]:
         return True
     else:
         return False
