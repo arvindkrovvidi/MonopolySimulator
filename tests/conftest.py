@@ -99,6 +99,12 @@ def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virgin
 
 
 @pytest.fixture
+def property_data_by_color(states_avenue, st_charles_place, virginia_avenue):
+    return {
+        "Pink": TileList([virginia_avenue, states_avenue, st_charles_place])
+    }
+
+@pytest.fixture
 def arvind():
     return Player("Arvind", 200)
 
