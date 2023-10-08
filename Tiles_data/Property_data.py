@@ -4,7 +4,8 @@ from pathlib import Path
 from TileIterators import TileList
 from Tiles.Property import Property
 
-property_rent_data_file = Path(Path.cwd() / "Tiles_data" / "property_rent_data.json")
+current_directory = Path(__file__).resolve().parent
+property_rent_data_file = current_directory / "property_rent_data.json"
 with open(property_rent_data_file) as f:
     property_rent_data = json.load(f)
 
