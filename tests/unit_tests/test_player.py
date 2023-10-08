@@ -123,6 +123,7 @@ def test_pay_rent_color_set(arvind, arun, virginia_avenue, states_avenue, st_cha
     arun.player_portfolio.append(virginia_avenue)
     arun.player_portfolio.append(states_avenue)
     arun.player_portfolio.append(st_charles_place)
+    virginia_avenue._color_set = True
     arvind.pay_rent(arun, virginia_avenue.rent)
     assert arvind.cash == 176
     assert arun.cash == 224
