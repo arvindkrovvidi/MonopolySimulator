@@ -14,6 +14,9 @@ def test_play_turn_property_free_no_color_set(mocker, arvind, st_james_place):
     assert st_james_place.owner == arvind
 
 def test_play_turn_property_free_color_set(mocker, arvind, st_charles_place, states_avenue, virginia_avenue):
+    """
+    Test player_turn_property function if the player has the color set.
+    """
     arvind.cash = 1500
     arvind.player_portfolio.append(st_charles_place)
     arvind.player_portfolio.append(states_avenue)
