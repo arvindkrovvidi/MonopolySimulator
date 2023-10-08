@@ -27,7 +27,7 @@ from Tiles_data.special_tiles_data import go
 
 @pytest.fixture
 def property_rent_data():
-    property_rent_data_file = Path(Path.cwd() / "Tiles_data" / "property_rent_data.json")
+    property_rent_data_file =  Path(__file__).resolve().parent.parent / "Tiles_data" / "property_rent_data.json"
     with open(property_rent_data_file) as f:
         property_rent_data = json.load(f)
         return property_rent_data
