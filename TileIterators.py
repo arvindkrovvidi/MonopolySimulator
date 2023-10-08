@@ -1,3 +1,4 @@
+from Tiles.Property import Property
 class TileList:
     """
         A list of Properties. Data is a list.
@@ -17,6 +18,10 @@ class TileList:
                 raise IndexError("Tile number does not exist")
             for asset in self.data:
                 if asset.tile_no == key:
+                    return asset
+        elif isinstance(key, Property):
+            for asset in self.data:
+                if asset == key:
                     return asset
         else:
             raise TypeError("Invalid key")
@@ -63,15 +68,18 @@ class TileList:
             self.append(each)
         return self
 
-    def get(self, value):
-        """
-        Get the tile being requested based on tile number
-        :param value: The tile number
-        :return: The requested tile
-        """
-        for asset in self.data:
-            if asset == value:
-                return asset
+    # def get_by_name(self, value):
+    #     """
+    #     Get the tile being requested based on tile name
+    #     :param value: The tile name
+    #     :return: The requested tile
+    #     """
+    #     for asset in self.data:
+    #         if str(asset) == value:
+    #                 return asset
+
+    def remove(self, asset):
+        return TileList(self.data.remove(asset))
 
 class TileDict:
     """

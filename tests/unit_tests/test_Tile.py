@@ -1,4 +1,4 @@
-from Tile import Tile
+from Tiles.Tile import Tile
 
 
 def test_tile_init():

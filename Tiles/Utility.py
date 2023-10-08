@@ -1,11 +1,13 @@
-from Tile import Tile
-class Railroad(Tile):
-    def __init__(self, tile_no, name, cost, rent):
+from Tiles.Tile import Tile
+
+class Utility(Tile):
+    def __init__(self, tile_no, name, cost, rent, color):
         Tile.__init__(self, tile_no, name)
         self.cost = cost
         self._rent = rent
         self._owner = None
-        self._colors_owned = 0
+        self._utilities_owned = 0
+        self.color = color
 
     @property
     def owner(self):
@@ -17,4 +19,5 @@ class Railroad(Tile):
 
     @property
     def rent(self):
-        return self._rent[self._colors_owned - 1]
+        return self._rent
+

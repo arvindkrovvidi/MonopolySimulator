@@ -1,5 +1,9 @@
-from Player import Player
-from Tile import Tile
+import copy
+
+from Board import color_data
+from Tiles.Railroad import Railroad
+from Tiles.Tile import Tile
+from Tiles_data.Property_data import property_data_by_color
 
 
 def calculate_networth(player) -> int:
@@ -52,7 +56,7 @@ def get_positions(players):
             prev = winner
         players.pop(winner_index)
 
-def check_passing_go(player: Player, tile: Tile) -> bool:
+def check_passing_go(player, tile: Tile) -> bool:
     """
     Check if moving to a tile requires crossing Go tile. This is required for Chance cards.
     :param player: Player that is moving to tile
@@ -63,3 +67,50 @@ def check_passing_go(player: Player, tile: Tile) -> bool:
         return False
     else:
         return True
+
+def check_player_has_color_set(player, color):
+    """
+    Check if the player has all the properties in the color set.
+    :param player: The player who is being tested for owning the color set.
+    :param color: The color which is being tested.
+    :return: True if the player has the color set. False if they do not.
+    """
+    if player.player_color_data[color] == color_data[color]:
+        return True
+    else:
+        return False
+
+def get_railroads_owned(player):
+    count = 0
+    for asset in player.player_portfolio:
+        if type(asset) == Railroad:
+            count += 1
+
+    return count
+
+def check_property_can_be_developed(asset):
+    """
+    A house can be built in a property only if the property had the same number of houses as or less number of houses than the other properties in the color set.
+    :param asset: The asset being tested for development
+    :return: True if the property can be developed. False if the propert cannot be developed.
+    """
+    data = copy.deepcopy(property_data_by_color)
+    asset_to_be_removed = data[asset.color][asset]
+    data[asset.color].remove(asset_to_be_removed)
+    remaining_list = data[asset.color]
+    for each in remaining_list:
+        if asset._houses > each._houses:
+            return False
+    return True
+
+def check_can_build_hotel(asset):
+    """
+    Check if a hotel can be built on the given property. A hotel can be built only if all the properties in the color set have 4 houses each.
+    :param asset: The asset being tested if there can be a hotel built
+    :return: True if all the properties in the color set have 4 houses. False if even one property does not have 4 houses.
+    """
+    data = copy.deepcopy(property_data_by_color)
+    for each_property in data[asset.color]:
+        if each_property._houses < 4:
+            return False
+    return True

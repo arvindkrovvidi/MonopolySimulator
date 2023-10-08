@@ -1,5 +1,5 @@
-from CommunityChestTile import CommunityChestTile
 from TileIterators import TileList
+from Tiles.CommunityChestTile import CommunityChestTile
 
 community_chest_2 = CommunityChestTile(name="Community Chest", tile_no=2)
 community_chest_17 = CommunityChestTile(name="Community Chest", tile_no=17)
