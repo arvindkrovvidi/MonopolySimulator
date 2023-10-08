@@ -31,17 +31,20 @@ def test_buy_property(states_avenue, arvind, st_charles_place):
     assert arvind.cash == 10
     assert st_charles_place not in arvind.player_portfolio
 
+
 def test_buy_railroad_one(arvind, pennsylvania_railroad):
     arvind.buy_railroad(pennsylvania_railroad)
     assert arvind.cash == 0
     assert pennsylvania_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 1
 
+
 def test_buy_utility_one(arvind, electric_company):
     arvind.buy_utility(electric_company)
     assert arvind.cash == 50
     assert electric_company in arvind.player_portfolio
     assert arvind.utilities_owned == 1
+
 
 def test_buy_utility_multiple(arvind, electric_company, water_works):
     arvind.cash = 500
@@ -55,6 +58,7 @@ def test_buy_utility_multiple(arvind, electric_company, water_works):
 
     arvind.buy_utility(electric_company)
     assert arvind.utilities_owned == 2
+
 
 def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
                                short_line_railroad):
@@ -73,6 +77,7 @@ def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, readi
 
     arvind.buy_railroad(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
+
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash", [
     (0, 12, 200),
@@ -106,10 +111,12 @@ def test_move_to_default_collect_go_cash_flag(arvind, states_avenue):
     assert arvind.tile_no == states_avenue.tile_no
     assert arvind.cash == 400
 
+
 def test_pay_rent(arvind, arun):
     arvind.pay_rent(arun, 20)
     assert arvind.cash == 180
     assert arun.cash == 220
+
 
 def test_pay_rent_color_set(arvind, arun, virginia_avenue, states_avenue, st_charles_place):
     arvind.tile_no = 14
@@ -119,6 +126,7 @@ def test_pay_rent_color_set(arvind, arun, virginia_avenue, states_avenue, st_cha
     arvind.pay_rent(arun, virginia_avenue.rent)
     assert arvind.cash == 176
     assert arun.cash == 224
+
 
 @pytest.mark.parametrize("input_amount, expected_cash_1, expected_cash_2", [
     (100, 300, 100),
@@ -132,9 +140,10 @@ def test_transact_with_one_player(arvind, arun, input_amount, expected_cash_1, e
 
 @pytest.mark.parametrize("input_amount, expected_cash_1, expected_cash_2, expected_cash_3, expected_cash_4", [
     (10, 230, 190, 190, 190),
-     (-50, 50, 250, 250, 250)
+    (-50, 50, 250, 250, 250)
 ])
-def test_transact_with_multiple_players(arvind, arun, adityam, padma, input_amount, expected_cash_1, expected_cash_2, expected_cash_3, expected_cash_4):
+def test_transact_with_multiple_players(arvind, arun, adityam, padma, input_amount, expected_cash_1, expected_cash_2,
+                                        expected_cash_3, expected_cash_4):
     player_list = [arun, adityam, padma]
     for player in player_list:
         arvind.player_transaction(player, input_amount)
@@ -144,7 +153,7 @@ def test_transact_with_multiple_players(arvind, arun, adityam, padma, input_amou
     assert padma.cash == expected_cash_4
 
 
-@pytest.mark.parametrize("input_amount, expected",[
+@pytest.mark.parametrize("input_amount, expected", [
     (100, 300),
     (-100, 100)
 ])
@@ -168,3 +177,7 @@ def test_build_house_false(arvind, st_charles_place, mocker):
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 
+def test_build_hotel(mocker, arvind, st_charles_place):
+    mocker.patch('Player.check_can_build_hotel', return_value=True)
+    arvind.build_hotel(st_charles_place)
+    assert st_charles_place._hotel == True
