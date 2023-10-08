@@ -121,6 +121,7 @@ class Player:
                 pass
             else:
                 self.cash += go_cash
+
     def move_to(self, tile, collect_go_cash_flag: bool=True) -> None:
         """
         Move to a specific Tile with or without collecting salary. This occurs through Chance, Community chest cards and Jail tiles.

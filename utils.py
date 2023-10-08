@@ -102,3 +102,15 @@ def check_property_can_be_developed(asset):
         if asset._houses > each._houses:
             return False
     return True
+
+def check_can_build_hotel(asset):
+    """
+    Check if a hotel can be built on the given property. A hotel can be built only if all the properties in the color set have 4 houses each.
+    :param asset: The asset being tested if there can be a hotel built
+    :return: True if all the properties in the color set have 4 houses. False if even one property does not have 4 houses.
+    """
+    data = copy.deepcopy(property_data_by_color)
+    for each_property in data[asset.color]:
+        if each_property._houses < 4:
+            return False
+    return True
