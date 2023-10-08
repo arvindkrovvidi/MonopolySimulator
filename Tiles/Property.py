@@ -9,7 +9,7 @@ class Property(Tile):
         self.color = color
         self._rent = rent
         self._owner = None
-        self._color_set = True
+        self._color_set = False
         self._houses = 0
         self._hotel = False
         self._building_cost = building_cost
