@@ -3,7 +3,7 @@ import random
 from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
-from utils import check_player_has_color_set, check_property_can_be_developed
+from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
 
 
 class Player:
@@ -167,3 +167,7 @@ class Player:
             asset._houses += 1
             self.player_color_data[asset.color] += 1
             self.cash -= asset.building_cost
+
+    def build_hotel(self, asset):
+        if check_can_build_hotel(asset):
+            asset._hotel = True
