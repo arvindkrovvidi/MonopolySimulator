@@ -3,6 +3,7 @@ import random
 from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
+from Tiles_data.special_tiles_data import just_visiting_jail
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
 
 
@@ -28,6 +29,9 @@ class Player:
             "Utility": 0
         }
 
+        self.get_out_of_jail_free_card = 0
+        self.in_jail = False
+        self.jail_throw_counter = 0
 
     # @property
     # def tile_no(self):
@@ -171,3 +175,21 @@ class Player:
     def build_hotel(self, asset):
         if check_can_build_hotel(asset):
             asset._hotel = True
+
+    def pay_jail_fine(self):
+        self.bank_transaction(50)
+        self.in_jail = False
+
+    def try_jail_double_throw(self):
+        dice1 = self.throw_one_dice()
+        dice2 = self.throw_one_dice()
+        if dice1 == dice2:
+            self.in_jail = False
+        self.jail_throw_counter += 1
+        if self.jail_throw_counter == 3:
+            self.pay_jail_fine()
+            self.in_jail = False
+
+    def get_out_of_jail_free(self):
+        self.get_out_of_jail_free_card -= 1
+        self.in_jail = False

@@ -56,3 +56,4 @@ print(display_winners)
 # TODO Add descriptions for functions
 # TODO: Automatically create test functions and give suggestions to create test functions when a function is selected.
 # TODO: Calculate probabilities for each person winning the game
+# TODO: Add exceptions
