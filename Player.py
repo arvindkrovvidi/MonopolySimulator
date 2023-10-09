@@ -28,7 +28,7 @@ class Player:
             "Railroad": 0,
             "Utility": 0
         }
-
+        self.double_counter = 0
         self.get_out_of_jail_free_card = 0
         self.in_jail = False
         self.jail_throw_counter = 0

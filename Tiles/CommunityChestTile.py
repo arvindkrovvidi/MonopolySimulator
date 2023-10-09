@@ -17,7 +17,7 @@ class CommunityChestTile(SpecialTiles):
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
         if _card_no == 1:
-            player.move_to(go)
+            player.move_to(go.tile_no)
             player.bank_transaction(200)
         if _card_no == 2:
             player.bank_transaction(200)

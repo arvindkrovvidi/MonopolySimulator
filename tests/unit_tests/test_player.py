@@ -101,13 +101,13 @@ def test_move_to(arvind, states_avenue, destination, expected_cash, expected_des
                  request):
     input_destination = request.getfixturevalue(destination)
     expected_destination_value = request.getfixturevalue(expected_destination)
-    arvind.move_to(input_destination, collect_go_cash_flag=collect_go_cash_flag)
+    arvind.move_to(input_destination.tile_no, collect_go_cash_flag=collect_go_cash_flag)
     assert arvind.tile_no == expected_destination_value.tile_no
     assert arvind.cash == expected_cash
 
 
 def test_move_to_default_collect_go_cash_flag(arvind, states_avenue):
-    arvind.move_to(states_avenue)
+    arvind.move_to(states_avenue.tile_no)
     assert arvind.tile_no == states_avenue.tile_no
     assert arvind.cash == 400
 

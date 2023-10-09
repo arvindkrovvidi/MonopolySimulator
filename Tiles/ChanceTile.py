@@ -22,13 +22,13 @@ class ChanceTile(SpecialTiles):
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
         if _card_no == 1:
-            player.move_to(boardwalk, collect_go_cash_flag=False)
+            player.move_to(boardwalk.tile_no, collect_go_cash_flag=False)
         elif _card_no == 2:
-            player.move_to(go, collect_go_cash_flag=False)
+            player.move_to(go.tile_no, collect_go_cash_flag=False)
         elif _card_no == 3:
-            player.move_to(illinois_avenue, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
+            player.move_to(illinois_avenue.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 4:
-            player.move_to(st_charles_place, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
+            player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5:
             execute_chance_5(player)
         elif _card_no == 6:
@@ -48,7 +48,7 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 13:
             player.bank_transaction(-15)
         elif _card_no == 14:
-            player.move_to(reading_railroad, collect_go_cash_flag=True)
+            player.move_to(reading_railroad.tile_no, collect_go_cash_flag=True)
         elif _card_no == 15:
             execute_chance_15(player, all_players_list)
         elif _card_no == 16:
@@ -87,7 +87,7 @@ def execute_chance_5(player):
     :param player: The player who landed on Chance and picked chance card no 5.
     """
     nearest_railroad = get_nearest_railroad(player)
-    player.move_to(nearest_railroad, collect_go_cash_flag=False)
+    player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
     if nearest_railroad.owner is None:
         player.buy_railroad(nearest_railroad)
     elif nearest_railroad not in player.player_portfolio:
@@ -117,7 +117,7 @@ def execute_chance_7(player, throw):
     :param tracker: The property tracker that tracks properties and their owners.
     """
     nearest_utility = get_nearest_utility(player)
-    player.move_to(nearest_utility, collect_go_cash_flag=False)
+    player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     if nearest_utility.owner is None:
         player.buy_utility(nearest_utility)
     else:
