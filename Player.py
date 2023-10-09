@@ -3,7 +3,6 @@ import random
 from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
-from Tiles_data.special_tiles_data import just_visiting_jail
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
 
 
@@ -106,33 +105,45 @@ class Player:
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
 
+    def throw_one_dice(self):
+        return random.randint(1, 6)
+
     def throw_dice(self) -> int:
         """
         Simulates a two dice throw by generating a random number between 2 and 12.
         :return: Random integer between 2 and 12
         """
-        return random.randint(2, 12)
+        dice1 = self.throw_one_dice()
+        dice2 = self.throw_one_dice()
+        if dice1 == dice2:
+            self.double_counter += 1
+        else:
+            self.double_counter = 0
+        return dice1 + dice2
 
     def move(self, throw: int) -> None:
         """
         Move the player to a tile based on the dice throw
         :param throw: The dice throw
         """
-        self.tile_no += throw
-        if self.tile_no  > max_tile_no:
-            self.tile_no -= (max_tile_no + 1)
-            if self.tile_no == 0:
-                pass
-            else:
-                self.cash += go_cash
+        while not self.in_jail:
+            self.tile_no += throw
+            if self.tile_no == 30:
+                self.in_jail = True
+            if self.tile_no  > max_tile_no:
+                self.tile_no -= (max_tile_no + 1)
+                if self.tile_no == 0:
+                    pass
+                else:
+                    self.cash += go_cash
 
-    def move_to(self, tile, collect_go_cash_flag: bool=True) -> None:
+    def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
         Move to a specific Tile with or without collecting salary. This occurs through Chance, Community chest cards and Jail tiles.
-        :param tile: The tile to move to
+        :param tile_no: The tile number to move to
         :param collect_go_cash_flag: True if salary is to be collected. Else False.
         """
-        self.tile_no = tile.tile_no
+        self.tile_no = tile_no
         if collect_go_cash_flag:
             self.cash += 200
 
