@@ -2,7 +2,5 @@ from Tiles.Tile import Tile
 
 
 class SpecialTiles(Tile):
-#    TODO: To be implemented in child classes
-    @staticmethod
-    def execute(player, card_no):
+    def execute(self, player, card_no):
         pass
