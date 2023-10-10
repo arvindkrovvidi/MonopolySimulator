@@ -26,9 +26,9 @@ class CommunityChestTile(SpecialTiles):
         if _card_no == 4:
             player.bank_transaction(50)
         if _card_no == 5:
-            pass
+            player.get_out_of_jail_free_card += 1
         if _card_no == 6:
-            pass
+            player.move_to(10, collect_go_cash_flag=False)
         if _card_no == 7:
             player.bank_transaction(100)
         if _card_no == 8:
@@ -44,11 +44,26 @@ class CommunityChestTile(SpecialTiles):
         if _card_no == 13:
             player.bank_transaction(25)
         if _card_no == 14:
-            pass
+            execute_chest_14(player)
         if _card_no == 15:
             player.bank_transaction(10)
         if _card_no == 16:
             player.bank_transaction(100)
+
+def execute_chest_14(player):
+    """
+    Execute chance card number 14. You are assessed for street repair. $40 per house. $115 per hotel.
+    :param player: Player that picked the community chest card number 14
+    :return: The total cost of repairs
+    """
+    houses = 0
+    hotels = 0
+    for each_property in player.player_portfolio:
+        houses += each_property._houses
+        if each_property._hotel:
+            hotels += 1
+    repairs_cost = (40 * houses) + (115 * hotels)
+    player.bank_transaction(-repairs_cost)
 
 def execute_chest_9(player, players) -> None:
     """
