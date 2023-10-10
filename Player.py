@@ -184,14 +184,24 @@ class Player:
             self.cash -= asset.building_cost
 
     def build_hotel(self, asset):
+        """
+        Build hotel in property
+        :param asset: The tile where the hotel is being built
+        """
         if check_can_build_hotel(asset):
             asset._hotel = True
 
     def pay_jail_fine(self):
-        self.bank_transaction(50)
+        """
+        Pay fine to get out of jail
+        """
+        self.bank_transaction(-50)
         self.in_jail = False
 
     def try_jail_double_throw(self):
+        """
+        Try to throw a double to get out of jail. You get three turns to throw a double. After three turns, you pay the fine.
+        """
         dice1 = self.throw_one_dice()
         dice2 = self.throw_one_dice()
         if dice1 == dice2:
@@ -203,5 +213,8 @@ class Player:
             self.jail_throw_counter = 0
 
     def get_out_of_jail_free(self):
+        """
+        Use get out of jail free card.
+        """
         self.get_out_of_jail_free_card -= 1
         self.in_jail = False
