@@ -126,7 +126,7 @@ class Player:
         Move the player to a tile based on the dice throw
         :param throw: The dice throw
         """
-        while not self.in_jail:
+        if not self.in_jail:
             self.tile_no += throw
             if self.tile_no == 30:
                 self.in_jail = True
@@ -200,6 +200,7 @@ class Player:
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
             self.in_jail = False
+            self.jail_throw_counter = 0
 
     def get_out_of_jail_free(self):
         self.get_out_of_jail_free_card -= 1
