@@ -14,8 +14,7 @@ class ChanceTile(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
 
-    @staticmethod
-    def execute(player, _card_no, **kwargs):
+    def execute(self, player, _card_no, **kwargs):
         """
         Main function that executes chance tile cards based on card number.
         :param player: Player who is picking up the chance card.
