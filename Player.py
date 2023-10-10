@@ -146,6 +146,8 @@ class Player:
         self.tile_no = tile_no
         if collect_go_cash_flag:
             self.cash += 200
+        if tile_no == 10:
+            self.in_jail = True
 
     def pay_rent(self, player, rent: int) -> None:
         """

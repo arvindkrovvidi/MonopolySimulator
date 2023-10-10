@@ -38,13 +38,13 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 8:
             player.bank_transaction(50)
         elif _card_no == 9:
-            pass
+            player.get_out_of_jail_free_card += 1
         elif _card_no == 10:
             pass
         elif _card_no == 11:
-            pass
+            player.move_to(10, collect_go_cash_flag=False)
         elif _card_no == 12:
-            pass
+            execute_chance_12(player)
         elif _card_no == 13:
             player.bank_transaction(-15)
         elif _card_no == 14:
@@ -54,6 +54,21 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 16:
             player.bank_transaction(150)
 
+
+def execute_chance_12(player):
+    """
+    Execute chance card number 12. Make general repairs on all your property. For each house pay$25. For each hotel pay $100.
+    :param player: Player that picked the chance card 12
+    :return: The total cost of repairs
+    """
+    houses = 0
+    hotels = 0
+    for each_property in player.player_portfolio:
+        houses += each_property._houses
+        if each_property._hotel:
+            hotels += 1
+    repairs_cost = (25 * houses) + (100 * hotels)
+    player.bank_transaction(-repairs_cost)
 
 def execute_chance_15(player, players):
     """
