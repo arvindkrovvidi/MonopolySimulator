@@ -1,4 +1,5 @@
 from TileIterators import TileList
+from Tiles.FreeParkingTile import FreeParkingTile
 from Tiles.IncomeTaxTile import IncomeTaxTile
 from Tiles.Jail import Jail
 from Tiles.LuxuryTaxTile import LuxuryTaxTile
