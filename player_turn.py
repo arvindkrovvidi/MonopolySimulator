@@ -40,7 +40,7 @@ def play_turn_property(current_tile, player):
     """
     if current_tile.owner is None:
         player.buy_property(current_tile)
-    elif current_tile in player.player_portfolio and check_player_has_color_set(player, current_tile.color):
+    elif current_tile in player.player_portfolio:
         player.build_house(current_tile)
     elif current_tile.owner != player:
         landlord = current_tile.owner
