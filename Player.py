@@ -6,6 +6,7 @@ from Tiles.Utility import Utility
 from errors import PlayerBrokeError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
 
+
 class Player:
     def __init__(self, name, cash=200, tile_no=0, networth=0):
         self._player_portfolio = TileList([])
@@ -206,8 +207,9 @@ class Player:
         """
         Pay fine to get out of jail
         """
-        self.bank_transaction(-50)
-        self.in_jail = False
+        if self.cash > 50:
+            self.bank_transaction(-50)
+            self.in_jail = False
 
     def try_jail_double_throw(self):
         """
