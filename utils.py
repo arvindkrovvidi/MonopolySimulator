@@ -1,5 +1,7 @@
 import copy
 
+from prettytable import PrettyTable
+
 from Board import color_data
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
@@ -125,3 +127,13 @@ def check_any_player_broke(player_list):
         if player.cash < 0:
             return True
     return False
+
+def print_player_summary(players):
+    for player in players:
+        player.networth = calculate_networth(player)
+
+    display_winners = PrettyTable()
+    display_winners.field_names = ["Position", "Player", "Net Worth"]
+    for pos, win, nw in get_positions(players):
+        display_winners.add_row((pos, str(win), nw))
+    print(display_winners)
