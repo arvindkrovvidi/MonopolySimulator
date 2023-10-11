@@ -3,7 +3,7 @@ import random
 from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
-from errors import PlayerBrokeError
+from errors import PlayerBrokeError, PropertyNotFreeError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
 
 
@@ -69,6 +69,9 @@ class Player:
         Buy property that the player lands on (excluding railroads and utilities).
         :param asset: Property
         """
+        if asset.owner is not None:
+            print(f'{asset} is already owned by {asset.owner}')
+            raise PropertyNotFreeError
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
