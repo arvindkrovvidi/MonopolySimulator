@@ -92,6 +92,15 @@ def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expec
     assert arvind.cash == expected_cash
     assert arvind.tile_no < 39
 
+@pytest.mark.parametrize("current_tile, expected_tile",[
+    (15, 12),
+    (0, 37)
+])
+def test_move_back(arvind, pennsylvania_railroad, electric_company, current_tile, expected_tile):
+    arvind.tile_no = current_tile
+    arvind.move(-3)
+    assert arvind.tile_no == expected_tile
+    assert arvind.tile_no < 39
 
 @pytest.mark.parametrize("destination, collect_go_cash_flag, expected_destination, expected_cash", [
     ("states_avenue", True, "states_avenue", 400),

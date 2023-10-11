@@ -127,13 +127,15 @@ class Player:
 
     def move(self, throw: int) -> None:
         """
-        Move the player to a tile based on the dice throw
+        Move the player to a tile based on the dice throw. Positive throw means move forward. Negative throw means move backward.
         :param throw: The dice throw
         """
         if not self.in_jail:
             self.tile_no += throw
             if self.tile_no == 30:
                 self.in_jail = True
+            if self.tile_no < 0:
+                self.tile_no = 40 + throw
             if self.tile_no  > max_tile_no:
                 self.tile_no -= (max_tile_no + 1)
                 if self.tile_no == 0:

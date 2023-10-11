@@ -47,7 +47,6 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
 
 
 
-# TODO: Add chance
 # TODO: Add progress bar
 # TODO: Run a profiler to check for possible optimizations
 # TODO: Add tests for all functions

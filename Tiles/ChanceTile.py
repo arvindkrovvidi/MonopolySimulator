@@ -40,7 +40,7 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 9:
             player.get_out_of_jail_free_card += 1
         elif _card_no == 10:
-            pass
+            player.move(-3)
         elif _card_no == 11:
             player.move_to(10, collect_go_cash_flag=False)
         elif _card_no == 12:
