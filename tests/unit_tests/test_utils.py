@@ -2,7 +2,7 @@ import pytest
 
 from Player import Player
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_property_can_be_developed, check_can_build_hotel
+    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -150,20 +150,36 @@ def test_check_property_can_be_developed_3(arvind, st_charles_place, states_aven
     (2, 2, 1, False)
 ])
 def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected):
+                                 property_2_house, property_3_house, expected):
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
     assert check_can_build_hotel(st_charles_place) == expected
 
+
 @pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
     (4, 4, 4, True)
 ])
 def test_check_can_build_hotel_2(mocker, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected, property_data_by_color):
+                                 property_2_house, property_3_house, expected, property_data_by_color):
     mocker.patch('utils.property_data_by_color', return_value=property_data_by_color)
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
     assert check_can_build_hotel(st_charles_place) == expected
 
+
+@pytest.mark.parametrize("arvind_cash, arun_cash, padma_cash, adityam_cash, expected", [
+    (100, 100, 100, 100, False),
+    (100, -100, 100, 100, True),
+    (-100, 100, 100, 100, True),
+    (100, 100, 100, -100, True)
+])
+def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_cash, adityam_cash, padma_cash, expected):
+    arvind.cash = arvind_cash
+    arun.cash = arun_cash
+    adityam.cash = adityam_cash
+    padma.cash = padma_cash
+
+    player_list = [arvind, arun, adityam, padma]
+    assert check_any_player_broke(player_list) == expected
