@@ -114,3 +114,14 @@ def check_can_build_hotel(asset):
         if each_property._houses < 4:
             return False
     return True
+
+def check_any_player_broke(player_list):
+    """
+    Check if a player has cash less than 0
+    :param player_list: List of all players
+    :return: True if a player has cash less than 0. Else False.
+    """
+    for player in player_list:
+        if player.cash < 0:
+            return True
+    return False

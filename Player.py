@@ -3,8 +3,8 @@ import random
 from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
+from errors import PlayerBrokeError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
-
 
 class Player:
     def __init__(self, name, cash=200, tile_no=0, networth=0):
@@ -155,15 +155,21 @@ class Player:
         :param player: The player to whom the rent has to be paid
         :param rent: The rent to be paid to the player
         """
+        if self.cash - rent < 0:
+            print(f'{self} cannot pay {player} rent of {rent}')
+            raise PlayerBrokeError
         self.cash -= rent
         player.cash += rent
 
     def player_transaction(self, player, amount: int) -> None:
         """
-        Collect or pay a player a specified amount. Positive means collect from player. Negative means pay player.
+        Collect or pay a player a specified amount
         :param player: The player paying
-        :param amount: The amount being paid
+        :param amount: The amount being paid. Positive means collect from player. Negative means pay player.
         """
+        if self.cash + amount < 0:
+            print(f'{self} cannot pay {player} amount of {-amount}')
+            raise PlayerBrokeError
         self.cash += amount
         player.cash -= amount
 
@@ -172,6 +178,9 @@ class Player:
         Collect or pay the bank a certain amount
         :param amount: The amount being paid or collected
         """
+        if self.cash + amount < 0:
+            print(f'{self} cannot pay the bank amount of {-amount}')
+            raise PlayerBrokeError
         self.cash += amount
 
 
