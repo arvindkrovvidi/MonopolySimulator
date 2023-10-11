@@ -1,4 +1,5 @@
 from Player_data import all_players_list
+from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
 from Tiles_data.special_tiles_data import go
@@ -58,9 +59,10 @@ def execute_chest_14(player):
     houses = 0
     hotels = 0
     for each_property in player.player_portfolio:
-        houses += each_property._houses
-        if each_property._hotel:
-            hotels += 1
+        if type(each_property) == Property:
+            houses += each_property._houses
+            if each_property._hotel:
+                hotels += 1
     repairs_cost = (40 * houses) + (115 * hotels)
     player.bank_transaction(-repairs_cost)
 
