@@ -4,7 +4,8 @@ from Board import max_tile_no, go_cash, color_data
 from TileIterators import TileList
 from Tiles.Utility import Utility
 from errors import PlayerBrokeError, PropertyNotFreeError
-from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel
+from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
+    set_color_set_value
 
 
 class Player:
@@ -33,9 +34,6 @@ class Player:
         self.in_jail = False
         self.jail_throw_counter = 0
 
-    # @property
-    # def tile_no(self):
-    #     return self._tile_no
 
     @property
     def player_portfolio(self):
@@ -70,7 +68,6 @@ class Player:
         :param asset: Property
         """
         if asset.owner is not None:
-            print(f'{asset} is already owned by {asset.owner}')
             raise PropertyNotFreeError
         if asset.cost <= self.cash:
             self.cash -= asset.cost
@@ -80,6 +77,8 @@ class Player:
                 self.player_color_data[asset.color] += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
+                set_color_set_value(self, asset)
+
 
     def buy_railroad(self, asset):
         """
