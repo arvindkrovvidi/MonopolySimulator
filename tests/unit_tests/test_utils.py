@@ -2,7 +2,7 @@ import pytest
 
 from Player import Player
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke
+    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -183,3 +183,14 @@ def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_
 
     player_list = [arvind, arun, adityam, padma]
     assert check_any_player_broke(player_list) == expected
+
+def test_set_color_set(arvind, st_charles_place, virginia_avenue, states_avenue):
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    arvind.buy_property(st_charles_place)
+
+    set_color_set_value(arvind, st_charles_place)
+    assert st_charles_place._color_set == True
+    assert virginia_avenue._color_set == True
+    assert states_avenue._color_set == True
+

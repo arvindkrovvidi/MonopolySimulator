@@ -3,9 +3,11 @@ import copy
 from prettytable import PrettyTable
 
 from Board import color_data
+from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles_data.Property_data import property_data_by_color
+from errors import InvalidPropertyTypeError
 
 
 def calculate_networth(player) -> int:
@@ -137,3 +139,10 @@ def print_player_summary(players):
     for pos, win, nw in get_positions(players):
         display_winners.add_row((pos, str(win), nw))
     print(display_winners)
+
+def set_color_set_value(player, asset):
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(set_color_set_value.__name__, asset)
+    for each_property in player.player_portfolio:
+        if each_property.color == asset.color:
+            each_property._color_set = True
