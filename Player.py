@@ -1,6 +1,6 @@
 import random
 
-from Board import max_tile_no, go_cash, color_data
+from Board import max_tile_no, go_cash
 from TileIterators import TileList
 from Tiles.Utility import Utility
 from errors import PlayerBrokeError, PropertyNotFreeError
