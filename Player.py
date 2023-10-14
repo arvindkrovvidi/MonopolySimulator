@@ -188,8 +188,9 @@ class Player:
         Build hotel in property
         :param asset: The tile where the hotel is being built
         """
-        if check_can_build_hotel(asset):
+        if check_can_build_hotel(asset) and self.cash > asset.building_cost:
             asset._hotel = True
+            self.cash -= asset.building_cost
 
     def pay_jail_fine(self):
         """
