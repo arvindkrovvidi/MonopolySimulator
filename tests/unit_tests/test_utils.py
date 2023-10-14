@@ -163,7 +163,6 @@ def test_check_can_build_hotel_2(arvind, mocker, st_charles_place, states_avenue
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind
-    mocker.patch('utils.property_data_by_color', return_value=property_data_by_color)
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
