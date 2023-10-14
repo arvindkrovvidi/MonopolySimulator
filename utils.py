@@ -6,7 +6,6 @@ from Board import color_data
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
-from Tiles_data.Property_data import property_data_by_color
 from errors import InvalidPropertyTypeError
 
 
@@ -101,12 +100,11 @@ def check_property_can_be_developed(asset):
     :param asset: The asset being tested for development
     :return: True if the property can be developed. False if the propert cannot be developed.
     """
-    data = copy.deepcopy(property_data_by_color)
-    asset_to_be_removed = data[asset.color][asset]
-    data[asset.color].remove(asset_to_be_removed)
-    remaining_list = data[asset.color]
-    for each in remaining_list:
-        if asset._houses > each._houses:
+    if asset.owner is None:
+        return False
+    data = copy.deepcopy(asset.owner.player_portfolio)
+    for each_property in data:
+        if asset._houses > each_property._houses:
             return False
     return True
 
