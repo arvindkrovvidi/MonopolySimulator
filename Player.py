@@ -56,7 +56,7 @@ class Player:
         :param asset: Property
         """
         if asset.owner is not None:
-            raise PropertyNotFreeError
+            raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
