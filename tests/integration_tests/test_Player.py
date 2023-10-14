@@ -59,3 +59,42 @@ def test_pay_rent_3(arvind, arun, st_charles_place, virginia_avenue, states_aven
 
     assert arvind.cash == 150
     assert arun.cash == 110
+
+def test_pay_rent_4(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
+    """
+    test pay_rent when player owns color set and has built a house and a hotel
+    """
+    arun.cash = 1000
+    arvind.cash = 1000
+
+    arun.move_to(electric_company.tile_no, collect_go_cash_flag=True)
+    arun.move_to(st_charles_place.tile_no, collect_go_cash_flag=True)
+    arun.move_to(st_charles_place.tile_no, collect_go_cash_flag=True)
+    arun.move_to(st_charles_place.tile_no, collect_go_cash_flag=True)
+    arun.move_to(st_charles_place.tile_no, collect_go_cash_flag=True)
+    arun.move_to(st_charles_place.tile_no, collect_go_cash_flag=True)
+
+
+    arun.buy_property(st_charles_place)
+    arun.buy_property(virginia_avenue)
+    arun.buy_property(states_avenue)
+
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+
+    arun.build_hotel(st_charles_place)
+    arvind.pay_rent(arun, st_charles_place.rent)
+
+    assert arvind.cash == 250
+    assert arun.cash == 1210
+
