@@ -92,6 +92,15 @@ def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expec
     assert arvind.cash == expected_cash
     assert arvind.tile_no < 39
 
+@pytest.mark.parametrize("current_tile, expected_tile",[
+    (15, 12),
+    (0, 37)
+])
+def test_move_back(arvind, pennsylvania_railroad, electric_company, current_tile, expected_tile):
+    arvind.tile_no = current_tile
+    arvind.move(-3)
+    assert arvind.tile_no == expected_tile
+    assert arvind.tile_no < 39
 
 @pytest.mark.parametrize("destination, collect_go_cash_flag, expected_destination, expected_cash", [
     ("states_avenue", True, "states_avenue", 400),
@@ -101,13 +110,13 @@ def test_move_to(arvind, states_avenue, destination, expected_cash, expected_des
                  request):
     input_destination = request.getfixturevalue(destination)
     expected_destination_value = request.getfixturevalue(expected_destination)
-    arvind.move_to(input_destination, collect_go_cash_flag=collect_go_cash_flag)
+    arvind.move_to(input_destination.tile_no, collect_go_cash_flag=collect_go_cash_flag)
     assert arvind.tile_no == expected_destination_value.tile_no
     assert arvind.cash == expected_cash
 
 
 def test_move_to_default_collect_go_cash_flag(arvind, states_avenue):
-    arvind.move_to(states_avenue)
+    arvind.move_to(states_avenue.tile_no)
     assert arvind.tile_no == states_avenue.tile_no
     assert arvind.cash == 400
 
@@ -123,6 +132,7 @@ def test_pay_rent_color_set(arvind, arun, virginia_avenue, states_avenue, st_cha
     arun.player_portfolio.append(virginia_avenue)
     arun.player_portfolio.append(states_avenue)
     arun.player_portfolio.append(st_charles_place)
+    virginia_avenue._color_set = True
     arvind.pay_rent(arun, virginia_avenue.rent)
     assert arvind.cash == 176
     assert arun.cash == 224
@@ -170,6 +180,7 @@ def test_build_house_true(arvind, st_charles_place, mocker):
     assert st_charles_place._houses == 1
     assert arvind.cash == 100
 
+
 def test_build_house_false(arvind, st_charles_place, mocker):
     mocker.patch('Player.check_player_has_color_set', return_value=False)
     mocker.patch('Player.check_property_can_be_developed', return_value=True)
@@ -177,7 +188,41 @@ def test_build_house_false(arvind, st_charles_place, mocker):
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 
+
 def test_build_hotel(mocker, arvind, st_charles_place):
     mocker.patch('Player.check_can_build_hotel', return_value=True)
     arvind.build_hotel(st_charles_place)
     assert st_charles_place._hotel == True
+
+
+def test_pay_jail_fine(arvind):
+    arvind.pay_jail_fine()
+    assert arvind.cash == 150
+
+def test_try_jail_double_throw_double(arvind, mocker):
+    arvind.in_jail = True
+    mocker.patch.object(arvind, 'throw_one_dice', return_value=1)
+    arvind.try_jail_double_throw()
+    assert arvind.in_jail == False
+
+def test_try_jail_double_throw_not_double(arvind, mocker):
+    arvind.in_jail = True
+    mock = mocker.patch.object(arvind, 'throw_one_dice', side_effect=[1, 2])
+    arvind.try_jail_double_throw()
+    assert arvind.in_jail == True
+    mock.assert_called()
+
+def test_try_jail_double_throw_three_tries(arvind, mocker):
+    arvind.in_jail = True
+    arvind.jail_throw_counter = 2
+    mock = mocker.patch.object(arvind, 'throw_one_dice', side_effect=[1, 2])
+    arvind.try_jail_double_throw()
+    assert arvind.in_jail == False
+    mock.assert_called()
+
+def test_get_out_of_jail_free(arvind):
+    arvind.in_jail = True
+    arvind.get_out_of_jail_free_card = 1
+    arvind.get_out_of_jail_free()
+    assert arvind.get_out_of_jail_free_card == 0
+    assert arvind.in_jail == False

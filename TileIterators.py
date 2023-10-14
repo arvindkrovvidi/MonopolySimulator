@@ -39,6 +39,7 @@ class TileList:
             self.index += 1
             return result
         else:
+            self.index = 0
             raise StopIteration
 
     def append(self, asset):

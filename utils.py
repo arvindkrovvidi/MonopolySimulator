@@ -1,9 +1,12 @@
 import copy
 
+from prettytable import PrettyTable
+
 from Board import color_data
+from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
-from Tiles_data.Property_data import property_data_by_color
+from errors import InvalidPropertyTypeError
 
 
 def calculate_networth(player) -> int:
@@ -75,10 +78,13 @@ def check_player_has_color_set(player, color):
     :param color: The color which is being tested.
     :return: True if the player has the color set. False if they do not.
     """
-    if player.player_color_data[color] == color_data[color]:
+    count = 0
+    for each_property in player.player_portfolio:
+        if each_property.color == color:
+            count += 1
+    if count == color_data[color]:
         return True
-    else:
-        return False
+    return False
 
 def get_railroads_owned(player):
     count = 0
@@ -94,12 +100,11 @@ def check_property_can_be_developed(asset):
     :param asset: The asset being tested for development
     :return: True if the property can be developed. False if the propert cannot be developed.
     """
-    data = copy.deepcopy(property_data_by_color)
-    asset_to_be_removed = data[asset.color][asset]
-    data[asset.color].remove(asset_to_be_removed)
-    remaining_list = data[asset.color]
-    for each in remaining_list:
-        if asset._houses > each._houses:
+    if asset.owner is None:
+        return False
+    data = copy.deepcopy(asset.owner.player_portfolio)
+    for each_property in data:
+        if asset._houses > each_property._houses:
             return False
     return True
 
@@ -109,8 +114,36 @@ def check_can_build_hotel(asset):
     :param asset: The asset being tested if there can be a hotel built
     :return: True if all the properties in the color set have 4 houses. False if even one property does not have 4 houses.
     """
-    data = copy.deepcopy(property_data_by_color)
-    for each_property in data[asset.color]:
+    data = copy.deepcopy(asset.owner.player_portfolio)
+    for each_property in data:
         if each_property._houses < 4:
             return False
     return True
+
+def check_any_player_broke(player_list):
+    """
+    Check if a player has cash less than 0
+    :param player_list: List of all players
+    :return: True if a player has cash less than 0. Else False.
+    """
+    for player in player_list:
+        if player.cash < 0:
+            return True
+    return False
+
+def print_player_summary(players):
+    for player in players:
+        player.networth = calculate_networth(player)
+
+    display_winners = PrettyTable()
+    display_winners.field_names = ["Position", "Player", "Net Worth"]
+    for pos, win, nw in get_positions(players):
+        display_winners.add_row((pos, str(win), nw))
+    print(display_winners)
+
+def set_color_set_value(player, asset):
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(set_color_set_value.__name__, asset)
+    for each_property in player.player_portfolio:
+        if each_property.color == asset.color:
+            each_property._color_set = True

@@ -1,7 +1,7 @@
 import pytest
 
 from Tiles.ChanceTile import get_nearest_railroad, execute_chance_5, execute_chance_7, get_nearest_utility, \
-    execute_chance_15
+    execute_chance_15, execute_chance_12
 from Tiles_data.railroad_property_data import railroad_properties_list
 from Tiles_data.utilities_data import utilities_list
 
@@ -71,3 +71,16 @@ def test_execute_chance_15(arvind, arun, adityam, padma):
     assert arun.cash == 250
     assert adityam.cash == 250
     assert padma.cash == 250
+
+
+def test_execute_chance_12(arvind, states_avenue, virginia_avenue, st_james_place):
+    arvind.cash = 500
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    arvind.player_portfolio.append(st_james_place)
+    states_avenue._houses = 2
+    virginia_avenue._houses = 2
+    st_james_place._hotel = True
+
+    execute_chance_12(arvind)
+    assert arvind.cash == 300
