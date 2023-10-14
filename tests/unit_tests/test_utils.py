@@ -73,8 +73,6 @@ def test_check_passing_go(arvind, st_james_place, request, current_tile, destina
 def test_check_player_has_color_set_false(arvind, st_james_place, electric_company):
     arvind.player_portfolio.append(st_james_place)
     arvind.player_portfolio.append(electric_company)
-    arvind.player_color_data[st_james_place.color] += 1
-    arvind.player_color_data[electric_company.color] += 1
     assert check_player_has_color_set(arvind, "Pink") == False
     assert check_player_has_color_set(arvind, "Utility") == False
 
@@ -83,9 +81,6 @@ def test_check_player_has_color_set_pink(arvind, st_charles_place, states_avenue
     arvind.player_portfolio.append(st_charles_place)
     arvind.player_portfolio.append(states_avenue)
     arvind.player_portfolio.append(virginia_avenue)
-    arvind.player_color_data[st_charles_place.color] += 1
-    arvind.player_color_data[states_avenue.color] += 1
-    arvind.player_color_data[virginia_avenue.color] += 1
     assert check_player_has_color_set(arvind, "Pink") == True
 
 
@@ -95,18 +90,12 @@ def test_check_player_has_color_set_railroad(arvind, pennsylvania_railroad, bo_r
     arvind.player_portfolio.append(bo_railroad)
     arvind.player_portfolio.append(reading_railroad)
     arvind.player_portfolio.append(short_line_railroad)
-    arvind.player_color_data[pennsylvania_railroad.color] += 1
-    arvind.player_color_data[bo_railroad.color] += 1
-    arvind.player_color_data[reading_railroad.color] += 1
-    arvind.player_color_data[short_line_railroad.color] += 1
     assert check_player_has_color_set(arvind, "Railroad")
 
 
 def test_check_player_has_color_set_utility(arvind, electric_company, water_works):
     arvind.player_portfolio.append(electric_company)
     arvind.player_portfolio.append(water_works)
-    arvind.player_color_data[electric_company.color] += 1
-    arvind.player_color_data[water_works.color] += 1
     assert check_player_has_color_set(arvind, "Utility")
 
 
@@ -151,6 +140,12 @@ def test_check_property_can_be_developed_3(arvind, st_charles_place, states_aven
 ])
 def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
                                  property_2_house, property_3_house, expected):
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    st_charles_place.owner = arvind
+    states_avenue.owner = arvind
+    virginia_avenue.owner = arvind
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
@@ -160,8 +155,14 @@ def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virgin
 @pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
     (4, 4, 4, True)
 ])
-def test_check_can_build_hotel_2(mocker, st_charles_place, states_avenue, virginia_avenue, property_1_house,
+def test_check_can_build_hotel_2(arvind, mocker, st_charles_place, states_avenue, virginia_avenue, property_1_house,
                                  property_2_house, property_3_house, expected, property_data_by_color):
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    st_charles_place.owner = arvind
+    states_avenue.owner = arvind
+    virginia_avenue.owner = arvind
     mocker.patch('utils.property_data_by_color', return_value=property_data_by_color)
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house

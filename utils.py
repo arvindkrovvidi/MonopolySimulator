@@ -79,10 +79,13 @@ def check_player_has_color_set(player, color):
     :param color: The color which is being tested.
     :return: True if the player has the color set. False if they do not.
     """
-    if player.player_color_data[color] == color_data[color]:
+    count = 0
+    for each_property in player.player_portfolio:
+        if each_property.color == color:
+            count += 1
+    if count == color_data[color]:
         return True
-    else:
-        return False
+    return False
 
 def get_railroads_owned(player):
     count = 0

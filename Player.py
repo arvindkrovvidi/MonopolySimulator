@@ -17,18 +17,6 @@ class Player:
         self.networth = networth
         self._railroads_owned = 0
         self._utilities_owned = 0
-        self.player_color_data = {
-            "Brown": 0,
-            "Light Blue": 0,
-            "Orange": 0,
-            "Pink": 0,
-            "Red": 0,
-            "Yellow": 0,
-            "Green": 0,
-            "Blue": 0,
-            "Railroad": 0,
-            "Utility": 0
-        }
         self.double_counter = 0
         self.get_out_of_jail_free_card = 0
         self.in_jail = False
@@ -73,10 +61,7 @@ class Player:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
             asset.owner = self
-            if self.player_color_data[asset.color] < color_data[asset.color]:
-                self.player_color_data[asset.color] += 1
             if check_player_has_color_set(self, asset.color):
-                asset._color_set = True
                 set_color_set_value(self, asset)
 
 
@@ -196,7 +181,6 @@ class Player:
         """
         if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset):
             asset._houses += 1
-            self.player_color_data[asset.color] += 1
             self.cash -= asset.building_cost
 
     def build_hotel(self, asset):
