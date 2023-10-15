@@ -1,6 +1,7 @@
 import pytest
 
 from Player import Player
+from errors import PropertyNotFreeError
 
 
 def test_init_default_values():
@@ -56,7 +57,8 @@ def test_buy_utility_multiple(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    arvind.buy_utility(electric_company)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_utility(electric_company)
     assert arvind.utilities_owned == 2
 
 

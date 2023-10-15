@@ -6,7 +6,7 @@ class PlayerBrokeError(Exception):
 class PropertyNotFreeError(Exception):
     def __init__(self, asset):
         self.asset = asset
-        self.exc_message = str(self.asset) + " is not free to buy"
+        self.exc_message = str(self.asset) + " is already owned by" + str(self.asset.owner)
 
 class InvalidPropertyTypeError(Exception):
     def __init__(self, function, asset):
