@@ -148,3 +148,15 @@ def test_buy_utility_2(arvind, arun, electric_company):
     assert electric_company.owner == arun
 
 
+def test_buy_utility_3(arvind, electric_company, water_works):
+    """
+    Test buy_utility for buying multiple utilities
+    """
+    arvind.move_to(electric_company, collect_go_cash_flag=True)
+    arvind.buy_utility(electric_company)
+    arvind.buy_utility(water_works)
+
+    assert electric_company.owner is arvind
+    assert water_works.owner is arvind
+    assert electric_company in arvind.player_portfolio
+    assert water_works in arvind.player_portfolio
