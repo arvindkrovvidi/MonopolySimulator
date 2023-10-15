@@ -169,7 +169,7 @@ class Player:
         """
         if self.cash + amount < 0:
             print(f'{self} cannot pay {player} amount of {-amount}')
-            raise PlayerBrokeError
+            raise PlayerBrokeError(self)
         self.cash += amount
         player.cash -= amount
 
