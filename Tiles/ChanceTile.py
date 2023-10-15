@@ -32,6 +32,12 @@ class ChanceTile(SpecialTiles):
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5:
             execute_chance_5(player)
+            current_railroad = railroad_properties_list[player.tile_no]
+            if current_railroad.owner is not None and current_railroad.cost > player.cash:
+                try:
+                    player.buy_railroad(current_railroad)
+                except InsufficientFundsError as e:
+                    print(e.exc_message)
         elif _card_no == 6:
             execute_chance_5(player)
         elif _card_no == 7:
@@ -105,14 +111,9 @@ def execute_chance_5(player):
     """
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
-    if nearest_railroad.owner is None:
-        try:
-            player.buy_railroad(nearest_railroad)
-        except InsufficientFundsError as e:
-            print(e.exc_message)
-    elif nearest_railroad not in player.player_portfolio:
+    if nearest_railroad not in player.player_portfolio and nearest_railroad.owner is not None:
         landlord = nearest_railroad.owner
-        player.pay_rent(landlord, nearest_railroad.rent[landlord.railroads_owned - 1] * 2)
+        player.pay_rent(landlord, nearest_railroad.rent * 2)
 
 def get_nearest_utility(player):
     """
