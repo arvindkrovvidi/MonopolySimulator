@@ -38,7 +38,7 @@ def play_turn_property(current_tile, player):
     :param current_tile: Property
     :param player: Player playing the turn
     """
-    if current_tile.owner is None:
+    if current_tile.owner is None and player.cash >= current_tile.cost:
         player.buy_property(current_tile)
     elif current_tile in player.player_portfolio:
         player.build_house(current_tile)
@@ -52,7 +52,7 @@ def player_turn_railroad(current_tile, player):
     :param current_tile: Railroad
     :param player: Player playing the turn
     """
-    if current_tile.owner is None:
+    if current_tile.owner is None and player.cash >= current_tile.cost:
         player.buy_railroad(current_tile)
     else:
         landlord = current_tile.owner
@@ -65,7 +65,7 @@ def player_turn_utility(current_tile, player, throw):
     :param player: Player playing the turn
     :param throw: The dice throw
     """
-    if current_tile.owner is None:
+    if current_tile.owner is None and player.cash >= current_tile.cost:
         player.buy_utility(current_tile)
     else:
         landlord = current_tile.owner
