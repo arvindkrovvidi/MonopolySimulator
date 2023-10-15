@@ -42,9 +42,9 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
     if player_broke:
         break
 # print(game_details)
-
-
-
+# TODO: Add property trading feature
+# TODO: Organize class attributes into private and public. Make appropriate attributes properties.
+# TODO: Convert three buy functions into one
 # TODO: Add progress bar
 # TODO: Run a profiler to check for possible optimizations
 # TODO: Add tests for all functions

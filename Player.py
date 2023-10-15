@@ -149,6 +149,7 @@ class Player:
         if tile_no == 10:
             self.in_jail = True
 
+#TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
         """
         Pay rent to the specified player
