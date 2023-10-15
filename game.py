@@ -7,7 +7,7 @@ from Tiles_data.community_chest_tiles_data import community_chest_tiles_list
 from Tiles_data.railroad_property_data import railroad_properties_list
 from Tiles_data.special_tiles_data import special_tiles_list
 from Tiles_data.utilities_data import utilities_list
-from errors import PlayerBrokeError, PropertyNotFreeError
+from errors import PlayerBrokeError
 from player_turn import play_turn
 from utils import check_any_player_broke, print_player_summary
 
@@ -36,17 +36,15 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
             player_broke = True
             print_player_summary(players)
             break
-        except PropertyNotFreeError:
-            raise SystemExit
         else:
             game_details.add_row([turn, player.name, throw, current_tile, player.cash])
             turn += 1
     if player_broke:
         break
 # print(game_details)
-
-
-
+# TODO: Add property trading feature
+# TODO: Organize class attributes into private and public. Make appropriate attributes properties.
+# TODO: Convert three buy functions into one
 # TODO: Add progress bar
 # TODO: Run a profiler to check for possible optimizations
 # TODO: Add tests for all functions
