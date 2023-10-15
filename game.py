@@ -7,7 +7,7 @@ from Tiles_data.community_chest_tiles_data import community_chest_tiles_list
 from Tiles_data.railroad_property_data import railroad_properties_list
 from Tiles_data.special_tiles_data import special_tiles_list
 from Tiles_data.utilities_data import utilities_list
-from errors import PlayerBrokeError, PropertyNotFreeError
+from errors import PlayerBrokeError
 from player_turn import play_turn
 from utils import check_any_player_broke, print_player_summary
 
