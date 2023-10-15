@@ -21,7 +21,7 @@ def test_buy_property_2(arvind, st_charles_place, arun):
         arvind.buy_property(st_charles_place)
     assert st_charles_place.owner == arun
 
-def test_pay_rent_1(arvind, arun, st_charles_place):
+def test_pay_rent_property_1(arvind, arun, st_charles_place):
     """
     test pay_rent when player does not own color set or has not built any houses or hotels.
     """
@@ -31,7 +31,7 @@ def test_pay_rent_1(arvind, arun, st_charles_place):
     assert arvind.cash == 190
     assert arun.cash == 70
 
-def test_pay_rent_2(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
+def test_pay_rent_property_2(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
     """
     test pay_rent when player owns color set
     """
@@ -45,7 +45,7 @@ def test_pay_rent_2(arvind, arun, st_charles_place, virginia_avenue, states_aven
     assert arvind.cash == 180
     assert arun.cash == 180
 
-def test_pay_rent_3(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
+def test_pay_rent_property_3(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
     """
     test pay_rent when player owns color set and has built a house
     """
@@ -60,7 +60,7 @@ def test_pay_rent_3(arvind, arun, st_charles_place, virginia_avenue, states_aven
     assert arvind.cash == 150
     assert arun.cash == 110
 
-def test_pay_rent_4(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
+def test_pay_rent_property_4(arvind, arun, st_charles_place, virginia_avenue, states_avenue, electric_company):
     """
     test pay_rent when player owns color set and has built a house and a hotel
     """
