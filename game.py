@@ -36,8 +36,6 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
             player_broke = True
             print_player_summary(players)
             break
-        except PropertyNotFreeError:
-            raise SystemExit
         else:
             game_details.add_row([turn, player.name, throw, current_tile, player.cash])
             turn += 1
