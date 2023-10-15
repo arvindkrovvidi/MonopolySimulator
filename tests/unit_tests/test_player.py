@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import PropertyNotFreeError
+from errors import PropertyNotFreeError, InsufficientFundsError
 
 
 def test_init_default_values():
@@ -27,7 +27,8 @@ def test_buy_property(states_avenue, arvind, st_charles_place):
     assert states_avenue in arvind.player_portfolio
 
     arvind.cash = 10
-    arvind.buy_property(st_charles_place)
+    with pytest.raises(InsufficientFundsError):
+        arvind.buy_property(st_charles_place)
 
     assert arvind.cash == 10
     assert st_charles_place not in arvind.player_portfolio
