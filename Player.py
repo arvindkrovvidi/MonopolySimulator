@@ -70,6 +70,8 @@ class Player:
         Buy railroad that the player lands on
         :param asset: Railroad
         """
+        if asset.owner is not None:
+            raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
@@ -84,6 +86,8 @@ class Player:
         Buy the utility that the player lands on
         :param asset: Utility
         """
+        if asset.owner is not None:
+            raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
             self.player_portfolio.append(asset)
