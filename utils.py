@@ -100,6 +100,8 @@ def check_property_can_be_developed(asset):
     :param asset: The asset being tested for development
     :return: True if the property can be developed. False if the propert cannot be developed.
     """
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(__name__, asset)
     if asset.owner is None:
         return False
     data = copy.deepcopy(asset.owner.player_portfolio)
