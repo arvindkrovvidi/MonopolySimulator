@@ -19,39 +19,39 @@ def test_init_correct_values():
     assert arvind.cash == 500
 
 
-def test_buy_property(states_avenue, arvind, st_charles_place):
+def test_buy_asset(states_avenue, arvind, st_charles_place):
     arvind.cash = 500
-    arvind.buy_property(states_avenue)
+    arvind.buy_asset(states_avenue)
 
     assert arvind.cash == 360
     assert states_avenue in arvind.player_portfolio
 
     arvind.cash = 10
     with pytest.raises(InsufficientFundsError):
-        arvind.buy_property(st_charles_place)
+        arvind.buy_asset(st_charles_place)
 
     assert arvind.cash == 10
     assert st_charles_place not in arvind.player_portfolio
 
 
-def test_buy_railroad_one(arvind, pennsylvania_railroad):
-    arvind.buy_railroad(pennsylvania_railroad)
+def test_buy_asset_one(arvind, pennsylvania_railroad):
+    arvind.buy_asset(pennsylvania_railroad)
     assert arvind.cash == 0
     assert pennsylvania_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 1
 
 
-def test_buy_utility_one(arvind, electric_company):
-    arvind.buy_utility(electric_company)
+def test_buy_asset_one(arvind, electric_company):
+    arvind.buy_asset(electric_company)
     assert arvind.cash == 50
     assert electric_company in arvind.player_portfolio
     assert arvind.utilities_owned == 1
 
 
-def test_buy_utility_multiple(arvind, electric_company, water_works):
+def test_buy_asset_multiple(arvind, electric_company, water_works):
     arvind.cash = 500
-    arvind.buy_utility(electric_company)
-    arvind.buy_utility(water_works)
+    arvind.buy_asset(electric_company)
+    arvind.buy_asset(water_works)
 
     assert arvind.cash == 200
     assert electric_company in arvind.player_portfolio
@@ -59,17 +59,17 @@ def test_buy_utility_multiple(arvind, electric_company, water_works):
     assert arvind.utilities_owned == 2
 
     with pytest.raises(PropertyNotFreeError):
-        arvind.buy_utility(electric_company)
+        arvind.buy_asset(electric_company)
     assert arvind.utilities_owned == 2
 
 
-def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
+def test_buy_asset_multiple(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
                                short_line_railroad):
     arvind.cash = 1500
-    arvind.buy_railroad(pennsylvania_railroad)
-    arvind.buy_railroad(bo_railroad)
-    arvind.buy_railroad(reading_railroad)
-    arvind.buy_railroad(short_line_railroad)
+    arvind.buy_asset(pennsylvania_railroad)
+    arvind.buy_asset(bo_railroad)
+    arvind.buy_asset(reading_railroad)
+    arvind.buy_asset(short_line_railroad)
 
     assert arvind.cash == 700
     assert pennsylvania_railroad in arvind.player_portfolio
@@ -79,7 +79,7 @@ def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, readi
     assert arvind.railroads_owned == 4
 
     with pytest.raises(PropertyNotFreeError):
-        arvind.buy_railroad(pennsylvania_railroad)
+        arvind.buy_asset(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 
