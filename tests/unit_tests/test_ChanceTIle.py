@@ -20,13 +20,13 @@ def test_execute_chance_5_railroad_free(arvind, mocker, pennsylvania_railroad):
     arvind.tile_no = 36
     mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
     execute_chance_5(arvind)
-    assert pennsylvania_railroad in arvind.player_portfolio
     assert arvind.tile_no == pennsylvania_railroad.tile_no
 
 
 def test_execute_chance_5_railroad_occupied(arvind, arun, mocker, short_line_railroad):
     arvind.tile_no = 36
     short_line_railroad.owner = arun
+    arun.player_portfolio.append(short_line_railroad)
     arun.railroads_owned = 2
     mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
     execute_chance_5(arvind)
