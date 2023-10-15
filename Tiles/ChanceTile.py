@@ -35,7 +35,7 @@ class ChanceTile(SpecialTiles):
             current_railroad = railroad_properties_list[player.tile_no]
             if current_railroad.owner is not None and current_railroad.cost > player.cash:
                 try:
-                    player.buy_railroad(current_railroad)
+                    player.buy_asset(current_railroad)
                 except InsufficientFundsError as e:
                     print(e.exc_message)
         elif _card_no == 6:
@@ -140,7 +140,7 @@ def execute_chance_7(player, throw):
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     if nearest_utility.owner is None:
         try:
-            player.buy_utility(nearest_utility)
+            player.buy_asset(nearest_utility)
         except InsufficientFundsError as e:
             print(e.exc_message)
     else:

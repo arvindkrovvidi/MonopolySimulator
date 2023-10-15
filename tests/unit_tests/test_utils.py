@@ -187,7 +187,7 @@ def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_
 def test_set_color_set(arvind, st_charles_place, virginia_avenue, states_avenue):
     arvind.player_portfolio.append(states_avenue)
     arvind.player_portfolio.append(virginia_avenue)
-    arvind.buy_property(st_charles_place)
+    arvind.buy_asset(st_charles_place)
 
     set_color_set_value(arvind, st_charles_place)
     assert st_charles_place._color_set == True
