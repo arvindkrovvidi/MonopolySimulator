@@ -134,11 +134,17 @@ def test_buy_railroad_3(arvind, pennsylvania_railroad, bo_railroad):
     assert bo_railroad in arvind.player_portfolio
 
 def test_buy_utility_1(arvind, electric_company):
+    """
+    Test buy_utility when utility is free.
+    """
     assert electric_company.owner is None
     arvind.buy_utility(electric_company)
     assert electric_company.owner is arvind
 
 def test_buy_utility_2(arvind, arun, electric_company):
+    """
+    Test buy_utility when utility is not free
+    """
     assert electric_company.owner is None
     arun.buy_utility(electric_company)
 
