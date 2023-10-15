@@ -42,7 +42,7 @@ def play_turn_property(current_tile, player):
         player.buy_property(current_tile)
     elif current_tile in player.player_portfolio:
         player.build_house(current_tile)
-    elif current_tile.owner != player:
+    elif current_tile.owner is not None and current_tile.owner != player:
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
 
@@ -54,7 +54,7 @@ def player_turn_railroad(current_tile, player):
     """
     if current_tile.owner is None and player.cash >= current_tile.cost:
         player.buy_railroad(current_tile)
-    else:
+    elif current_tile.owner is not None and current_tile.owner != player:
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent[landlord.railroads_owned - 1])
 
@@ -67,7 +67,7 @@ def player_turn_utility(current_tile, player, throw):
     """
     if current_tile.owner is None and player.cash >= current_tile.cost:
         player.buy_utility(current_tile)
-    else:
+    elif current_tile.owner is not None and current_tile.owner != player:
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
             player.pay_rent(landlord, throw * 10)
