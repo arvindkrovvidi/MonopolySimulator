@@ -17,4 +17,4 @@ class Railroad(Tile):
 
     @property
     def rent(self):
-        return self._rent
+        return self._rent[self.owner._railroads_owned - 1]
