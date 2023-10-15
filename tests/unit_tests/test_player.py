@@ -77,7 +77,8 @@ def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, readi
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    arvind.buy_railroad(pennsylvania_railroad)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_railroad(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 
