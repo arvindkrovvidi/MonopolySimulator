@@ -98,3 +98,53 @@ def test_pay_rent_4(arvind, arun, st_charles_place, virginia_avenue, states_aven
     assert arvind.cash == 250
     assert arun.cash == 1210
 
+def test_buy_railroad_1(arvind, pennsylvania_railroad):
+    """
+    Test buy_railroad function when railroad is free
+    """
+    assert pennsylvania_railroad.owner is None
+    arvind.buy_railroad(pennsylvania_railroad)
+    assert pennsylvania_railroad.owner == arvind
+    assert pennsylvania_railroad in arvind.player_portfolio
+def test_buy_railroad_2(arvind, arun, pennsylvania_railroad):
+    """
+    Test buy_railroad function when railroad is not free
+    """
+    arun.buy_railroad(pennsylvania_railroad)
+    assert pennsylvania_railroad.owner is arun
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_railroad(pennsylvania_railroad)
+    assert pennsylvania_railroad.owner == arun
+
+def test_buy_railroad_3(arvind, pennsylvania_railroad, bo_railroad):
+    """
+    Test buy_railroad function for buying multiple railroads
+    """
+    arvind.move_to(pennsylvania_railroad.tile_no, collect_go_cash_flag=True)
+
+    assert pennsylvania_railroad.owner is None
+    assert bo_railroad.owner is None
+
+    arvind.buy_railroad(pennsylvania_railroad)
+    arvind.buy_railroad(bo_railroad)
+
+    assert pennsylvania_railroad.owner is arvind
+    assert bo_railroad.owner is arvind
+    assert pennsylvania_railroad in arvind.player_portfolio
+    assert bo_railroad in arvind.player_portfolio
+
+def test_buy_utility_1(arvind, electric_company):
+    assert electric_company.owner is None
+    arvind.buy_utility(electric_company)
+    assert electric_company.owner is arvind
+
+def test_buy_utility_2(arvind, arun, electric_company):
+    assert electric_company.owner is None
+    arun.buy_utility(electric_company)
+
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_utility(electric_company)
+
+    assert electric_company.owner == arun
+
+
