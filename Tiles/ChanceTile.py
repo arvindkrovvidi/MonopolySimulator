@@ -6,6 +6,7 @@ from Tiles_data.Property_data import boardwalk, illinois_avenue, st_charles_plac
 from Tiles_data.railroad_property_data import reading_railroad, railroad_properties_list
 from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
+from errors import InsufficientFundsError
 from utils import check_passing_go, check_player_has_color_set
 
 
@@ -105,7 +106,10 @@ def execute_chance_5(player):
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
     if nearest_railroad.owner is None:
-        player.buy_railroad(nearest_railroad)
+        try:
+            player.buy_railroad(nearest_railroad)
+        except InsufficientFundsError as e:
+            print(e.exc_message)
     elif nearest_railroad not in player.player_portfolio:
         landlord = nearest_railroad.owner
         player.pay_rent(landlord, nearest_railroad.rent[landlord.railroads_owned - 1] * 2)
@@ -135,7 +139,10 @@ def execute_chance_7(player, throw):
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     if nearest_utility.owner is None:
-        player.buy_utility(nearest_utility)
+        try:
+            player.buy_utility(nearest_utility)
+        except InsufficientFundsError as e:
+            print(e.exc_message)
     else:
         landlord = nearest_utility.owner
         if check_player_has_color_set(landlord, "Utility"):
