@@ -6,6 +6,7 @@ from Tiles_data.Property_data import boardwalk, illinois_avenue, st_charles_plac
 from Tiles_data.railroad_property_data import reading_railroad, railroad_properties_list
 from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
+from errors import InsufficientFundsError
 from utils import check_passing_go, check_player_has_color_set
 
 
@@ -31,6 +32,12 @@ class ChanceTile(SpecialTiles):
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5:
             execute_chance_5(player)
+            current_railroad = railroad_properties_list[player.tile_no]
+            if current_railroad.owner is not None and current_railroad.cost > player.cash:
+                try:
+                    player.buy_railroad(current_railroad)
+                except InsufficientFundsError as e:
+                    print(e.exc_message)
         elif _card_no == 6:
             execute_chance_5(player)
         elif _card_no == 7:
@@ -104,11 +111,9 @@ def execute_chance_5(player):
     """
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
-    if nearest_railroad.owner is None:
-        player.buy_railroad(nearest_railroad)
-    elif nearest_railroad not in player.player_portfolio:
+    if nearest_railroad not in player.player_portfolio and nearest_railroad.owner is not None:
         landlord = nearest_railroad.owner
-        player.pay_rent(landlord, nearest_railroad.rent[landlord.railroads_owned - 1] * 2)
+        player.pay_rent(landlord, nearest_railroad.rent * 2)
 
 def get_nearest_utility(player):
     """
@@ -130,12 +135,14 @@ def execute_chance_7(player, throw):
     If the utility is owned by someone, pay twice the rent to them.
     :param throw: Throw that landed the player in Chance
     :param player: The player who landed on Chance and picked chance card no 5.
-    :param tracker: The property tracker that tracks properties and their owners.
     """
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     if nearest_utility.owner is None:
-        player.buy_utility(nearest_utility)
+        try:
+            player.buy_utility(nearest_utility)
+        except InsufficientFundsError as e:
+            print(e.exc_message)
     else:
         landlord = nearest_utility.owner
         if check_player_has_color_set(landlord, "Utility"):

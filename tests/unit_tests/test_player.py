@@ -1,6 +1,7 @@
 import pytest
 
 from Player import Player
+from errors import PropertyNotFreeError, InsufficientFundsError
 
 
 def test_init_default_values():
@@ -26,7 +27,8 @@ def test_buy_property(states_avenue, arvind, st_charles_place):
     assert states_avenue in arvind.player_portfolio
 
     arvind.cash = 10
-    arvind.buy_property(st_charles_place)
+    with pytest.raises(InsufficientFundsError):
+        arvind.buy_property(st_charles_place)
 
     assert arvind.cash == 10
     assert st_charles_place not in arvind.player_portfolio
@@ -56,7 +58,8 @@ def test_buy_utility_multiple(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    arvind.buy_utility(electric_company)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_utility(electric_company)
     assert arvind.utilities_owned == 2
 
 
@@ -75,7 +78,8 @@ def test_buy_railroad_multiple(arvind, pennsylvania_railroad, bo_railroad, readi
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    arvind.buy_railroad(pennsylvania_railroad)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_railroad(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 

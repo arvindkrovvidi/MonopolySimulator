@@ -3,7 +3,7 @@ import random
 from Board import max_tile_no, go_cash
 from TileIterators import TileList
 from Tiles.Utility import Utility
-from errors import PlayerBrokeError, PropertyNotFreeError
+from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
     set_color_set_value
 
@@ -59,10 +59,12 @@ class Player:
             raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
-            self.player_portfolio.append(asset)
-            asset.owner = self
-            if check_player_has_color_set(self, asset.color):
-                set_color_set_value(self, asset)
+        else:
+            raise InsufficientFundsError(self)
+        self.player_portfolio.append(asset)
+        asset.owner = self
+        if check_player_has_color_set(self, asset.color):
+            set_color_set_value(self, asset)
 
 
     def buy_railroad(self, asset):
@@ -70,28 +72,36 @@ class Player:
         Buy railroad that the player lands on
         :param asset: Railroad
         """
+        if asset.owner is not None:
+            raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
-            self.player_portfolio.append(asset)
-            asset.owner = self
-            if self.railroads_owned < 4:
-                self.railroads_owned += 1
-            if check_player_has_color_set(self, asset.color):
-                asset._color_set = True
+        else:
+            raise InsufficientFundsError(self)
+        self.player_portfolio.append(asset)
+        asset.owner = self
+        if self.railroads_owned < 4:
+            self.railroads_owned += 1
+        if check_player_has_color_set(self, asset.color):
+            asset._color_set = True
 
     def buy_utility(self, asset):
         """
         Buy the utility that the player lands on
         :param asset: Utility
         """
+        if asset.owner is not None:
+            raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
-            self.player_portfolio.append(asset)
-            asset.owner = self
-            if type(asset) == Utility and self.utilities_owned < 2:
-                self.utilities_owned += 1
-            if check_player_has_color_set(self, asset.color):
-                asset._color_set = True
+        else:
+            raise InsufficientFundsError(self)
+        self.player_portfolio.append(asset)
+        asset.owner = self
+        if type(asset) == Utility and self.utilities_owned < 2:
+            self.utilities_owned += 1
+        if check_player_has_color_set(self, asset.color):
+            asset._color_set = True
 
     def throw_one_dice(self):
         return random.randint(1, 6)
@@ -147,7 +157,7 @@ class Player:
         """
         if self.cash - rent < 0:
             print(f'{self} cannot pay {player} rent of {rent}')
-            raise PlayerBrokeError
+            raise PlayerBrokeError(player)
         self.cash -= rent
         player.cash += rent
 
@@ -159,18 +169,18 @@ class Player:
         """
         if self.cash + amount < 0:
             print(f'{self} cannot pay {player} amount of {-amount}')
-            raise PlayerBrokeError
+            raise PlayerBrokeError(self)
         self.cash += amount
         player.cash -= amount
 
     def bank_transaction(self, amount: int) -> None:
         """
-        Collect or pay the bank a certain amount
-        :param amount: The amount being paid or collected
+        Collect or pay the bank a certain amount.
+        :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
         """
         if self.cash + amount < 0:
             print(f'{self} cannot pay the bank amount of {-amount}')
-            raise PlayerBrokeError
+            raise PlayerBrokeError(self)
         self.cash += amount
 
 
