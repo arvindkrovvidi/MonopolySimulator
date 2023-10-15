@@ -134,7 +134,6 @@ def execute_chance_7(player, throw):
     If the utility is owned by someone, pay twice the rent to them.
     :param throw: Throw that landed the player in Chance
     :param player: The player who landed on Chance and picked chance card no 5.
-    :param tracker: The property tracker that tracks properties and their owners.
     """
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
