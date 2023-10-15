@@ -54,8 +54,8 @@ class Player:
 
     def buy_asset(self, asset) -> None:
         """
-        Buy property that the player lands on (excluding railroads and utilities).
-        :param asset: Property
+        Buy asset that the player lands on.
+        :param asset: Property, Railroad or Utility.
         """
         if asset.owner is not None:
             raise PropertyNotFreeError(asset)
