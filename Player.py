@@ -175,8 +175,8 @@ class Player:
 
     def bank_transaction(self, amount: int) -> None:
         """
-        Collect or pay the bank a certain amount
-        :param amount: The amount being paid or collected
+        Collect or pay the bank a certain amount.
+        :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
         """
         if self.cash + amount < 0:
             print(f'{self} cannot pay the bank amount of {-amount}')
