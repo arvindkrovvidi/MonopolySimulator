@@ -20,7 +20,6 @@ all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_li
 # TODO: Automate adding players to the all_players_list
 
 players = all_players_list
-
 game_details = PrettyTable()
 game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
 player_broke = False
