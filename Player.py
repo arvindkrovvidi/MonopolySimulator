@@ -5,6 +5,7 @@ from TileIterators import TileList
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
+from config import logger
 from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
     set_color_set_value
