@@ -69,15 +69,8 @@ class TileList:
             self.append(each)
         return self
 
-    # def get_by_name(self, value):
-    #     """
-    #     Get the tile being requested based on tile name
-    #     :param value: The tile name
-    #     :return: The requested tile
-    #     """
-    #     for asset in self.data:
-    #         if str(asset) == value:
-    #                 return asset
+    def __len__(self):
+        return len(self.data)
 
     def remove(self, asset):
         return TileList(self.data.remove(asset))
