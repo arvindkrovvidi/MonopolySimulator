@@ -78,6 +78,7 @@ class Player:
                 self.utilities_owned += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
+        logger.info(f'{self} bought {asset}.')
 
 
     def throw_one_dice(self):
@@ -94,6 +95,7 @@ class Player:
             self.double_counter += 1
         else:
             self.double_counter = 0
+        logger.info(f'{self} threw a {dice1 + dice2}')
         return dice1 + dice2
 
     def move(self, throw: int) -> None:
@@ -125,6 +127,7 @@ class Player:
             self.cash += 200
         if tile_no == 10:
             self.in_jail = True
+        logger.info(f'{self} moved to {tile_no}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
@@ -138,6 +141,7 @@ class Player:
             raise PlayerBrokeError(player)
         self.cash -= rent
         player.cash += rent
+        logger.info(f'{self} paid {player} rent of amount {rent}')
 
     def player_transaction(self, player, amount: int) -> None:
         """
@@ -150,6 +154,10 @@ class Player:
             raise PlayerBrokeError(self)
         self.cash += amount
         player.cash -= amount
+        if amount > 0:
+            logger.info(f'{self} collected {amount} from the {player}')
+        else:
+            logger.info(f'{self} paid the {player} an amount of {amount}')
 
     def bank_transaction(self, amount: int) -> None:
         """
@@ -160,6 +168,10 @@ class Player:
             print(f'{self} cannot pay the bank amount of {-amount}')
             raise PlayerBrokeError(self)
         self.cash += amount
+        if amount > 0:
+            logger.info(f'{self} collected {amount} from the the bank')
+        else:
+            logger.info(f'{self} paid the the bank an amount of {amount}')
 
 
     def build_house(self, asset):
@@ -170,6 +182,7 @@ class Player:
         if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset):
             asset._houses += 1
             self.cash -= asset.building_cost
+            logger.info(f'{self} built a house on {asset}')
 
     def build_hotel(self, asset):
         """
@@ -179,6 +192,7 @@ class Player:
         if check_can_build_hotel(asset) and self.cash > asset.building_cost:
             asset._hotel = True
             self.cash -= asset.building_cost
+            logger.info(f'{self} built a hotel on {asset}')
 
     def pay_jail_fine(self):
         """
@@ -187,6 +201,7 @@ class Player:
         if self.cash > 50:
             self.bank_transaction(-50)
             self.in_jail = False
+            logger.info(f'{self} paid a fine and got out of jail')
 
     def try_jail_double_throw(self):
         """
@@ -196,11 +211,15 @@ class Player:
         dice2 = self.throw_one_dice()
         if dice1 == dice2:
             self.in_jail = False
+            logger.info(f'{self} threw a double and got out of jail')
         self.jail_throw_counter += 1
+        logger.info(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
             self.in_jail = False
             self.jail_throw_counter = 0
+            logger.info(f'{self} used all of their three chances to throw a double.')
+
 
     def get_out_of_jail_free(self):
         """
@@ -208,3 +227,4 @@ class Player:
         """
         self.get_out_of_jail_free_card -= 1
         self.in_jail = False
+        logger.info(f'{self} used a Get Out of Jail Free card')

@@ -1,12 +1,8 @@
 from prettytable import PrettyTable
 
-from Player_data import all_players_list
-from Tiles_data.Property_data import properties_list
-from Tiles_data.chance_tiles_data import chance_tiles_list
-from Tiles_data.community_chest_tiles_data import community_chest_tiles_list
-from Tiles_data.railroad_property_data import railroad_properties_list
-from Tiles_data.special_tiles_data import special_tiles_list
-from Tiles_data.utilities_data import utilities_list
+from Player_data import all_players_list as players
+from Tiles_data.all_tiles_data import all_tiles_list
+from config import logger
 from errors import PlayerBrokeError
 from player_turn import play_turn
 from utils import check_any_player_broke, print_player_summary
@@ -29,6 +25,7 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
         player.move(throw)
         current_tile = properties_list[player.tile_no]
         try:
+            logger.info(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
             play_turn(current_tile, player, throw)
         except PlayerBrokeError:
             print(f'turn: {turn}, player: {player}, cash: {player.cash}')
@@ -37,9 +34,10 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
             break
         else:
             game_details.add_row([turn, player.name, throw, current_tile, player.cash])
-            turn += 1
+            logger.info('---------------------------------------------------------------')
     if player_broke:
         break
+    logger.info('=================================================================')
 # print(game_details)
 # TODO: Add property trading feature
 # TODO: Organize class attributes into private and public. Make appropriate attributes properties.
