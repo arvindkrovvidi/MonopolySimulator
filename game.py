@@ -9,21 +9,19 @@ from utils import check_any_player_broke, print_player_summary
 
 # TODO: Take all inputs for the program from a file
 total_turns = 1000
-turn = 0
-
-all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list + railroad_properties_list + utilities_list
+turn = 1
 
 # TODO: Automate adding players to the all_players_list
 
-players = all_players_list
 game_details = PrettyTable()
 game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", "Cash"]
 player_broke = False
-while turn <= total_turns or not check_any_player_broke(all_players_list):
+while turn <= total_turns or not check_any_player_broke(players):
     for player in players:
         throw = player.throw_dice()
         player.move(throw)
-        current_tile = properties_list[player.tile_no]
+        current_tile = all_tiles_list[player.tile_no]
+        logger.info(f'{player} landed on {current_tile}')
         try:
             logger.info(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
             play_turn(current_tile, player, throw)
@@ -37,6 +35,7 @@ while turn <= total_turns or not check_any_player_broke(all_players_list):
             logger.info('---------------------------------------------------------------')
     if player_broke:
         break
+    turn += 1
     logger.info('=================================================================')
 # print(game_details)
 # TODO: Add property trading feature
