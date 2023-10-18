@@ -48,3 +48,4 @@ while turn <= total_turns or not check_any_player_broke(players):
 # TODO: Push code to GIT
 # TODO: Calculate probabilities for each person winning the game
 # TODO: Add exceptions
+# TODO: Test custom error classes
