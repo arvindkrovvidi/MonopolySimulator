@@ -127,7 +127,15 @@ def test_check_property_can_be_developed_2(arvind, st_charles_place, states_aven
     (2, 2, 1, False)
 ])
 def test_check_property_can_be_developed_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected):
+                                           property_2_house, property_3_house, expected, pennsylvania_railroad):
+    st_charles_place.owner = arvind
+    states_avenue.owner = arvind
+    virginia_avenue.owner = arvind
+    pennsylvania_railroad.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(virginia_avenue)
+    arvind.player_portfolio.append(pennsylvania_railroad)
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
