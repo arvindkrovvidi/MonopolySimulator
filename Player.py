@@ -58,7 +58,7 @@ class Player:
         Buy asset that the player lands on.
         :param asset: Property, Railroad or Utility.
         """
-        if asset.owner is not None:
+        if asset.owner is not None and asset.owner is not self:
             raise PropertyNotFreeError(asset)
         if asset.cost <= self.cash:
             self.cash -= asset.cost
