@@ -2,7 +2,9 @@ from random import randint
 
 from Tiles.ChanceTile import ChanceTile
 from Tiles.CommunityChestTile import CommunityChestTile
+from Tiles.GoToJail import GoToJail
 from Tiles.IncomeTaxTile import IncomeTaxTile
+from Tiles.Jail import Jail
 from Tiles.LuxuryTaxTile import LuxuryTaxTile
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
@@ -30,6 +32,8 @@ def play_turn(current_tile, player, throw):
         card_no = randint(1, 16)
         current_tile.execute(player, card_no, throw=throw)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
+        current_tile.execute(player)
+    elif type(current_tile) == Jail or type(current_tile) == GoToJail:
         current_tile.execute(player)
 
 def play_turn_property(current_tile, player):

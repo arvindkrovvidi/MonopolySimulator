@@ -1,10 +1,10 @@
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
-from utils import randomly_play_jail_turn
-class Jail(SpecialTiles):
+class GoToJail(SpecialTiles):
     def __init__(self, name, tile_no, description=None):
         self._description = description
         Tile.__init__(self, tile_no, name)
 
     def execute(self, player):
-        randomly_play_jail_turn(player)
+        player.move_to(10, collect_go_cash_flag=False)
+
