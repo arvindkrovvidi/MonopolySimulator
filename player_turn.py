@@ -85,10 +85,10 @@ def player_turn_utility(current_tile, player, throw):
     """
     try:
         player.buy_asset(current_tile)
-    except InsufficientFundsError:
-        logger.info(f'{player} does not have cash to buy {current_tile}')
-    except PropertyNotFreeError:
-        logger.info(f'{current_tile} already owned by {current_tile.owner}')
+    except InsufficientFundsError as e:
+        logger.info(e.exc_message)
+    except PropertyNotFreeError as e:
+        logger.info(e.exc_message)
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
             player.pay_rent(landlord, throw * 10)
