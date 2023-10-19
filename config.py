@@ -1,8 +1,8 @@
 import logging
 from pathlib import Path
 
-log_directory = Path("logs")
-log_file = log_directory / "log.txt"
+log_file = Path(__file__).resolve().parent / "logs" / 'log.txt'
+print(log_file)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

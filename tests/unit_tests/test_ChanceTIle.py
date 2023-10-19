@@ -56,6 +56,7 @@ def test_execute_chance_7_utility_free(arvind, mocker, electric_company):
 def test_execute_chance_7_utility_occupied(arvind, arun, mocker, electric_company):
     arvind.tile_no = 36
     electric_company.owner = arun
+    arun.player_portfolio.append(electric_company)
     mocker.patch("Tiles.ChanceTile.get_nearest_utility", return_value=electric_company)
     execute_chance_7(arvind, 5)
     assert arun.cash == 220
