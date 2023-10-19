@@ -6,7 +6,8 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from config import logger
-from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError
+from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError, CannotBuildHouseError, \
+    CannotBuildHotelError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
     set_color_set_value
 
@@ -184,6 +185,9 @@ class Player:
             asset._houses += 1
             self.cash -= asset.building_cost
             logger.info(f'{self} built a house on {asset}')
+        else:
+            raise CannotBuildHouseError(self, asset)
+
 
     def build_hotel(self, asset):
         """
@@ -194,6 +198,8 @@ class Player:
             asset._hotel = True
             self.cash -= asset.building_cost
             logger.info(f'{self} built a hotel on {asset}')
+        else:
+            raise CannotBuildHotelError(self, asset)
 
     def pay_jail_fine(self):
         """
