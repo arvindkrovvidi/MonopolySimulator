@@ -14,6 +14,7 @@ from config import logger
 from errors import InsufficientFundsError, PropertyNotFreeError, CannotBuildHotelError, CannotBuildHouseError
 from utils import check_player_has_color_set
 
+
 def play_turn(current_tile, player, throw):
     """
     Play turn after throwing the dice and moving to a tile.
@@ -35,7 +36,7 @@ def play_turn(current_tile, player, throw):
         current_tile.execute(player, card_no, throw=throw)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
         current_tile.execute(player)
-    elif type(current_tile) == Jail or type(current_tile) == GoToJail:
+    elif type(current_tile) in [Jail, GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
 
 def play_turn_property(current_tile, player):
