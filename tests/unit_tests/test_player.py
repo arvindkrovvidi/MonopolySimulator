@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import PropertyNotFreeError, InsufficientFundsError
+from errors import InsufficientFundsError, CannotBuildHouseError
 
 
 def test_init_default_values():
@@ -34,21 +34,21 @@ def test_buy_asset(states_avenue, arvind, st_charles_place):
     assert st_charles_place not in arvind.player_portfolio
 
 
-def test_buy_asset_one(arvind, pennsylvania_railroad):
+def test_buy_asset_one_railroad(arvind, pennsylvania_railroad):
     arvind.buy_asset(pennsylvania_railroad)
     assert arvind.cash == 0
     assert pennsylvania_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 1
 
 
-def test_buy_asset_one(arvind, electric_company):
+def test_buy_asset_one_utility(arvind, electric_company):
     arvind.buy_asset(electric_company)
     assert arvind.cash == 50
     assert electric_company in arvind.player_portfolio
     assert arvind.utilities_owned == 1
 
 
-def test_buy_asset_multiple(arvind, electric_company, water_works):
+def test_buy_asset_multiple_utilities(arvind, electric_company, water_works):
     arvind.cash = 500
     arvind.buy_asset(electric_company)
     arvind.buy_asset(water_works)
@@ -58,12 +58,11 @@ def test_buy_asset_multiple(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    with pytest.raises(PropertyNotFreeError):
-        arvind.buy_asset(electric_company)
+    arvind.buy_asset(electric_company)
     assert arvind.utilities_owned == 2
 
 
-def test_buy_asset_multiple(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
+def test_buy_asset_multiple_railroads(arvind, pennsylvania_railroad, bo_railroad, reading_railroad,
                                short_line_railroad):
     arvind.cash = 1500
     arvind.buy_asset(pennsylvania_railroad)
@@ -78,8 +77,7 @@ def test_buy_asset_multiple(arvind, pennsylvania_railroad, bo_railroad, reading_
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    with pytest.raises(PropertyNotFreeError):
-        arvind.buy_asset(pennsylvania_railroad)
+    arvind.buy_asset(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 
@@ -188,7 +186,8 @@ def test_build_house_true(arvind, st_charles_place, mocker):
 def test_build_house_false(arvind, st_charles_place, mocker):
     mocker.patch('Player.check_player_has_color_set', return_value=False)
     mocker.patch('Player.check_property_can_be_developed', return_value=True)
-    arvind.build_house(st_charles_place)
+    with pytest.raises(CannotBuildHouseError):
+        arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 

@@ -1,4 +1,5 @@
 import copy
+from random import randint
 
 from prettytable import PrettyTable
 
@@ -149,3 +150,10 @@ def set_color_set_value(player, asset):
     for each_property in player.player_portfolio:
         if each_property.color == asset.color:
             each_property._color_set = True
+
+def randomly_play_jail_turn(player):
+    num = randint(1, 2)
+    if num == 1:
+        player.pay_jail_fine()
+    elif num == 2:
+        player.try_jail_double_throw()

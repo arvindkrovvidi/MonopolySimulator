@@ -1,0 +1,8 @@
+from Tiles_data.Property_data import properties_list
+from Tiles_data.chance_tiles_data import chance_tiles_list
+from Tiles_data.community_chest_tiles_data import community_chest_tiles_list
+from Tiles_data.railroad_property_data import railroad_properties_list
+from Tiles_data.special_tiles_data import special_tiles_list
+from Tiles_data.utilities_data import utilities_list
+
+all_tiles_list = properties_list + special_tiles_list + community_chest_tiles_list + chance_tiles_list + railroad_properties_list + utilities_list
