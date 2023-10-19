@@ -6,7 +6,7 @@ from Tiles.LuxuryTaxTile import LuxuryTaxTile
 from Tiles.SpecialTiles import SpecialTiles
 
 go = SpecialTiles(0, "Go")
-jail = SpecialTiles(10, "Just visiting")
+jail = SpecialTiles(10, "Jail/Just visiting")
 free_parking = FreeParkingTile(20, "Free parking")
 income_tax = IncomeTaxTile(name="Income Tax", tile_no=4)
 luxury_tax = LuxuryTaxTile(name="Luxury Tax", tile_no=38)
