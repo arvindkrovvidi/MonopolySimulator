@@ -23,8 +23,8 @@ while turn <= total_turns or not check_any_player_broke(players):
         current_tile = all_tiles_list[player.tile_no]
         logger.info(f'{player} landed on {current_tile}')
         try:
-            logger.info(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
             play_turn(current_tile, player, throw)
+            logger.info(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
         except PlayerBrokeError:
             print(f'turn: {turn}, player: {player}, cash: {player.cash}')
             player_broke = True
