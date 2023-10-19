@@ -6,7 +6,7 @@ class PlayerBrokeError(Exception):
 class PropertyNotFreeError(Exception):
     def __init__(self, asset):
         self.asset = asset
-        self.exc_message = str(self.asset) + " is already owned by" + str(self.asset.owner)
+        self.exc_message = str(self.asset) + " is already owned by " + str(self.asset.owner)
 
 class InvalidPropertyTypeError(Exception):
     def __init__(self, function, asset):
@@ -19,3 +19,15 @@ class InsufficientFundsError(Exception):
     def __init__(self, player):
         self.player = player
         self.exc_message = str(player) + " does not have sufficient funds for this transaction!"
+
+class CannotBuildHouseError(Exception):
+    def __init__(self, player, asset):
+        self.player = player
+        self.asset = asset
+        self.exc_message = f'{str(self.player)} cannot build house on {str(asset)}'
+
+class CannotBuildHotelError(Exception):
+    def __init__(self, player, asset):
+        self.player = player
+        self.asset = asset
+        self.exc_message = f'{str(self.player)} cannot build hotel on {str(asset)}'
