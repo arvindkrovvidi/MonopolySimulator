@@ -49,3 +49,4 @@ while turn <= total_turns or not check_any_player_broke(players):
 # TODO: Calculate probabilities for each person winning the game
 # TODO: Add exceptions
 # TODO: Test custom error classes
+# TODO: When a property is added to player portfolio, set the property owner to be the player.
