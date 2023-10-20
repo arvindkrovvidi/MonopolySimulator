@@ -138,6 +138,10 @@ def check_any_player_broke(player_list):
     return False
 
 def print_player_summary(players):
+    """
+    Print player summary with Position, player and their networth.
+    :param players: List of all players
+    """
     for player in players:
         player.networth = calculate_networth(player)
 
@@ -148,6 +152,11 @@ def print_player_summary(players):
     print(display_winners)
 
 def set_color_set_value(player, asset):
+    """
+    Set the color_set value for all properties once a player buys the last property in the set.
+    :param player: Player that completes the color set.
+    :param asset: The last property in the set that the player bought.
+    """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(set_color_set_value.__name__, asset)
     for each_property in player.player_portfolio:
@@ -155,6 +164,10 @@ def set_color_set_value(player, asset):
             each_property._color_set = True
 
 def randomly_play_jail_turn(player):
+    """
+    Choose whether the player pays jail fine or tries for a double randomly.
+    :param player:
+    """
     num = randint(1, 2)
     if num == 1:
         player.pay_jail_fine()
