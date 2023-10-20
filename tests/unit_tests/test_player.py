@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, CannotBuildHouseError
+from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError
 
 
 def test_init_default_values():
@@ -229,3 +229,25 @@ def test_get_out_of_jail_free(arvind):
     arvind.get_out_of_jail_free()
     assert arvind.get_out_of_jail_free_card == 0
     assert arvind.in_jail == False
+
+def test_sell_houses_1(arvind, st_charles_place):
+    """
+    Sell houses when there is a hotel.
+    """
+    st_charles_place._hotel = True
+    st_charles_place._houses = 1
+
+    with pytest.raises(CannotSellHouseError):
+        arvind.sell_houses(st_charles_place, 1)
+
+def test_sell_houses_2(arvind, st_charles_place):
+    """
+    Sell houses when there is no hotel.
+    """
+    st_charles_place._houses = 3
+    st_charles_place.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.sell_houses(st_charles_place, 2)
+    assert arvind.cash == 300
+    assert st_charles_place._houses == 1
+

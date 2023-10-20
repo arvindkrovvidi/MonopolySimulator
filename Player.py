@@ -244,5 +244,5 @@ class Player:
         if asset._hotel == True:
             raise CannotSellHouseError(asset)
         if asset._houses > 0 and asset in self.player_portfolio:
-            asset.owner.cash += asset._building_cost
+            self.bank_transaction(( asset._building_cost * number_of_houses ) / 2)
             asset._houses -= number_of_houses
