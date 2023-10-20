@@ -31,3 +31,8 @@ class CannotBuildHotelError(Exception):
         self.player = player
         self.asset = asset
         self.exc_message = f'{str(self.player)} cannot build hotel on {str(asset)}'
+
+class CannotSellHouseError(Exception):
+    def __init__(self, asset):
+        self.asset = asset
+        self.exc_message = f'{str(self.asset.owner)} cannot sell the house on {str(asset)}'
