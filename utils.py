@@ -88,14 +88,6 @@ def check_player_has_color_set(player, color):
         return True
     return False
 
-def get_railroads_owned(player):
-    count = 0
-    for asset in player.player_portfolio:
-        if type(asset) == Railroad:
-            count += 1
-
-    return count
-
 def check_property_can_be_developed(asset):
     """
     A house can be built in a property only if the property had the same number of houses as or less number of houses than the other properties in the color set.
