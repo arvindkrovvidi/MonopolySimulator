@@ -231,3 +231,35 @@ def test_pay_rent_utility_2(mocker, arvind, arun, electric_company, water_works)
 
     assert arvind.cash == 150
     assert arun.cash == 150
+
+def test_sell_house(arvind, arun, st_charles_place, virginia_avenue, states_avenue):
+    """
+    Test sell_house function
+    """
+    arvind.cash = 100
+    arun.cash = 2000
+    arun.buy_asset(st_charles_place)
+    arun.buy_asset(virginia_avenue)
+    arun.buy_asset(states_avenue)
+
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+    arun.build_house(st_charles_place)
+    arun.build_house(virginia_avenue)
+    arun.build_house(states_avenue)
+
+    assert st_charles_place._houses == 4
+    assert states_avenue._houses == 4
+    assert virginia_avenue._houses == 4
+
+    arun.sell_house(st_charles_place)
+
+    assert st_charles_place._houses == 3
+    assert arun.cash == 410
