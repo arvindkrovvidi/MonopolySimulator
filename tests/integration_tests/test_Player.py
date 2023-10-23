@@ -232,7 +232,7 @@ def test_pay_rent_utility_2(mocker, arvind, arun, electric_company, water_works)
     assert arvind.cash == 150
     assert arun.cash == 150
 
-def test_sell_house(arvind, arun, st_charles_place, virginia_avenue, states_avenue):
+def test_sell_house_1(arvind, arun, st_charles_place, virginia_avenue, states_avenue):
     """
     Test sell_house function
     """
@@ -263,3 +263,41 @@ def test_sell_house(arvind, arun, st_charles_place, virginia_avenue, states_aven
 
     assert st_charles_place._houses == 3
     assert arun.cash == 410
+
+def test_sell_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue):
+    """
+    Test sell_hotel when asset is in the player portfolio
+    """
+    arvind.cash = 2000
+    arvind.buy_asset(states_avenue)
+    arvind.buy_asset(st_charles_place)
+    arvind.buy_asset(virginia_avenue)
+
+    arvind.build_house(st_charles_place)
+    arvind.build_house(states_avenue)
+    arvind.build_house(virginia_avenue)
+    arvind.build_house(st_charles_place)
+    arvind.build_house(states_avenue)
+    arvind.build_house(virginia_avenue)
+    arvind.build_house(st_charles_place)
+    arvind.build_house(states_avenue)
+    arvind.build_house(virginia_avenue)
+    arvind.build_house(st_charles_place)
+    arvind.build_house(states_avenue)
+    arvind.build_house(virginia_avenue)
+
+    arvind.build_hotel(st_charles_place)
+    arvind.build_hotel(virginia_avenue)
+    arvind.build_hotel(states_avenue)
+
+    assert st_charles_place._hotel == True
+    assert virginia_avenue._hotel == True
+    assert states_avenue._hotel == True
+
+    arvind.sell_hotel(st_charles_place)
+    arvind.sell_hotel(virginia_avenue)
+
+    assert st_charles_place._hotel == False
+    assert virginia_avenue._hotel == False
+    assert arvind.cash == 160
+

@@ -256,3 +256,19 @@ def test_sell_house_2(arvind, st_charles_place):
     assert arvind.cash == 250
     assert st_charles_place._houses == 2
 
+@pytest.mark.parametrize("check_can_sell_hotel_value, hotel_value, cash", [
+    (True, False, 250),
+    (False, True, 200)
+])
+def test_sell_hotel_1(mocker, arvind, st_charles_place, check_can_sell_hotel_value, hotel_value, cash):
+    """
+    Test check_can_sell_hotel
+    """
+    mocker.patch("Player.check_can_sell_hotel", return_value=check_can_sell_hotel_value)
+    st_charles_place.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place._hotel = True
+
+    arvind.sell_hotel(st_charles_place)
+    assert st_charles_place._hotel == hotel_value
+    assert arvind.cash == cash
