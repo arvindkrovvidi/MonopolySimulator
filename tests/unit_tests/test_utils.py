@@ -1,8 +1,10 @@
 import pytest
 
 from Player import Player
+from errors import InvalidPropertyTypeError, CannotSellHouseError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value
+    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value, \
+    check_can_sell_house, check_can_sell_hotel
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -202,3 +204,65 @@ def test_set_color_set(arvind, st_charles_place, virginia_avenue, states_avenue)
     assert virginia_avenue._color_set == True
     assert states_avenue._color_set == True
 
+def test_check_can_sell_house_1(arvind, pennsylvania_railroad):
+    """
+    Test check_can_sell_house when property is Railroad or Utility
+    """
+    pennsylvania_railroad.owner = arvind
+    arvind.player_portfolio.append(pennsylvania_railroad)
+    with pytest.raises(InvalidPropertyTypeError):
+        check_can_sell_house(pennsylvania_railroad)
+
+def test_check_can_sell_house_2(arvind, st_charles_place):
+    """
+    Test check_can_sell_house when property has hotel
+    """
+    st_charles_place._hotel = True
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place.owner = arvind
+    with pytest.raises(CannotSellHouseError):
+        check_can_sell_house(st_charles_place)
+
+@pytest.mark.parametrize("property_1_houses, property_2_houses, property_3_houses, expected",[
+    (2, 2, 2, True),
+    (1, 2, 2, False),
+    (3, 2, 2, True)
+])
+def test_check_can_sell_house_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_houses, property_2_houses, property_3_houses, expected):
+    """
+    Test check_can_sell_house
+    """
+    st_charles_place._houses = property_1_houses
+    states_avenue._houses = property_2_houses
+    virginia_avenue._houses = property_3_houses
+    arvind.player_portfolio.append(states_avenue)
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.player_portfolio.append(virginia_avenue)
+    states_avenue.owner = arvind
+    st_charles_place.owner = arvind
+    virginia_avenue.owner = arvind
+
+    assert check_can_sell_house(st_charles_place) == expected
+
+def test_check_can_sell_hotel_1(arvind, pennsylvania_railroad):
+    """
+    Test check_can_sell_hotel when asset is a railroad/utility
+    """
+    pennsylvania_railroad.owner = arvind
+    arvind.player_portfolio.append(pennsylvania_railroad)
+
+    with pytest.raises(InvalidPropertyTypeError):
+        check_can_sell_hotel(pennsylvania_railroad)
+
+    assert arvind.cash == 200
+
+def test_check_can_sell_hotel_2(arvind, st_charles_place):
+    """
+    Test check_can_sell_hotel
+    """
+
+    st_charles_place.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place._hotel = True
+
+    assert check_can_sell_hotel(st_charles_place) == True

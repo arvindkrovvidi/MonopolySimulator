@@ -12,7 +12,7 @@ class InvalidPropertyTypeError(Exception):
     def __init__(self, function, asset):
         self.function = function
         self.asset = asset
-        self.exc_message = "Cannot perform " + self.function.__name__ + " on type " + type(asset)
+        self.exc_message = "Cannot perform " + self.function + " on type " + str(type(asset))
 
 class InsufficientFundsError(Exception):
 
@@ -31,3 +31,13 @@ class CannotBuildHotelError(Exception):
         self.player = player
         self.asset = asset
         self.exc_message = f'{str(self.player)} cannot build hotel on {str(asset)}'
+
+class CannotSellHouseError(Exception):
+    def __init__(self, asset):
+        self.asset = asset
+        self.exc_message = f'{str(self.asset.owner)} cannot sell the house on {str(asset)}'
+
+class CannotSellHotelError(Exception):
+    def __init__(self, asset):
+        self.asset = asset
+        self.exc_message = f'{str(self.asset.owner)} cannot sell the hotel on {str(asset)}'

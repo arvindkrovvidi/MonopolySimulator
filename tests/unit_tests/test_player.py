@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, CannotBuildHouseError
+from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError
 
 
 def test_init_default_values():
@@ -229,3 +229,46 @@ def test_get_out_of_jail_free(arvind):
     arvind.get_out_of_jail_free()
     assert arvind.get_out_of_jail_free_card == 0
     assert arvind.in_jail == False
+
+def test_sell_house_1(mocker, arvind, st_charles_place):
+    """
+    Sell houses when there is a hotel.
+    """
+    mocker.patch('Player.check_can_sell_house', side_effect=CannotSellHouseError(st_charles_place))
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place.owner = arvind
+    st_charles_place._hotel = True
+    st_charles_place._houses = 4
+
+    arvind.sell_house(st_charles_place)
+    assert st_charles_place._houses == 4
+    assert arvind.cash == 200
+
+def test_sell_house_2(arvind, st_charles_place):
+    """
+    Sell houses when there is no hotel.
+    """
+    st_charles_place._houses = 3
+    st_charles_place.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    arvind.sell_house(st_charles_place)
+
+    assert arvind.cash == 250
+    assert st_charles_place._houses == 2
+
+@pytest.mark.parametrize("check_can_sell_hotel_value, hotel_value, cash", [
+    (True, False, 250),
+    (False, True, 200)
+])
+def test_sell_hotel_1(mocker, arvind, st_charles_place, check_can_sell_hotel_value, hotel_value, cash):
+    """
+    Test check_can_sell_hotel
+    """
+    mocker.patch("Player.check_can_sell_hotel", return_value=check_can_sell_hotel_value)
+    st_charles_place.owner = arvind
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place._hotel = True
+
+    arvind.sell_hotel(st_charles_place)
+    assert st_charles_place._hotel == hotel_value
+    assert arvind.cash == cash

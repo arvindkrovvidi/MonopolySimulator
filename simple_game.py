@@ -45,7 +45,8 @@ while turn <= total_turns or not check_any_player_broke(players):
 # TODO: Run a profiler to check for possible optimizations
 # TODO: Add tests for all functions
 # TODO: Check for code coverage
-# TODO: Push code to GIT
 # TODO: Calculate probabilities for each person winning the game
 # TODO: Add exceptions
 # TODO: Test custom error classes
+# TODO: When a property is added to player portfolio, set the property owner to be the player.
+# TODO: Change all transactions to be bank transactions or player transactions.
