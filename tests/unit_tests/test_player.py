@@ -230,15 +230,19 @@ def test_get_out_of_jail_free(arvind):
     assert arvind.get_out_of_jail_free_card == 0
     assert arvind.in_jail == False
 
-def test_sell_houses_1(arvind, st_charles_place):
+def test_sell_houses_1(mocker, arvind, st_charles_place):
     """
     Sell houses when there is a hotel.
     """
+    mocker.patch('Player.check_can_sell_house', side_effect=CannotSellHouseError(st_charles_place))
+    arvind.player_portfolio.append(st_charles_place)
+    st_charles_place.owner = arvind
     st_charles_place._hotel = True
-    st_charles_place._houses = 1
+    st_charles_place._houses = 4
 
-    with pytest.raises(CannotSellHouseError):
-        arvind.sell_houses(st_charles_place, 1)
+    arvind.sell_house(st_charles_place)
+    assert st_charles_place._houses == 4
+    assert arvind.cash == 200
 
 def test_sell_houses_2(arvind, st_charles_place):
     """
@@ -247,7 +251,8 @@ def test_sell_houses_2(arvind, st_charles_place):
     st_charles_place._houses = 3
     st_charles_place.owner = arvind
     arvind.player_portfolio.append(st_charles_place)
-    arvind.sell_houses(st_charles_place, 2)
-    assert arvind.cash == 300
-    assert st_charles_place._houses == 1
+    arvind.sell_house(st_charles_place)
+
+    assert arvind.cash == 250
+    assert st_charles_place._houses == 2
 

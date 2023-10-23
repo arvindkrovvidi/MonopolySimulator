@@ -7,9 +7,9 @@ from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from config import logger
 from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError, CannotBuildHouseError, \
-    CannotBuildHotelError, CannotSellHouseError
+    CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
-    set_color_set_value
+    set_color_set_value, check_can_sell_house
 
 
 class Player:
@@ -181,7 +181,7 @@ class Player:
         Build a house in a property if player has the color set and the property can be developed.
         :param asset: A property where house is being built
         """
-        if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset):
+        if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset) and asset._houses <= 3 :
             asset._houses += 1
             self.cash -= asset.building_cost
             logger.info(f'{self} built a house on {asset}')
@@ -236,13 +236,17 @@ class Player:
         self.in_jail = False
         logger.info(f'{self} used a Get Out of Jail Free card')
 
-    def sell_houses(self, asset, number_of_houses):
+    def sell_house(self, asset):
         """
         Sell the house on a property
         :param asset: The asset with houses on it
         """
-        if asset._hotel == True:
-            raise CannotSellHouseError(asset)
-        if asset._houses > 0 and asset in self.player_portfolio:
-            self.bank_transaction(( asset._building_cost * number_of_houses ) / 2)
-            asset._houses -= number_of_houses
+        try:
+            if asset in self.player_portfolio and check_can_sell_house(asset):
+                self.bank_transaction(asset._building_cost / 2)
+                asset._houses -= 1
+        except CannotSellHouseError as e:
+            logger.info(e.exc_message)
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message)
+
