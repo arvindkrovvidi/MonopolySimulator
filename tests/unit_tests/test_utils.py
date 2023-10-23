@@ -1,8 +1,10 @@
 import pytest
 
 from Player import Player
+from errors import InvalidPropertyTypeError, CannotSellHouseError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value
+    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value, \
+    check_can_sell_house
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
