@@ -230,7 +230,7 @@ def test_get_out_of_jail_free(arvind):
     assert arvind.get_out_of_jail_free_card == 0
     assert arvind.in_jail == False
 
-def test_sell_houses_1(mocker, arvind, st_charles_place):
+def test_sell_house_1(mocker, arvind, st_charles_place):
     """
     Sell houses when there is a hotel.
     """
@@ -244,7 +244,7 @@ def test_sell_houses_1(mocker, arvind, st_charles_place):
     assert st_charles_place._houses == 4
     assert arvind.cash == 200
 
-def test_sell_houses_2(arvind, st_charles_place):
+def test_sell_house_2(arvind, st_charles_place):
     """
     Sell houses when there is no hotel.
     """
