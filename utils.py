@@ -1,4 +1,5 @@
 import copy
+import inspect
 from random import randint
 
 from prettytable import PrettyTable
@@ -8,7 +9,7 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
-from errors import InvalidPropertyTypeError
+from errors import InvalidPropertyTypeError, CannotSellHouseError
 
 
 def calculate_networth(player) -> int:
@@ -95,7 +96,7 @@ def check_property_can_be_developed(asset):
     :return: True if the property can be developed. False if the propert cannot be developed.
     """
     if type(asset) is not Property:
-        raise InvalidPropertyTypeError(__name__, asset)
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
     if asset.owner is None:
         return False
     data = copy.deepcopy(asset.owner.player_portfolio)
@@ -150,7 +151,7 @@ def set_color_set_value(player, asset):
     :param asset: The last property in the set that the player bought.
     """
     if type(asset) is not Property:
-        raise InvalidPropertyTypeError(set_color_set_value.__name__, asset)
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
     for each_property in player.player_portfolio:
         if each_property.color == asset.color:
             each_property._color_set = True

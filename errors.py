@@ -12,7 +12,7 @@ class InvalidPropertyTypeError(Exception):
     def __init__(self, function, asset):
         self.function = function
         self.asset = asset
-        self.exc_message = "Cannot perform " + self.function.__name__ + " on type " + type(asset)
+        self.exc_message = "Cannot perform " + self.function + " on type " + str(type(asset))
 
 class InsufficientFundsError(Exception):
 
