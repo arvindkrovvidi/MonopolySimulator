@@ -180,3 +180,14 @@ def check_can_sell_house(asset):
         if asset._houses < each_property._houses:
             return False
     return True
+
+def check_can_sell_hotel(asset):
+    """
+    Check whether the hotel on this property can be sold.
+    :param asset:
+    """
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    if asset._hotel == True:
+        return True
+    return False

@@ -36,3 +36,8 @@ class CannotSellHouseError(Exception):
     def __init__(self, asset):
         self.asset = asset
         self.exc_message = f'{str(self.asset.owner)} cannot sell the house on {str(asset)}'
+
+class CannotSellHotelError(Exception):
+    def __init__(self, asset):
+        self.asset = asset
+        self.exc_message = f'{str(self.asset.owner)} cannot sell the hotel on {str(asset)}'

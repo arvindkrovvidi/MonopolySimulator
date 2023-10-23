@@ -7,9 +7,9 @@ from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from config import logger
 from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError, CannotBuildHouseError, \
-    CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError
+    CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
 from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
-    set_color_set_value, check_can_sell_house
+    set_color_set_value, check_can_sell_house, check_can_sell_hotel
 
 
 class Player:
@@ -250,3 +250,16 @@ class Player:
         except InvalidPropertyTypeError as e:
             logger.error(e.exc_message)
 
+    def sell_hotel(self, asset):
+        """
+        Sell the hotel on the property
+        :param asset: The property with hotel it
+        """
+        try:
+            if asset in self.player_portfolio and check_can_sell_hotel(asset):
+                self.bank_transaction(asset._building_cost / 2)
+                asset._hotel = False
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message)
+        except CannotSellHotelError as e:
+            logger.info(e.exc_message)
