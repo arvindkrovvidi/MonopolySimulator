@@ -166,3 +166,17 @@ def randomly_play_jail_turn(player):
         player.pay_jail_fine()
     elif num == 2:
         player.try_jail_double_throw()
+
+def check_can_sell_house(asset):
+    """
+    Check whether a house on this property can be sold
+    :param asset: Property
+    """
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    if asset._hotel == True or asset._houses <= 0:
+        raise CannotSellHouseError(asset)
+    for each_property in asset.owner.player_portfolio:
+        if asset._houses < each_property._houses:
+            return False
+    return True
