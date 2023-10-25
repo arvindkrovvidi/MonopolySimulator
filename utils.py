@@ -191,3 +191,14 @@ def check_can_sell_hotel(asset):
     if asset._hotel == True:
         return True
     return False
+
+def display_options(*args):
+    """
+    Display the options that are passed to the function
+    :param args: List of options
+    :return: String in the format [s.no] <option>
+    """
+    for option in args:
+         return f'[{args.index(option)}] {option}'
+
+
