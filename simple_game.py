@@ -50,3 +50,4 @@ while turn <= total_turns or not check_any_player_broke(players):
 # TODO: Test custom error classes
 # TODO: When a property is added to player portfolio, set the property owner to be the player.
 # TODO: Change all transactions to be bank transactions or player transactions.
+# TODO: See if Player and Property can be converted into @dataclass

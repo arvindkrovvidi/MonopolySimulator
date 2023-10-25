@@ -3,6 +3,7 @@ from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
 from Tiles_data.special_tiles_data import go
+from config import logger
 
 
 class CommunityChestTile(SpecialTiles):
@@ -49,6 +50,8 @@ class CommunityChestTile(SpecialTiles):
             player.bank_transaction(10)
         if _card_no == 16:
             player.bank_transaction(100)
+        print(f'{self} played community chest card {_card_no}')
+        logger.info(f'{self} played community chest card {_card_no}')
 
 def execute_chest_14(player):
     """

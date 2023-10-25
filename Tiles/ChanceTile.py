@@ -69,6 +69,8 @@ class ChanceTile(SpecialTiles):
             execute_chance_15(player, all_players_list)
         elif _card_no == 16:
             player.bank_transaction(150)
+        print(f'{self} played chance card no {_card_no}')
+        logger.info(f'{self} played chance card no {_card_no}')
 
 
 def execute_chance_12(player):

@@ -80,6 +80,7 @@ class Player:
                 self.utilities_owned += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
+        print(f'{self} bought {asset}.')
         logger.info(f'{self} bought {asset}.')
 
 
@@ -97,6 +98,8 @@ class Player:
             self.double_counter += 1
         else:
             self.double_counter = 0
+        print(f'{self} threw a {dice1 + dice2}')
+        print(f'{self} threw a {dice1 + dice2}')
         logger.info(f'{self} threw a {dice1 + dice2}')
         return dice1 + dice2
 
@@ -129,6 +132,7 @@ class Player:
             self.cash += 200
         if tile_no == 10:
             self.in_jail = True
+        print(f'{self} moved to {tile_no}')
         logger.info(f'{self} moved to {tile_no}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
@@ -143,6 +147,7 @@ class Player:
             raise PlayerBrokeError(player)
         self.cash -= rent
         player.cash += rent
+        print(f'{self} paid {player} rent of amount {rent}')
         logger.info(f'{self} paid {player} rent of amount {rent}')
 
     def player_transaction(self, player, amount: int) -> None:
@@ -157,8 +162,10 @@ class Player:
         self.cash += amount
         player.cash -= amount
         if amount > 0:
+            print(f'{self} collected {amount} from the {player}')
             logger.info(f'{self} collected {amount} from the {player}')
         else:
+            print(f'{self} paid the {player} an amount of {amount}')
             logger.info(f'{self} paid the {player} an amount of {amount}')
 
     def bank_transaction(self, amount: int) -> None:
@@ -171,8 +178,10 @@ class Player:
             raise PlayerBrokeError(self)
         self.cash += amount
         if amount > 0:
+            print(f'{self} collected {amount} from the the bank')
             logger.info(f'{self} collected {amount} from the the bank')
         else:
+            print(f'{self} paid the the bank an amount of {amount}')
             logger.info(f'{self} paid the the bank an amount of {amount}')
 
 
@@ -184,6 +193,7 @@ class Player:
         if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset) and asset._houses <= 3 :
             asset._houses += 1
             self.cash -= asset.building_cost
+            print(f'{self} built a house on {asset}')
             logger.info(f'{self} built a house on {asset}')
         else:
             raise CannotBuildHouseError(self, asset)
@@ -197,6 +207,7 @@ class Player:
         if check_can_build_hotel(asset) and self.cash > asset.building_cost:
             asset._hotel = True
             self.cash -= asset.building_cost
+            print(f'{self} built a hotel on {asset}')
             logger.info(f'{self} built a hotel on {asset}')
         else:
             raise CannotBuildHotelError(self, asset)
@@ -208,6 +219,7 @@ class Player:
         if self.cash > 50:
             self.bank_transaction(-50)
             self.in_jail = False
+            print(f'{self} paid a fine and got out of jail')
             logger.info(f'{self} paid a fine and got out of jail')
 
     def try_jail_double_throw(self):
@@ -218,13 +230,16 @@ class Player:
         dice2 = self.throw_one_dice()
         if dice1 == dice2:
             self.in_jail = False
+            print(f'{self} threw a double and got out of jail')
             logger.info(f'{self} threw a double and got out of jail')
         self.jail_throw_counter += 1
+        print(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
         logger.info(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
             self.in_jail = False
             self.jail_throw_counter = 0
+            print(f'{self} used all of their three chances to throw a double.')
             logger.info(f'{self} used all of their three chances to throw a double.')
 
 
@@ -234,6 +249,7 @@ class Player:
         """
         self.get_out_of_jail_free_card -= 1
         self.in_jail = False
+        print(f'{self} used a Get Out of Jail Free card')
         logger.info(f'{self} used a Get Out of Jail Free card')
 
     def sell_house(self, asset):
@@ -245,6 +261,8 @@ class Player:
             if asset in self.player_portfolio and check_can_sell_house(asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._houses -= 1
+                print(f'{self} sold a house on {asset}')
+                logger.info(f'{self} sold a house on {asset}')
         except CannotSellHouseError as e:
             logger.info(e.exc_message)
         except InvalidPropertyTypeError as e:
@@ -259,6 +277,8 @@ class Player:
             if asset in self.player_portfolio and check_can_sell_hotel(asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._hotel = False
+                print(f'{self} sold the hotel on {asset}')
+                logger.info(f'{self} sold the hotel on {asset}')
         except InvalidPropertyTypeError as e:
             logger.error(e.exc_message)
         except CannotSellHotelError as e:
