@@ -6,10 +6,10 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from config import logger
-from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError, CannotBuildHouseError, \
+from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
-from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
-    set_color_set_value, check_can_sell_house, check_can_sell_hotel
+from utils import check_player_has_color_set, check_can_build_hotel, \
+    set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house
 
 
 class Player:
@@ -59,14 +59,10 @@ class Player:
         Buy asset that the player lands on.
         :param asset: Property, Railroad or Utility.
         """
-        if asset.owner is not None and asset.owner is not self:
-            raise PropertyNotFreeError(asset)
-        if asset.cost <= self.cash:
+        if check_can_buy_asset(self, asset):
             self.cash -= asset.cost
-        else:
-            raise InsufficientFundsError(self)
-        self.player_portfolio.append(asset)
-        asset.owner = self
+            self.player_portfolio.append(asset)
+            asset.owner = self
         if type(asset) is Property:
             if check_player_has_color_set(self, asset.color):
                 set_color_set_value(self, asset)
@@ -190,7 +186,7 @@ class Player:
         Build a house in a property if player has the color set and the property can be developed.
         :param asset: A property where house is being built
         """
-        if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset) and asset._houses <= 3 :
+        if check_can_build_house(self, asset):
             asset._houses += 1
             self.cash -= asset.building_cost
             print(f'{self} built a house on {asset}')
