@@ -206,8 +206,10 @@ def get_display_options(*args):
     :param args: List of options
     :return: String in the format [s.no] <option>
     """
-    for option in args:
-         return f'[{args.index(option)}] {option}'
+    options_string = ''
+    for option in args[0]:
+         options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
+    return options_string
 
 def check_can_buy_asset(player, asset):
     """
