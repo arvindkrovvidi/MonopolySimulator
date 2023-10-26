@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError, PropertyNotFreeError
+from errors import InsufficientFundsError, PropertyNotFreeError
 
 
 def test_init_default_values():
@@ -186,8 +186,7 @@ def test_build_house_true(arvind, st_charles_place, mocker):
 
 def test_build_house_false(arvind, st_charles_place, mocker):
     mocker.patch('Player.check_can_build_house', return_value=False)
-    with pytest.raises(CannotBuildHouseError):
-        arvind.build_house(st_charles_place)
+    arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 
@@ -234,7 +233,7 @@ def test_sell_house_1(mocker, arvind, st_charles_place):
     """
     Sell houses when there is a hotel.
     """
-    mocker.patch('Player.check_can_sell_house', side_effect=CannotSellHouseError(st_charles_place))
+    mocker.patch('Player.check_can_sell_house', return_value=False)
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place.owner = arvind
     st_charles_place._hotel = True

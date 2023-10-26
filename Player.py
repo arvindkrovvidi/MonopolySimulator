@@ -9,7 +9,8 @@ from config import logger
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
 from utils import check_player_has_color_set, check_can_build_hotel, \
-    set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house
+    set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house, \
+    UnownedPropertyError, PropertyNotFreeError
 
 
 class Player:
@@ -186,26 +187,47 @@ class Player:
         Build a house in a property if player has the color set and the property can be developed.
         :param asset: A property where house is being built
         """
-        if check_can_build_house(self, asset):
-            asset._houses += 1
-            self.cash -= asset.building_cost
-            print(f'{self} built a house on {asset}')
-            logger.info(f'{self} built a house on {asset}')
-        else:
+        try:
+            if check_can_build_house(self, asset):
+                asset._houses += 1
+                self.cash -= asset.building_cost
+                print(f'{self} built a house on {asset}')
+                logger.info(f'{self} built a house on {asset}')
+            else:
+                print(f'{self} cannot build a house on {asset}')
+                logger.info(f'{self} cannot build a house on {asset}')
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message, exc_info=True)
             raise CannotBuildHouseError(self, asset)
-
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHouseError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHouseError(self, asset)
 
     def build_hotel(self, asset):
         """
         Build hotel in property
         :param asset: The tile where the hotel is being built
         """
-        if check_can_build_hotel(asset) and self.cash > asset.building_cost:
-            asset._hotel = True
-            self.cash -= asset.building_cost
-            print(f'{self} built a hotel on {asset}')
-            logger.info(f'{self} built a hotel on {asset}')
-        else:
+        try:
+            if check_can_build_hotel(self, asset):
+                asset._hotel = True
+                self.cash -= asset.building_cost
+                print(f'{self} built a hotel on {asset}')
+                logger.info(f'{self} built a hotel on {asset}')
+            else:
+                print(f'{self} cannot build a hotel on {asset}')
+                logger.info(f'{self} cannot build a hotel on {asset}')
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHotelError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHotelError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
             raise CannotBuildHotelError(self, asset)
 
     def pay_jail_fine(self):
@@ -254,15 +276,23 @@ class Player:
         :param asset: The asset with houses on it
         """
         try:
-            if asset in self.player_portfolio and check_can_sell_house(asset):
+            if check_can_sell_house(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._houses -= 1
                 print(f'{self} sold a house on {asset}')
                 logger.info(f'{self} sold a house on {asset}')
-        except CannotSellHouseError as e:
-            logger.info(e.exc_message)
+            else:
+                print(f'{self} cannot sell the house on {asset}')
+                logger.info(f'{self} cannot sell the house on {asset}')
         except InvalidPropertyTypeError as e:
-            logger.error(e.exc_message)
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
 
     def sell_hotel(self, asset):
         """
@@ -270,12 +300,20 @@ class Player:
         :param asset: The property with hotel it
         """
         try:
-            if asset in self.player_portfolio and check_can_sell_hotel(asset):
+            if  check_can_sell_hotel(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._hotel = False
                 print(f'{self} sold the hotel on {asset}')
                 logger.info(f'{self} sold the hotel on {asset}')
+            else:
+                print(f'{self} cannot sell the hotel on {asset}')
+                logger.info(f'{self} cannot sell the hotel on {asset}')
         except InvalidPropertyTypeError as e:
-            logger.error(e.exc_message)
-        except CannotSellHotelError as e:
-            logger.info(e.exc_message)
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
