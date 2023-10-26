@@ -9,7 +9,7 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
-from errors import InvalidPropertyTypeError, CannotSellHouseError
+from errors import InvalidPropertyTypeError, CannotSellHouseError, PropertyNotFreeError, InsufficientFundsError
 
 
 def calculate_networth(player) -> int:
@@ -107,6 +107,14 @@ def check_property_can_be_developed(asset):
             return False
     return True
 
+def check_can_build_house(player, asset):
+    if asset.building_cost <= player.cash \
+        and check_player_has_color_set(player,asset.color) \
+        and check_property_can_be_developed(asset) \
+        and asset._houses <= 3:
+        return True
+    return False
+
 def check_can_build_hotel(asset):
     """
     Check if a hotel can be built on the given property. A hotel can be built only if all the properties in the color set have 4 houses each.
@@ -192,7 +200,7 @@ def check_can_sell_hotel(asset):
         return True
     return False
 
-def display_options(*args):
+def get_display_options(*args):
     """
     Display the options that are passed to the function
     :param args: List of options
@@ -201,4 +209,15 @@ def display_options(*args):
     for option in args:
          return f'[{args.index(option)}] {option}'
 
-
+def check_can_buy_asset(player, asset):
+    """
+    Check if you can buy the asset.
+    :param player: Player trying to buy the asset
+    :param asset: Property, Railroad or utility
+    :return: True if the player can buy the asset. Else False.
+    """
+    if asset.owner is not None and asset.owner is not player:
+        raise PropertyNotFreeError(asset)
+    if asset.cost >= player.cash:
+        raise InsufficientFundsError(player)
+    return True
