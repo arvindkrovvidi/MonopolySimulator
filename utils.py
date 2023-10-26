@@ -211,12 +211,14 @@ def get_display_options(*args):
 
 def check_can_buy_asset(player, asset):
     """
-    Check if you can buy the asset.
+    Check if player can buy the asset.
     :param player: Player trying to buy the asset
     :param asset: Property, Railroad or utility
     :return: True if the player can buy the asset. Else False.
     """
-    if asset.owner is not None and asset.owner is not player:
+    if asset.owner is not None:
+        raise PropertyNotFreeError(asset)
+    if asset.owner is player:
         raise PropertyNotFreeError(asset)
     if asset.cost > player.cash:
         raise InsufficientFundsError(player)
