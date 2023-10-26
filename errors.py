@@ -41,6 +41,10 @@ class CannotSellHouseError(Exception):
 class CannotSellHotelError(Exception):
     def __init__(self, player, asset):
         self.asset = asset
-        self.exc_message = f'{str(self.asset.owner)} cannot sell the hotel on {str(asset)}'
         self.player = player
         self.exc_message = f'{str(self.player)} cannot sell the hotel on {str(asset)}'
+
+class UnownedPropertyError(Exception):
+    def __init__(self, asset):
+        self.asset = asset
+        self.exc_message = f'No one owns {str(self.asset)}'
