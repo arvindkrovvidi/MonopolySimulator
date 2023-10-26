@@ -51,3 +51,4 @@ while turn <= total_turns or not check_any_player_broke(players):
 # TODO: When a property is added to player portfolio, set the property owner to be the player.
 # TODO: Change all transactions to be bank transactions or player transactions.
 # TODO: See if Player and Property can be converted into @dataclass
+# TODO: Add the exceptions that each function throws in the docs.
