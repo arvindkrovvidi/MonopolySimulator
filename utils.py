@@ -218,6 +218,6 @@ def check_can_buy_asset(player, asset):
     """
     if asset.owner is not None and asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset.cost >= player.cash:
+    if asset.cost > player.cash:
         raise InsufficientFundsError(player)
     return True
