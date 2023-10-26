@@ -4,7 +4,7 @@ from Player import Player
 from errors import InvalidPropertyTypeError, CannotSellHouseError, PropertyNotFreeError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
     check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value, \
-    check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, InsufficientFundsError
+    check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, InsufficientFundsError, get_display_options
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -288,6 +288,7 @@ def test_check_can_buy_asset_1(arvind, arun, asset, request):
     with pytest.raises(PropertyNotFreeError):
         check_can_buy_asset(arvind, asset)
 
+
 @pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
 def test_check_can_buy_asset_2(arvind, asset, request):
     """
@@ -299,6 +300,7 @@ def test_check_can_buy_asset_2(arvind, asset, request):
 
     with pytest.raises(PropertyNotFreeError):
         check_can_buy_asset(arvind, asset)
+
 
 @pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
 def test_check_can_buy_asset_3(arvind, asset, request):
@@ -312,6 +314,7 @@ def test_check_can_buy_asset_3(arvind, asset, request):
     with pytest.raises(InsufficientFundsError):
         check_can_buy_asset(arvind, asset)
 
+
 @pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
 def test_check_can_buy_asset_4(arvind, asset, request):
     """
@@ -322,3 +325,13 @@ def test_check_can_buy_asset_4(arvind, asset, request):
     assert asset.owner is None
 
     assert check_can_buy_asset(arvind, asset) == True
+
+
+def test_get_display_options():
+    """
+    Test get_display_options
+    """
+    options_list = ['Buy property', 'Buy house', 'Buy hotel', 'Sell house', 'Sell hotel']
+    actual = get_display_options(options_list)
+    expected = '[0] Buy property    [1] Buy house    [2] Buy hotel    [3] Sell house    [4] Sell hotel    '
+    assert actual == expected
