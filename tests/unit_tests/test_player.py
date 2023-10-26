@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError
+from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError, PropertyNotFreeError
 
 
 def test_init_default_values():
@@ -58,7 +58,8 @@ def test_buy_asset_multiple_utilities(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    arvind.buy_asset(electric_company)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_asset(electric_company)
     assert arvind.utilities_owned == 2
 
 
@@ -77,7 +78,8 @@ def test_buy_asset_multiple_railroads(arvind, pennsylvania_railroad, bo_railroad
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    arvind.buy_asset(pennsylvania_railroad)
+    with pytest.raises(PropertyNotFreeError):
+        arvind.buy_asset(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 
