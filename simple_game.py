@@ -40,15 +40,10 @@ while turn <= total_turns or not check_any_player_broke(players):
 # print(game_details)
 # TODO: Add property trading feature
 # TODO: Organize class attributes into private and public. Make appropriate attributes properties.
-# TODO: Convert three buy functions into one
-# TODO: Add progress bar
 # TODO: Run a profiler to check for possible optimizations
 # TODO: Add tests for all functions
-# TODO: Check for code coverage
 # TODO: Calculate probabilities for each person winning the game
-# TODO: Add exceptions
 # TODO: Test custom error classes
-# TODO: When a property is added to player portfolio, set the property owner to be the player.
 # TODO: Change all transactions to be bank transactions or player transactions.
 # TODO: See if Player and Property can be converted into @dataclass
 # TODO: Add the exceptions that each function throws in the docs.
