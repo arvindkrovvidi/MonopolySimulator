@@ -96,7 +96,6 @@ class Player:
         else:
             self.double_counter = 0
         print(f'{self} threw a {dice1 + dice2}')
-        print(f'{self} threw a {dice1 + dice2}')
         logger.info(f'{self} threw a {dice1 + dice2}')
         return dice1 + dice2
 
