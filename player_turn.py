@@ -38,6 +38,21 @@ def play_turn(current_tile, player, throw):
         current_tile.execute(player)
     elif type(current_tile) in [Jail, GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
+def run_player_option(player, current_tile, option_function_dict, user_input):
+    if option_function_dict[user_input] == 'Buy property':
+        player.buy_asset(current_tile)
+    elif option_function_dict[user_input] == 'Build house':
+        player.build_house(current_tile)
+    elif option_function_dict[user_input] == 'Build hotel':
+        player.build_hotel(current_tile)
+    elif option_function_dict[user_input] == 'Sell house':
+        player.sell_house(current_tile)
+    elif option_function_dict[user_input] == 'Sell hotel':
+        player.sell_hotel(current_tile)
+    elif option_function_dict[user_input] == 'Do nothing':
+        print(f'{player} did nothing this turn')
+        logger.info(f'{player} did nothing this turn')
+        pass
 
 def play_turn_property(current_tile, player):
     """
