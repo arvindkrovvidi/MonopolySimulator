@@ -47,7 +47,8 @@ class TileList:
         Add a tile to the list
         :param asset: The tile to be added to the list
         """
-        self.data.append(asset)
+        if asset not in self.data:
+            self.data.append(asset)
 
     def __contains__(self, item):
         """
