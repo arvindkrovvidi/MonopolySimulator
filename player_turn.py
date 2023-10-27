@@ -11,8 +11,10 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from config import logger
-from errors import InsufficientFundsError, PropertyNotFreeError, CannotBuildHotelError, CannotBuildHouseError
-from utils import check_player_has_color_set
+from errors import InsufficientFundsError, PropertyNotFreeError, CannotBuildHotelError, CannotBuildHouseError, \
+    CannotSellHouseError
+from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
+    check_can_sell_hotel, check_can_sell_house, UnownedPropertyError
 
 
 def play_turn(current_tile, player, throw):
@@ -38,6 +40,9 @@ def play_turn(current_tile, player, throw):
         current_tile.execute(player)
     elif type(current_tile) in [Jail, GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
+    available_options.append('Do nothing')
+    return available_options
+
 def run_player_option(player, current_tile, option_function_dict, user_input):
     if option_function_dict[user_input] == 'Buy property':
         player.buy_asset(current_tile)
@@ -61,7 +66,7 @@ def play_turn_property(current_tile, player):
     :param player: Player playing the turn
     """
     try:
-        player.buy_asset(current_tile)
+        check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
         logger.info(e.exc_message)
     except PropertyNotFreeError as e:
@@ -83,7 +88,7 @@ def player_turn_railroad(current_tile, player):
     :param player: Player playing the turn
     """
     try:
-        player.buy_asset(current_tile)
+        player.check_can_buy_asset(current_tile)
     except InsufficientFundsError as e:
         logger.info(e.exc_message)
     except PropertyNotFreeError as e:
@@ -99,7 +104,7 @@ def player_turn_utility(current_tile, player, throw):
     :param throw: The dice throw
     """
     try:
-        player.buy_asset(current_tile)
+        player.check_can_buy_asset(current_tile)
     except InsufficientFundsError as e:
         logger.info(e.exc_message)
     except PropertyNotFreeError as e:
