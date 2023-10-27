@@ -14,6 +14,8 @@ class Railroad(Tile):
     @owner.setter
     def owner(self, value):
         self._owner = value
+        if self not in value.player_portfolio:
+            value.player_portfolio.append(self)
 
     @property
     def rent(self):

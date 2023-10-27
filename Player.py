@@ -32,9 +32,6 @@ class Player:
     def player_portfolio(self):
         return self._player_portfolio
 
-    @player_portfolio.setter
-    def player_portfolio(self, value):
-        self._player_portfolio.append(value)
 
     @property
     def railroads_owned(self):
