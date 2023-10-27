@@ -24,8 +24,9 @@ def play_turn(current_tile, player, throw):
     :param player: Player playing the turn
     :param throw: The dice throw
     """
+    available_options = []
     if type(current_tile) == Property:
-        play_turn_property(current_tile, player)
+        available_options = play_turn_property(current_tile, player)
     elif type(current_tile) == Railroad:
         player_turn_railroad(current_tile, player)
     elif type(current_tile) == Utility:
@@ -65,6 +66,7 @@ def play_turn_property(current_tile, player):
     :param current_tile: Property
     :param player: Player playing the turn
     """
+    available_options = []
     try:
         check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
@@ -74,12 +76,49 @@ def play_turn_property(current_tile, player):
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
     else:
-        try:
-            player.build_house(current_tile)
-        except CannotBuildHouseError as e:
-            logger.info(e.exc_message)
-        except CannotBuildHotelError as e:
-            logger.info(e.exc_message)
+        available_options.append('Buy property')
+
+    try:
+        if check_can_build_house(player, current_tile):
+            available_options.append('Build house')
+    except CannotBuildHouseError as e:
+        logger.info(e.exc_message)
+    except UnownedPropertyError as e:
+        logger.info(e.exc_message)
+    except PropertyNotFreeError as e:
+        logger.info(e.exc_message)
+
+    try:
+        if check_can_build_hotel(player, current_tile):
+            available_options.append('Build hotel')
+    except CannotBuildHotelError as e:
+        logger.info(e.exc_message)
+    except UnownedPropertyError as e:
+        logger.info(e.exc_message)
+    except PropertyNotFreeError as e:
+        logger.info(e.exc_message)
+
+    try:
+        if check_can_sell_house(player, current_tile):
+            available_options.append('Sell house')
+    except CannotSellHouseError as e:
+        logger.info(e.exc_message)
+    except UnownedPropertyError as e:
+        logger.info(e.exc_message)
+    except PropertyNotFreeError as e:
+        logger.info(e.exc_message)
+
+    try:
+        if check_can_sell_hotel(player, current_tile):
+            available_options.append('Sell hotel')
+    except CannotSellHouseError as e:
+        logger.info(e.exc_message)
+    except UnownedPropertyError as e:
+        logger.info(e.exc_message)
+    except PropertyNotFreeError as e:
+        logger.info(e.exc_message)
+
+    return available_options
 
 def player_turn_railroad(current_tile, player):
     """
@@ -87,6 +126,7 @@ def player_turn_railroad(current_tile, player):
     :param current_tile: Railroad
     :param player: Player playing the turn
     """
+    available_options = []
     try:
         player.check_can_buy_asset(current_tile)
     except InsufficientFundsError as e:
@@ -95,6 +135,11 @@ def player_turn_railroad(current_tile, player):
         logger.info(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
+    else:
+        available_options.append('Buy property')
+
+    return available_options
+
 
 def player_turn_utility(current_tile, player, throw):
     """
@@ -103,6 +148,7 @@ def player_turn_utility(current_tile, player, throw):
     :param player: Player playing the turn
     :param throw: The dice throw
     """
+    available_options = []
     try:
         player.check_can_buy_asset(current_tile)
     except InsufficientFundsError as e:
@@ -114,3 +160,6 @@ def player_turn_utility(current_tile, player, throw):
             player.pay_rent(landlord, throw * 10)
         else:
             player.pay_rent(landlord, throw * 4)
+    else:
+        available_options.append('Buy property')
+    return available_options
