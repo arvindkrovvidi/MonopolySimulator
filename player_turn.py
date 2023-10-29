@@ -147,7 +147,7 @@ def player_turn_railroad(current_tile, player):
     """
     available_options = []
     try:
-        player.check_can_buy_asset(current_tile)
+        check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
         logger.info(e.exc_message)
     except PropertyNotFreeError as e:
@@ -169,7 +169,7 @@ def player_turn_utility(current_tile, player, throw):
     """
     available_options = []
     try:
-        player.check_can_buy_asset(current_tile)
+        check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
         logger.info(e.exc_message)
     except PropertyNotFreeError as e:
