@@ -17,7 +17,33 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
     check_can_sell_hotel, check_can_sell_house, UnownedPropertyError
 
 
-def get_available_options(current_tile, player, throw=None):
+def play_turn(player, current_tile, throw=None):
+    if type(current_tile) in [Property, Railroad, Utility]:
+        available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
+        if available_options is None:
+            return
+        option_function_dict = dict(list(enumerate(available_options)))
+        print(get_display_options(available_options))
+        user_input = int(input(f'Select an option from the above: '))
+        run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
+    if type(current_tile) == ChanceTile:
+        card_no = randint(1, 16)
+        chance_return_value = current_tile.execute(player, card_no, throw=throw)
+        if chance_return_value is not None:
+            available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
+            option_function_dict = dict(list(enumerate(available_options)))
+            get_display_options(available_options)
+            user_input = int(input(f'Select an option from the above: '))
+            run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
+    if type(current_tile) == CommunityChestTile:
+        card_no = randint(1, 16)
+        current_tile.execute(player, card_no)
+    elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
+        current_tile.execute(player)
+    elif type(current_tile) in [Jail, GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
+        current_tile.execute(player)
+
+def get_available_options_properties(current_tile, player, throw=None):
     """
     Play turn after throwing the dice and moving to a tile.
     :param current_tile: Tile the player landed on after throwing dice
@@ -28,19 +54,12 @@ def get_available_options(current_tile, player, throw=None):
     if type(current_tile) == Property:
         available_options = play_turn_property(current_tile, player)
     elif type(current_tile) == Railroad:
-        player_turn_railroad(current_tile, player)
+        available_options = player_turn_railroad(current_tile, player)
     elif type(current_tile) == Utility:
-        player_turn_utility(current_tile, player, throw)
-    elif type(current_tile) == CommunityChestTile:
-        card_no = randint(1, 16)
-        current_tile.execute(player, card_no)
-    elif type(current_tile) == ChanceTile:
-        card_no = randint(1, 16)
-        current_tile.execute(player, card_no, throw=throw)
-    elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
-        current_tile.execute(player)
-    elif type(current_tile) in [Jail, GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
-        current_tile.execute(player)
+        available_options = player_turn_utility(current_tile, player, throw)
+
+    if available_options is None:
+        return
     available_options.append('Do nothing')
     return available_options
 
