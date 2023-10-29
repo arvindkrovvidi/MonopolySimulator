@@ -75,6 +75,21 @@ def check_passing_go(player, tile: Tile) -> bool:
     else:
         return True
 
+def check_can_buy_asset(player, asset):
+    """
+    Check if player can buy the asset.
+    :param player: Player trying to buy the asset
+    :param asset: Property, Railroad or utility
+    :return: True if the player can buy the asset. Else False.
+    """
+    if asset.owner is not None:
+        raise PropertyNotFreeError(asset)
+    if asset.owner is player:
+        raise PropertyNotFreeError(asset)
+    if asset.cost > player.cash:
+        raise InsufficientFundsError(player)
+    return True
+
 def check_player_has_color_set(player, color):
     """
     Check if the player has all the properties in the color set.
@@ -245,18 +260,3 @@ def get_display_options(*args):
     for option in args[0]:
          options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
     return options_string
-
-def check_can_buy_asset(player, asset):
-    """
-    Check if player can buy the asset.
-    :param player: Player trying to buy the asset
-    :param asset: Property, Railroad or utility
-    :return: True if the player can buy the asset. Else False.
-    """
-    if asset.owner is not None:
-        raise PropertyNotFreeError(asset)
-    if asset.owner is player:
-        raise PropertyNotFreeError(asset)
-    if asset.cost > player.cash:
-        raise InsufficientFundsError(player)
-    return True
