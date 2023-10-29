@@ -30,7 +30,7 @@ def play_turn(player, current_tile, throw=None):
         if chance_return_value is not None:
             available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
             option_function_dict = dict(list(enumerate(available_options)))
-            get_display_options(available_options)
+            print(get_display_options(available_options))
             user_input = int(input(f'Select an option from the above: '))
             run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
     elif type(current_tile) == CommunityChestTile:
