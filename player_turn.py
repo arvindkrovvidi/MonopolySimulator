@@ -10,11 +10,12 @@ from Tiles.LuxuryTaxTile import LuxuryTaxTile
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
+from Tiles_data.all_tiles_data import all_tiles_list
 from config import logger
 from errors import InsufficientFundsError, PropertyNotFreeError, CannotBuildHotelError, CannotBuildHouseError, \
     CannotSellHouseError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
-    check_can_sell_hotel, check_can_sell_house, UnownedPropertyError
+    check_can_sell_hotel, check_can_sell_house, UnownedPropertyError, get_display_options
 
 
 def play_turn(player, current_tile, throw=None):
@@ -94,6 +95,7 @@ def play_turn_property(current_tile, player):
         logger.info(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
+        return None
     else:
         available_options.append('Buy property')
 
@@ -154,6 +156,7 @@ def player_turn_railroad(current_tile, player):
         logger.info(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
+        return None
     else:
         available_options.append('Buy property')
 
@@ -177,8 +180,10 @@ def player_turn_utility(current_tile, player, throw):
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
             player.pay_rent(landlord, throw * 10)
+            return None
         else:
             player.pay_rent(landlord, throw * 4)
+            return None
     else:
         available_options.append('Buy property')
     return available_options
