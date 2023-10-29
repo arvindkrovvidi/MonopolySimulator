@@ -21,6 +21,7 @@ class ChanceTile(SpecialTiles):
         :param player: Player who is picking up the chance card.
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
+        printing_and_logging(f'{player} picked chance card number {_card_no}')
         if _card_no == 1:
             player.move_to(boardwalk.tile_no, collect_go_cash_flag=False)
         elif _card_no == 2:
@@ -67,7 +68,6 @@ class ChanceTile(SpecialTiles):
             execute_chance_15(player, kwargs['all_players_list'])
         elif _card_no == 16:
             player.bank_transaction(150)
-        printing_and_logging(f'{player} played chance card no {_card_no}')
 
 
 def execute_chance_12(player):
