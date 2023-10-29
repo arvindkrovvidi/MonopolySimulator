@@ -31,17 +31,25 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 4:
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 5 or _card_no == 6:
-            execute_chance_5(player)
-            current_railroad = railroad_properties_list[player.tile_no]
             try:
-                check_can_buy_asset(player, current_railroad)
+                execute_chance_5(player)
             except InsufficientFundsError as e:
-                printing_and_logging(f'{player} cannot buy {current_railroad}')
+                printing_and_logging(f'{player} cannot buy {railroad_properties_list[player.tile_no]}')
                 printing_and_logging(e.exc_message)
             except PropertyNotFreeError as e:
                 printing_and_logging(e.exc_message)
+            else:
+                return True
         elif _card_no == 7:
-            execute_chance_7(player, kwargs['throw'])
+            try:
+                execute_chance_7(player, kwargs['throw'])
+            except InsufficientFundsError as e:
+                printing_and_logging(f'{player} cannot buy {utilities_list[player.tile_no]}')
+                printing_and_logging(e.exc_message)
+            except PropertyNotFreeError as e:
+                printing_and_logging(e.exc_message)
+            else:
+                return True
         elif _card_no == 8:
             player.bank_transaction(50)
         elif _card_no == 9:
@@ -112,9 +120,15 @@ def execute_chance_5(player):
     """
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
-    if nearest_railroad not in player.player_portfolio and nearest_railroad.owner is not None:
+    try:
+        check_can_buy_asset(player, nearest_railroad)
+    except InsufficientFundsError:
+        pass
+    except PropertyNotFreeError:
         landlord = nearest_railroad.owner
         player.pay_rent(landlord, nearest_railroad.rent * 2)
+    else:
+        return True
 
 def get_nearest_utility(player):
     """
@@ -140,13 +154,14 @@ def execute_chance_7(player, throw):
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     try:
-        player.buy_asset(nearest_utility)
-    except InsufficientFundsError as e:
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
+        check_can_buy_asset(player, nearest_utility)
+    except InsufficientFundsError:
+        pass
+    except PropertyNotFreeError:
         landlord = nearest_utility.owner
         if check_player_has_color_set(landlord, "Utility"):
             player.pay_rent(landlord, throw * 10)
         else:
             player.pay_rent(landlord, throw * 4)
+    else:
+        return True
