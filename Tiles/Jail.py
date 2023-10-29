@@ -9,8 +9,11 @@ class Jail(SpecialTiles):
     def execute(self, player, option):
         if option == 0:
             player.pay_jail_fine()
+            return True
         elif option == 1:
             player.try_jail_double_throw()
+            if player.in_jail == False:
+                return True
         elif option is not None and option == 2:
             player.get_out_of_jail_free()
 

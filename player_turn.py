@@ -12,10 +12,9 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
-from errors import InsufficientFundsError, PropertyNotFreeError, CannotBuildHotelError, CannotBuildHouseError, \
-    CannotSellHouseError
+from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
-    check_can_sell_hotel, check_can_sell_house, UnownedPropertyError, get_display_options, printing_and_logging
+    check_can_sell_hotel, check_can_sell_house, get_display_options, printing_and_logging
 
 
 def play_turn(player, current_tile, throw=None):
@@ -31,7 +30,7 @@ def play_turn(player, current_tile, throw=None):
         if chance_return_value is not None:
             available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
             option_function_dict = dict(list(enumerate(available_options)))
-            get_display_options(available_options)
+            print(get_display_options(available_options))
             user_input = int(input(f'Select an option from the above: '))
             run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
     elif type(current_tile) == CommunityChestTile:
@@ -39,13 +38,20 @@ def play_turn(player, current_tile, throw=None):
         current_tile.execute(player, card_no, all_players_list=all_players_list)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
         current_tile.execute(player)
-    elif type(current_tile) in [GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
+    elif type(current_tile) in [LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
-    elif type(current_tile) == Jail:
+    elif type(current_tile) == GoToJail:
+        current_tile.execute(player)
+        player.in_jail = True
         available_options = current_tile.get_available_options(player)
         print(get_display_options(available_options))
         player_option = int(input(f'Select an option from the above: '))
-        current_tile.execute(player, player_option)
+        if current_tile.execute(player, player_option):
+            play_turn(player, player.current_tile, throw=throw)
+    elif type(current_tile) == Jail:
+        pass
+
+
 
 def get_available_options_properties(current_tile, player, throw=None):
     """
@@ -93,51 +99,25 @@ def play_turn_property(current_tile, player):
         printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
     except PropertyNotFreeError as e:
+        if current_tile.owner is player:
+            if check_can_build_house(player, current_tile):
+                available_options.append('Build house')
+
+            if check_can_build_hotel(player, current_tile):
+                available_options.append('Build hotel')
+
+            if check_can_sell_house(player, current_tile):
+                available_options.append('Sell house')
+
+            if check_can_sell_hotel(player, current_tile):
+                available_options.append('Sell hotel')
+        else:
+            landlord = current_tile.owner
+            player.pay_rent(landlord, current_tile.rent)
+    except InvalidPropertyTypeError as e:
         printing_and_logging(e.exc_message)
-        landlord = current_tile.owner
-        player.pay_rent(landlord, current_tile.rent)
     else:
         available_options.append('Buy property')
-
-    try:
-        if check_can_build_house(player, current_tile):
-            available_options.append('Build house')
-    except CannotBuildHouseError as e:
-        printing_and_logging(e.exc_message)
-    except UnownedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
-
-    try:
-        if check_can_build_hotel(player, current_tile):
-            available_options.append('Build hotel')
-    except CannotBuildHotelError as e:
-        printing_and_logging(e.exc_message)
-    except UnownedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
-
-    try:
-        if check_can_sell_house(player, current_tile):
-            available_options.append('Sell house')
-    except CannotSellHouseError as e:
-        printing_and_logging(e.exc_message)
-    except UnownedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
-
-    try:
-        if check_can_sell_hotel(player, current_tile):
-            available_options.append('Sell hotel')
-    except CannotSellHouseError as e:
-        printing_and_logging(e.exc_message)
-    except UnownedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
 
     return available_options
 
@@ -161,7 +141,6 @@ def player_turn_railroad(current_tile, player):
         available_options.append('Buy property')
 
     return available_options
-
 
 def player_turn_utility(current_tile, player, throw):
     """

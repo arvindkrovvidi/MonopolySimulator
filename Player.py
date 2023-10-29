@@ -238,18 +238,21 @@ class Player:
         Try to throw a double to get out of jail. You get three turns to throw a double. After three turns, you pay the fine.
         """
         dice1 = self.throw_one_dice()
+        printing_and_logging(f'dice 1: {dice1} ')
         dice2 = self.throw_one_dice()
+        printing_and_logging(f'dice 2: {dice2} ')
         if dice1 == dice2:
             self.in_jail = False
             printing_and_logging(f'{self} threw a double and got out of jail')
+            self.move(dice1 + dice2)
         else:
             self.jail_throw_counter += 1
             printing_and_logging(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
-        if self.jail_throw_counter == 3:
-            self.pay_jail_fine()
-            self.in_jail = False
-            self.jail_throw_counter = 0
-            printing_and_logging(f'{self} used all of their three chances to throw a double.')
+            if self.jail_throw_counter == 3:
+                self.pay_jail_fine()
+                self.in_jail = False
+                self.jail_throw_counter = 0
+                printing_and_logging(f'{self} used all of their three chances to throw a double.')
 
 
     def get_out_of_jail_free(self):

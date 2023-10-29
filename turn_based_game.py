@@ -37,5 +37,3 @@ while turn <= total_turns or not check_any_player_broke(players):
         break
     turn += 1
     printing_and_logging('=================================================================')
-
-# TODO: combine print and log into one function
