@@ -35,7 +35,6 @@ def test_scenario_2(mocker, arvind, jail):
     current_tile = jail
     current_tile.execute(arvind, 1)
     throw = arvind.throw_dice()
-    arvind.move(throw)
     assert arvind.cash == 200
     assert arvind.tile_no == 20
 

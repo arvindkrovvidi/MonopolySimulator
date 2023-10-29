@@ -41,10 +41,13 @@ def play_turn(player, current_tile, throw=None):
     elif type(current_tile) in [GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
     elif type(current_tile) == Jail:
+        player.in_jail = True
         available_options = current_tile.get_available_options(player)
         print(get_display_options(available_options))
         player_option = int(input(f'Select an option from the above: '))
-        current_tile.execute(player, player_option)
+        if current_tile.execute(player, player_option):
+            play_turn(player, player.current_tile, throw=throw)
+
 
 def get_available_options_properties(current_tile, player, throw=None):
     """
