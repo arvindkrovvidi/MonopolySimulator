@@ -24,7 +24,7 @@ def play_turn(player, current_tile, throw=None):
         print(get_display_options(available_options))
         user_input = int(input(f'Select an option from the above: '))
         run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
-    if type(current_tile) == ChanceTile:
+    elif type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, throw=throw)
         if chance_return_value is not None:
@@ -33,7 +33,7 @@ def play_turn(player, current_tile, throw=None):
             get_display_options(available_options)
             user_input = int(input(f'Select an option from the above: '))
             run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
-    if type(current_tile) == CommunityChestTile:
+    elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
         current_tile.execute(player, card_no)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
