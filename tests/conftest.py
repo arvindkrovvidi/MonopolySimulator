@@ -8,6 +8,7 @@ import pytest
 from Player import Player
 from TileIterators import TileList, TileDict
 from Tiles.ChanceTile import ChanceTile
+from Tiles.CommunityChestTile import CommunityChestTile
 from Tiles.Jail import Jail
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
@@ -59,6 +60,10 @@ def chance_22():
 @pytest.fixture
 def chance_36():
     return ChanceTile(name="Chance", tile_no=36)
+
+@pytest.fixture
+def chest_2():
+    return CommunityChestTile('Community Chest', 2)
 
 @pytest.fixture
 def go_fx():
