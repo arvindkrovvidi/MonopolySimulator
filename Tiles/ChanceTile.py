@@ -8,7 +8,7 @@ from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
 from config import logger
 from errors import InsufficientFundsError, PropertyNotFreeError
-from utils import check_passing_go, check_player_has_color_set
+from utils import check_passing_go, check_player_has_color_set, check_can_buy_asset
 
 
 class ChanceTile(SpecialTiles):
@@ -31,20 +31,11 @@ class ChanceTile(SpecialTiles):
             player.move_to(illinois_avenue.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
         elif _card_no == 4:
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
-        elif _card_no == 5:
+        elif _card_no == 5 or _card_no == 6:
             execute_chance_5(player)
             current_railroad = railroad_properties_list[player.tile_no]
             try:
-                player.buy_asset(current_railroad)
-            except InsufficientFundsError as e:
-                logger.info(e.exc_message)
-            except PropertyNotFreeError as e:
-                logger.info(e.exc_message)
-        elif _card_no == 6:
-            execute_chance_5(player)
-            current_railroad = railroad_properties_list[player.tile_no]
-            try:
-                player.buy_asset(current_railroad)
+                check_can_buy_asset(player, current_railroad)
             except InsufficientFundsError as e:
                 logger.info(e.exc_message)
             except PropertyNotFreeError as e:
