@@ -50,8 +50,8 @@ class CommunityChestTile(SpecialTiles):
             player.bank_transaction(10)
         if _card_no == 16:
             player.bank_transaction(100)
-        print(f'{self} played community chest card {_card_no}')
-        logger.info(f'{self} played community chest card {_card_no}')
+        print(f'{player} played community chest card {_card_no}')
+        logger.info(f'{player} played community chest card {_card_no}')
 
 def execute_chest_14(player):
     """
