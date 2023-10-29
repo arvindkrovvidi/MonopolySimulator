@@ -145,7 +145,7 @@ def get_nearest_utility(player):
 
 def execute_chance_7(player, throw):
     """
-    Execute chance card no 5. Move the player to the nearest utility. If the utility is not owned, buy the property.
+    Execute chance card no 7. Move the player to the nearest utility. If the utility is not owned, buy the property.
     If the utility is owned by someone, pay twice the rent to them.
     :param throw: Throw that landed the player in Chance
     :param player: The player who landed on Chance and picked chance card no 5.
