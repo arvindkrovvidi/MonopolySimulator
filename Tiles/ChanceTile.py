@@ -36,6 +36,7 @@ class ChanceTile(SpecialTiles):
             try:
                 check_can_buy_asset(player, current_railroad)
             except InsufficientFundsError as e:
+                printing_and_logging(f'{player} cannot buy {current_railroad}')
                 printing_and_logging(e.exc_message)
             except PropertyNotFreeError as e:
                 printing_and_logging(e.exc_message)

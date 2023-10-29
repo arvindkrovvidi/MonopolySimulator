@@ -20,8 +20,6 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
 def play_turn(player, current_tile, throw=None):
     if type(current_tile) in [Property, Railroad, Utility]:
         available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
-        if available_options is None:
-            return
         option_function_dict = dict(list(enumerate(available_options)))
         print(get_display_options(available_options))
         user_input = int(input(f'Select an option from the above: '))
@@ -58,8 +56,6 @@ def get_available_options_properties(current_tile, player, throw=None):
     elif type(current_tile) == Utility:
         available_options = player_turn_utility(current_tile, player, throw)
 
-    if available_options is None:
-        return
     available_options.append('End turn')
     return available_options
 
@@ -88,12 +84,12 @@ def play_turn_property(current_tile, player):
     try:
         check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
+        printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
     except PropertyNotFreeError as e:
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
-        return None
     else:
         available_options.append('Buy property')
 
@@ -149,12 +145,12 @@ def player_turn_railroad(current_tile, player):
     try:
         check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
+        printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
     except PropertyNotFreeError as e:
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
-        return None
     else:
         available_options.append('Buy property')
 
@@ -172,16 +168,15 @@ def player_turn_utility(current_tile, player, throw):
     try:
         check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
+        printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
     except PropertyNotFreeError as e:
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
             player.pay_rent(landlord, throw * 10)
-            return None
         else:
             player.pay_rent(landlord, throw * 4)
-            return None
     else:
         available_options.append('Buy property')
     return available_options
