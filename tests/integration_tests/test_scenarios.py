@@ -12,7 +12,7 @@ def test_scenario_1(mocker, arvind, jail):
     arvind.move(throw)
     assert arvind.tile_no == 10
     current_tile = jail
-    current_tile.execute(arvind)
+    current_tile.execute(arvind, 0)
     throw = arvind.throw_dice()
     arvind.move(throw)
     assert arvind.cash == 150
@@ -33,7 +33,7 @@ def test_scenario_2(mocker, arvind, jail):
     arvind.move(throw)
     assert arvind.tile_no == 10
     current_tile = jail
-    current_tile.execute(arvind)
+    current_tile.execute(arvind, 1)
     throw = arvind.throw_dice()
     arvind.move(throw)
     assert arvind.cash == 200
@@ -54,7 +54,7 @@ def test_scenario_3(mocker, arvind, jail):
     assert arvind.tile_no == 10
     current_tile = jail
     mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3])
-    current_tile.execute(arvind)
+    current_tile.execute(arvind, 1)
     assert arvind.tile_no == 10
     assert arvind.cash == 200
     mocker.patch.object(arvind, 'throw_one_dice', side_effect=[5, 5])
