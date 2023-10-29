@@ -13,8 +13,7 @@ from Tiles.Jail import Jail
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
-from Tiles_data.special_tiles_data import go
-
+from Tiles.SpecialTiles import SpecialTiles
 
 @pytest.fixture
 def property_rent_data():
@@ -66,8 +65,8 @@ def chest_2():
     return CommunityChestTile('Community Chest', 2)
 
 @pytest.fixture
-def go_fx():
-    return go
+def go():
+    return SpecialTiles(0, 'Go')
 
 @pytest.fixture
 def jail():

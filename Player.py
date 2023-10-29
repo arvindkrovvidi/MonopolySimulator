@@ -27,7 +27,15 @@ class Player:
         self.get_out_of_jail_free_card = 0
         self.in_jail = False
         self.jail_throw_counter = 0
+        self._current_tile = all_tiles_list[self.tile_no]
 
+    @property
+    def current_tile(self):
+        return self._current_tile
+
+    @current_tile.setter
+    def current_tile(self, tile):
+        self._current_tile = tile
 
     @property
     def player_portfolio(self):

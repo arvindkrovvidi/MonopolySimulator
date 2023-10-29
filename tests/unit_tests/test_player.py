@@ -18,6 +18,9 @@ def test_init_correct_values():
     assert arvind.name == "Arvind"
     assert arvind.cash == 500
 
+def test_current_tile(go):
+    arvind = Player("Arvind", 500)
+    assert arvind.current_tile == go
 
 def test_buy_asset(states_avenue, arvind, st_charles_place):
     arvind.cash = 500
