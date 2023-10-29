@@ -1,6 +1,6 @@
 import pytest
 
-from player_turn import run_player_option, get_available_options
+from player_turn import run_player_option, get_available_options_properties
 
 
 def buy_color_set(player, asset_1, asset_2, asset_3):
@@ -79,13 +79,13 @@ def test_run_player_option_sell_hotel(arvind, st_charles_place, virginia_avenue,
 
     assert states_avenue._hotel == False
 
-def test_get_available_options_1(arvind, states_avenue):
+def test_get_available_options_properties_1(arvind, states_avenue):
     """
     Test the available_options list when player lands on a free asset
     """
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
-    available_options = get_available_options(current_tile, arvind)
+    available_options = get_available_options_properties(current_tile, arvind)
     assert 'Buy property' in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
@@ -93,14 +93,14 @@ def test_get_available_options_1(arvind, states_avenue):
     assert 'Sell hotel' not in available_options
     assert 'Do nothing' in available_options
 
-def test_get_available_options_2(arvind, states_avenue):
+def test_get_available_options_properties_2(arvind, states_avenue):
     """
     Test the available_options list when player lands on an asset owned by him but with no color set
     """
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     arvind.buy_asset(states_avenue)
-    available_options = get_available_options(current_tile, arvind)
+    available_options = get_available_options_properties(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
@@ -108,7 +108,7 @@ def test_get_available_options_2(arvind, states_avenue):
     assert 'Sell hotel' not in available_options
     assert 'Do nothing' in available_options
 
-def test_get_available_options_3(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_properties_3(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have the color set
     """
@@ -117,7 +117,7 @@ def test_get_available_options_3(arvind, states_avenue, st_charles_place, virgin
     current_tile = states_avenue
     buy_color_set(arvind, st_charles_place, states_avenue, virginia_avenue)
 
-    available_options = get_available_options(current_tile, arvind)
+    available_options = get_available_options_properties(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' in available_options
     assert 'Build hotel' not in available_options
@@ -125,7 +125,7 @@ def test_get_available_options_3(arvind, states_avenue, st_charles_place, virgin
     assert 'Sell hotel' not in available_options
     assert 'Do nothing' in available_options
 
-def test_get_available_options_4(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_properties_4(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have 4 houses in all the properties in the color set.
     """
@@ -133,7 +133,7 @@ def test_get_available_options_4(arvind, states_avenue, st_charles_place, virgin
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
-    available_options = get_available_options(current_tile, arvind)
+    available_options = get_available_options_properties(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' in available_options
@@ -141,7 +141,7 @@ def test_get_available_options_4(arvind, states_avenue, st_charles_place, virgin
     assert 'Sell hotel' not in available_options
     assert 'Do nothing' in available_options
 
-def test_get_available_options_5(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_properties_5(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have hotels in all the properties in the color set.
     """
@@ -149,7 +149,7 @@ def test_get_available_options_5(arvind, states_avenue, st_charles_place, virgin
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     build_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue)
-    available_options = get_available_options(current_tile, arvind)
+    available_options = get_available_options_properties(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
