@@ -9,7 +9,6 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
-from config import logger
 from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError
 
 
@@ -119,16 +118,13 @@ def check_can_build_house(player, asset):
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
     if asset.building_cost > player.cash:
-        print(f'{player} does not have enough cash to build a house on {asset}')
-        logger.info(f'{player} does not have enough cash to build a house on {asset}')
+        printing_and_logging(f'{player} does not have enough cash to build a house on {asset}')
         return False
     if not check_player_has_color_set(player,asset.color):
-        print(f'{player} does not own all the properties in {asset.color} color set')
-        logger.info(f'{player} does not own all the properties in {asset.color} color set')
+        printing_and_logging(f'{player} does not own all the properties in {asset.color} color set')
         return False
     if asset._houses == 4:
-        print(f'Can build only 4 houses on a property')
-        logger.info(f'Can build only 4 houses on a property')
+        printing_and_logging(f'Can build only 4 houses on a property')
         return False
     data = copy.deepcopy(player.player_portfolio)
     for each_property in data:
@@ -152,8 +148,7 @@ def check_can_build_hotel(player, asset):
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
     if player.cash < asset.building_cost:
-        print(f'{player} does not have enough cash to build a hotel on {asset}')
-        logger.info(f'{player} does not have enough cash to build a hotel on {asset}')
+        printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
     data = copy.deepcopy(asset.owner.player_portfolio)
     for each_property in data:
@@ -174,12 +169,10 @@ def check_can_sell_house(player, asset):
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
     if asset._hotel == True:
-        print(f'Cannot sell house before selling hotel')
-        logger.info(f'Cannot sell house before selling hotel')
+        printing_and_logging(f'Cannot sell house before selling hotel')
         return False
     if asset._houses <= 0:
-        print(f'No more houses to sell')
-        logger.info(f'No more houses to sell')
+        printing_and_logging(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
         if asset._houses < each_property._houses:
@@ -225,7 +218,7 @@ def print_player_summary(players):
     display_winners.field_names = ["Position", "Player", "Net Worth"]
     for pos, win, nw in get_positions(players):
         display_winners.add_row((pos, str(win), nw))
-    print(display_winners)
+    printing_and_logging(display_winners)
 
 def set_color_set_value(player, asset):
     """
@@ -260,3 +253,9 @@ def get_display_options(*args):
     for option in args[0]:
          options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
     return options_string
+
+def printing_and_logging(message, log=True, print_console=True):
+    if log:
+        printing_and_logging(message)
+    if print_console:
+        printing_and_logging(message)
