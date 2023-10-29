@@ -165,7 +165,7 @@ def test_buy_asset_3(arvind, electric_company, water_works):
     """
     Test buy_asset for buying multiple utilities
     """
-    arvind.move_to(electric_company, collect_go_cash_flag=True)
+    arvind.move_to(electric_company.tile_no, collect_go_cash_flag=True)
     arvind.buy_asset(electric_company)
     arvind.buy_asset(water_works)
 
@@ -190,7 +190,7 @@ def test_pay_rent_railroad_2(arvind, arun, pennsylvania_railroad, bo_railroad):
     """
     Test pay_rent function for railroads when owner has multiple railroads.
     """
-    arun.move_to(pennsylvania_railroad, collect_go_cash_flag=True)
+    arun.move_to(pennsylvania_railroad.tile_no, collect_go_cash_flag=True)
     assert pennsylvania_railroad.owner is None
     assert bo_railroad.owner is None
 
