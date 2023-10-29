@@ -4,7 +4,7 @@ from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import logger
 from errors import PlayerBrokeError
-from player_turn import play_turn, run_player_option
+from player_turn import get_available_options, run_player_option
 from utils import check_any_player_broke, print_player_summary, get_display_options
 
 # TODO: Take all inputs for the program from a file
@@ -25,7 +25,7 @@ while turn <= total_turns or not check_any_player_broke(players):
         print(f'{player} landed on {current_tile}')
         logger.info(f'{player} landed on {current_tile}')
         try:
-            available_options = play_turn(current_tile, player, throw)
+            available_options = get_available_options(current_tile, player, throw)
             option_function_dict = dict(list(enumerate(available_options)))
             print(get_display_options(available_options))
             user_input = int(input('Select an option from the above: '))

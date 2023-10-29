@@ -4,7 +4,7 @@ from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import logger
 from errors import PlayerBrokeError
-from player_turn import play_turn
+from player_turn import get_available_options
 from utils import check_any_player_broke, print_player_summary
 
 # TODO: Take all inputs for the program from a file
@@ -23,7 +23,7 @@ while turn <= total_turns or not check_any_player_broke(players):
         current_tile = all_tiles_list[player.tile_no]
         logger.info(f'{player} landed on {current_tile}')
         try:
-            play_turn(current_tile, player, throw)
+            get_available_options(current_tile, player, throw)
             logger.info(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
         except PlayerBrokeError:
             print(f'turn: {turn}, player: {player}, cash: {player.cash}')

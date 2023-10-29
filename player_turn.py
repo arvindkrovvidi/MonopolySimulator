@@ -17,7 +17,7 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
     check_can_sell_hotel, check_can_sell_house, UnownedPropertyError
 
 
-def play_turn(current_tile, player, throw):
+def get_available_options(current_tile, player, throw=None):
     """
     Play turn after throwing the dice and moving to a tile.
     :param current_tile: Tile the player landed on after throwing dice
