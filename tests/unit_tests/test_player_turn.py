@@ -11,7 +11,7 @@ def test_run_player_option_buy_asset(mocker, arvind, st_charles_place, pennsylva
     """
     def mock_buy_asset(player, test_asset):
         test_asset.owner = player
-    option_function_dict = {0: 'Buy asset', 1: 'Do nothing'}
+    option_function_dict = {0: 'Buy property', 1: 'Do nothing'}
     asset = request.getfixturevalue(asset)
     mocker.patch.object(arvind, 'buy_asset', side_effect=mock_buy_asset(arvind, asset))
     run_player_option(arvind, asset, option_function_dict, option)
