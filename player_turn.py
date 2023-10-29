@@ -38,15 +38,19 @@ def play_turn(player, current_tile, throw=None):
         current_tile.execute(player, card_no, all_players_list=all_players_list)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
         current_tile.execute(player)
-    elif type(current_tile) in [GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
+    elif type(current_tile) in [LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
-    elif type(current_tile) == Jail:
+    elif type(current_tile) == GoToJail:
+        current_tile.execute(player)
         player.in_jail = True
         available_options = current_tile.get_available_options(player)
         print(get_display_options(available_options))
         player_option = int(input(f'Select an option from the above: '))
         if current_tile.execute(player, player_option):
             play_turn(player, player.current_tile, throw=throw)
+    elif type(current_tile) == Jail:
+        pass
+
 
 
 def get_available_options_properties(current_tile, player, throw=None):
