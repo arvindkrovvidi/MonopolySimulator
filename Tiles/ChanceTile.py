@@ -1,4 +1,3 @@
-from Player_data import all_players_list
 from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
@@ -65,7 +64,7 @@ class ChanceTile(SpecialTiles):
         elif _card_no == 14:
             player.move_to(reading_railroad.tile_no, collect_go_cash_flag=True)
         elif _card_no == 15:
-            execute_chance_15(player, all_players_list)
+            execute_chance_15(player, kwargs['all_players_list'])
         elif _card_no == 16:
             player.bank_transaction(150)
         printing_and_logging(f'{player} played chance card no {_card_no}')

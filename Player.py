@@ -5,6 +5,7 @@ from TileIterators import TileList
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
+from Tiles_data.all_tiles_data import all_tiles_list
 from config import logger
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError

@@ -1,5 +1,6 @@
 from random import randint
 
+from Player_data import all_players_list
 from Tiles.ChanceTile import ChanceTile
 from Tiles.CommunityChestTile import CommunityChestTile
 from Tiles.FreeParkingTile import FreeParkingTile
@@ -26,7 +27,7 @@ def play_turn(player, current_tile, throw=None):
         run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
     elif type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
-        chance_return_value = current_tile.execute(player, card_no, throw=throw)
+        chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
         if chance_return_value is not None:
             available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
             option_function_dict = dict(list(enumerate(available_options)))
@@ -35,7 +36,7 @@ def play_turn(player, current_tile, throw=None):
             run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
     elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
-        current_tile.execute(player, card_no)
+        current_tile.execute(player, card_no, all_players_list=all_players_list)
     elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
         current_tile.execute(player)
     elif type(current_tile) in [GoToJail, LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:

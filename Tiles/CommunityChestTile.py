@@ -1,4 +1,3 @@
-from Player_data import all_players_list
 from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
@@ -11,7 +10,7 @@ class CommunityChestTile(SpecialTiles):
         self._description = description
         Tile.__init__(self, tile_no, name)
 
-    def execute(self, player, _card_no: int) -> None:
+    def execute(self, player, _card_no: int, **kwargs) -> None:
         """
         Main function that executes chance tile cards based on card number.
         :param player: Player who is picking up the chance card.
@@ -35,7 +34,7 @@ class CommunityChestTile(SpecialTiles):
         if _card_no == 8:
             player.bank_transaction(20)
         if _card_no == 9:
-            execute_chest_9(player, all_players_list)
+            execute_chest_9(player, kwargs['all_players_list'])
         if _card_no == 10:
             player.bank_transaction(100)
         if _card_no == 11:
