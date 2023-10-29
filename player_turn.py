@@ -60,7 +60,7 @@ def get_available_options_properties(current_tile, player, throw=None):
 
     if available_options is None:
         return
-    available_options.append('Do nothing')
+    available_options.append('End turn')
     return available_options
 
 def run_player_option(player, current_tile, option_function_dict, user_input):
@@ -74,7 +74,7 @@ def run_player_option(player, current_tile, option_function_dict, user_input):
         player.sell_house(current_tile)
     elif option_function_dict[user_input] == 'Sell hotel':
         player.sell_hotel(current_tile)
-    elif option_function_dict[user_input] == 'Do nothing':
+    elif option_function_dict[user_input] == 'End turn':
         printing_and_logging(f'{player} did nothing this turn')
         pass
 

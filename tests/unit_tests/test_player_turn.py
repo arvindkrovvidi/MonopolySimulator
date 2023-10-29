@@ -11,7 +11,7 @@ def test_run_player_option_buy_asset(mocker, arvind, st_charles_place, pennsylva
     """
     def mock_buy_asset(player, test_asset):
         test_asset.owner = player
-    option_function_dict = {0: 'Buy property', 1: 'Do nothing'}
+    option_function_dict = {0: 'Buy property', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     mocker.patch.object(arvind, 'buy_asset', side_effect=mock_buy_asset(arvind, asset))
     run_player_option(arvind, asset, option_function_dict, option)
@@ -28,7 +28,7 @@ def test_run_player_option_build_house(mocker, arvind, st_charles_place, option,
     def mock_build_house(test_asset):
         test_asset._houses += 1
 
-    option_function_dict = {0: 'Build house', 1: 'Do nothing'}
+    option_function_dict = {0: 'Build house', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     asset.owner = arvind
     mocker.patch.object(arvind, 'build_house', side_effect=mock_build_house(asset))
@@ -43,7 +43,7 @@ def test_run_player_option_build_hotel(mocker, arvind, st_charles_place, option,
     def mock_build_hotel(test_asset):
         test_asset._hotel = True
 
-    option_function_dict = {0: 'Build hotel', 1: 'Do nothing'}
+    option_function_dict = {0: 'Build hotel', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     asset.owner = arvind
     mocker.patch.object(arvind, 'build_hotel', side_effect=mock_build_hotel(asset))
@@ -58,7 +58,7 @@ def test_run_player_option_sell_house(mocker, arvind, st_charles_place, option, 
     def mock_sell_house(test_asset):
         test_asset._houses -= 1
 
-    option_function_dict = {0: 'Sell house', 1: 'Do nothing'}
+    option_function_dict = {0: 'Sell house', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     asset.owner = arvind
     mocker.patch.object(arvind, 'sell_house', side_effect=mock_sell_house(asset))
@@ -73,7 +73,7 @@ def test_run_player_option_sell_hotel(mocker, arvind, st_charles_place, option, 
     def mock_sell_hotel(test_asset):
         test_asset._hotel = False
 
-    option_function_dict = {0: 'Sell house', 1: 'Do nothing'}
+    option_function_dict = {0: 'Sell house', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     asset.owner = arvind
     asset._hotel = True

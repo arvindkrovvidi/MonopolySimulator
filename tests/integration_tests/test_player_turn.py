@@ -23,7 +23,7 @@ def test_run_player_option_buy_asset(arvind, st_charles_place, pennsylvania_rail
     """
     Test run_player_option for buy_property
     """
-    option_function_dict = {0: 'Buy property', 1: 'Do nothing'}
+    option_function_dict = {0: 'Buy property', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
     run_player_option(arvind, asset, option_function_dict, option)
 
@@ -35,7 +35,7 @@ def test_run_player_option_build_house(arvind, st_charles_place, virginia_avenue
     Test run_player_option for build_house
     """
     arvind.cash = 1000
-    option_function_dict = {0: 'Build house', 1: 'Do nothing'}
+    option_function_dict = {0: 'Build house', 1: 'End turn'}
     arvind.buy_asset(st_charles_place)
     arvind.buy_asset(virginia_avenue)
     arvind.buy_asset(states_avenue)
@@ -48,7 +48,7 @@ def test_run_player_option_build_hotel(arvind, st_charles_place, virginia_avenue
     Test run_player_option for build_hotel
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Build hotel', 1: 'Do nothing'}
+    option_function_dict = {0: 'Build hotel', 1: 'End turn'}
     build_houses(arvind, st_charles_place, virginia_avenue, states_avenue, 4)
     run_player_option(arvind, states_avenue, option_function_dict, 0)
 
@@ -59,7 +59,7 @@ def test_run_player_option_sell_house(arvind, st_charles_place, virginia_avenue,
     Test run_player_option for sell_house
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Sell house', 1: 'Do nothing'}
+    option_function_dict = {0: 'Sell house', 1: 'End turn'}
     buy_color_set(arvind, st_charles_place,states_avenue, virginia_avenue)
     arvind.build_house(states_avenue)
     assert states_avenue._houses == 1
@@ -71,7 +71,7 @@ def test_run_player_option_sell_hotel(arvind, st_charles_place, virginia_avenue,
     Test run_player_option for sell_hotel
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Sell hotel', 1: 'Do nothing'}
+    option_function_dict = {0: 'Sell hotel', 1: 'End turn'}
     build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
     arvind.build_hotel(states_avenue)
     assert states_avenue._hotel == True
@@ -91,7 +91,7 @@ def test_get_available_options_properties_1(arvind, states_avenue):
     assert 'Build hotel' not in available_options
     assert 'Sell house' not in available_options
     assert 'Sell hotel' not in available_options
-    assert 'Do nothing' in available_options
+    assert 'End turn' in available_options
 
 def test_get_available_options_properties_2(arvind, states_avenue):
     """
@@ -106,7 +106,7 @@ def test_get_available_options_properties_2(arvind, states_avenue):
     assert 'Build hotel' not in available_options
     assert 'Sell house' not in available_options
     assert 'Sell hotel' not in available_options
-    assert 'Do nothing' in available_options
+    assert 'End turn' in available_options
 
 def test_get_available_options_properties_3(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
@@ -123,7 +123,7 @@ def test_get_available_options_properties_3(arvind, states_avenue, st_charles_pl
     assert 'Build hotel' not in available_options
     assert 'Sell house' not in available_options
     assert 'Sell hotel' not in available_options
-    assert 'Do nothing' in available_options
+    assert 'End turn' in available_options
 
 def test_get_available_options_properties_4(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
@@ -139,7 +139,7 @@ def test_get_available_options_properties_4(arvind, states_avenue, st_charles_pl
     assert 'Build hotel' in available_options
     assert 'Sell house' in available_options
     assert 'Sell hotel' not in available_options
-    assert 'Do nothing' in available_options
+    assert 'End turn' in available_options
 
 def test_get_available_options_properties_5(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
@@ -155,4 +155,4 @@ def test_get_available_options_properties_5(arvind, states_avenue, st_charles_pl
     assert 'Build hotel' not in available_options
     assert 'Sell house' not in available_options
     assert 'Sell hotel' in available_options
-    assert 'Do nothing' in available_options
+    assert 'End turn' in available_options
