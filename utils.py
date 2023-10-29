@@ -9,6 +9,7 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
+from config import logger
 from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError
 
 
@@ -102,7 +103,17 @@ def check_can_build_house(player, asset):
         raise UnownedPropertyError(asset)
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset.building_cost > player.cash and not check_player_has_color_set(player,asset.color) and asset._houses == 4:
+    if asset.building_cost > player.cash:
+        print(f'{player} does not have enough cash to build a house on {asset}')
+        logger.info(f'{player} does not have enough cash to build a house on {asset}')
+        return False
+    if not check_player_has_color_set(player,asset.color):
+        print(f'{player} does not own all the properties in {asset.color} color set')
+        logger.info(f'{player} does not own all the properties in {asset.color} color set')
+        return False
+    if asset._houses == 4:
+        print(f'Can build only 4 houses on a property')
+        logger.info(f'Can build only 4 houses on a property')
         return False
     data = copy.deepcopy(player.player_portfolio)
     for each_property in data:
@@ -126,6 +137,8 @@ def check_can_build_hotel(player, asset):
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
     if player.cash < asset.building_cost:
+        print(f'{player} does not have enough cash to build a hotel on {asset}')
+        logger.info(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
     data = copy.deepcopy(asset.owner.player_portfolio)
     for each_property in data:
@@ -145,7 +158,13 @@ def check_can_sell_house(player, asset):
         raise UnownedPropertyError(asset)
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset._hotel == True or asset._houses <= 0:
+    if asset._hotel == True:
+        print(f'Cannot sell house before selling hotel')
+        logger.info(f'Cannot sell house before selling hotel')
+        return False
+    if asset._houses <= 0:
+        print(f'No more houses to sell')
+        logger.info(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
         if asset._houses < each_property._houses:
