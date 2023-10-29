@@ -168,7 +168,7 @@ class Player:
         if amount > 0:
             printing_and_logging(f'{self} collected {amount} from the the bank')
         else:
-            printing_and_logging(f'{self} paid the the bank an amount of {amount}')
+            printing_and_logging(f'{self} paid the the bank an amount of {-amount}')
 
 
     def build_house(self, asset):
