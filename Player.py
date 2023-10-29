@@ -135,6 +135,8 @@ class Player:
         :param player: The player to whom the rent has to be paid
         :param rent: The rent to be paid to the player
         """
+        if player == self:
+            return
         if self.cash - rent < 0:
             print(f'{self} cannot pay {player} rent of {rent}')
             raise PlayerBrokeError(player)
