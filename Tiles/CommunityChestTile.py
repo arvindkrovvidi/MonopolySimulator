@@ -16,6 +16,7 @@ class CommunityChestTile(SpecialTiles):
         :param player: Player who is picking up the chance card.
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
+        printing_and_logging(f'{player} picked community chest card number {_card_no}')
         if _card_no == 1:
             player.move_to(go.tile_no)
             player.bank_transaction(200)
@@ -49,7 +50,6 @@ class CommunityChestTile(SpecialTiles):
             player.bank_transaction(10)
         if _card_no == 16:
             player.bank_transaction(100)
-        printing_and_logging(f'{player} played community chest card {_card_no}')
 
 def execute_chest_14(player):
     """
