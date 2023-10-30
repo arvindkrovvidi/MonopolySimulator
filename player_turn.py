@@ -50,8 +50,6 @@ def play_turn(player, current_tile, throw=None):
         if current_tile.execute(player, player_option):
             play_turn(player, player.current_tile, throw=throw)
 
-
-
 def get_available_options_properties(current_tile, player, throw=None):
     """
     Play turn after throwing the dice and moving to a tile.

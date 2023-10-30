@@ -17,11 +17,17 @@ game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", 
 player_broke = False
 while turn <= total_turns or not check_any_player_broke(players):
     for player in players:
-        printing_and_logging(f'{player} turn. Cash: {player.cash}')
-        throw = player.throw_dice()
-        player.move(throw)
-        current_tile = all_tiles_list[player.tile_no]
-        printing_and_logging(f'{player} landed on {current_tile}.')
+        printing_and_logging(f'{player} turn. Location: {all_tiles_list[player.tile_no]}  Cash: {player.cash}')
+        if not player.in_jail:
+            throw = player.throw_dice()
+            player.move(throw)
+            current_tile = all_tiles_list[player.tile_no]
+            printing_and_logging(f'{player} landed on {current_tile}.')
+        else:
+            current_tile = all_tiles_list[player.tile_no]
+            printing_and_logging(f'{player} is in Jail')
+            # TODO: This throw should show two dice individually
+            throw = player.throw_dice()
         try:
             play_turn(player, current_tile, throw)
             printing_and_logging(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
@@ -39,3 +45,12 @@ while turn <= total_turns or not check_any_player_broke(players):
     printing_and_logging('=================================================================')
 
 #TODO Add trading properties
+#TODO Location of player not updating
+#TODO Chance tile moving player to location but not giving option to buy property
+#TODO Add mortgaging
+#TODO Game hanging after last double throw try
+#TODO Display Properties in color in terminal
+#TODO Check if you can pay fine and move in the same turn
+#TODO Go cash should be paid before options are shown
+#TODO View player portfolio during game
+#TODO: Display community chest/chance cards information in game

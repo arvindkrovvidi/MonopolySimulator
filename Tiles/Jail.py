@@ -7,18 +7,25 @@ class Jail(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
     def execute(self, player, option):
-        if option == 0:
-            player.pay_jail_fine()
-            return True
-        elif option == 1:
-            player.try_jail_double_throw()
-            if player.in_jail == False:
+        if player.in_jail:
+            if option == 0:
+                player.pay_jail_fine()
                 return True
-        elif option is not None and option == 2:
-            player.get_out_of_jail_free()
+            elif option == 1:
+                player.try_jail_double_throw()
+                if not player.in_jail:
+                    return True
+            elif option is not None and option == 2:
+                player.get_out_of_jail_free()
+        else:
+            if option == 0:
+                pass
 
     def get_available_options(self, player):
-        available_options = ['Pay fine', 'Try double throw']
-        if player.get_out_of_jail_free_card:
-            available_options.append('Use get out of jail free card')
+        if player.in_jail:
+            available_options = ['Pay fine', 'Try double throw']
+            if player.get_out_of_jail_free_card:
+                available_options.append('Use get out of jail free card')
+        else:
+            available_options = ['End turn']
         return available_options
