@@ -24,12 +24,16 @@ class ChanceTile(SpecialTiles):
         printing_and_logging(f'{player} picked chance card number {_card_no}')
         if _card_no == 1:
             player.move_to(boardwalk.tile_no, collect_go_cash_flag=False)
+            return True
         elif _card_no == 2:
             player.move_to(go.tile_no, collect_go_cash_flag=False)
+            return True
         elif _card_no == 3:
             player.move_to(illinois_avenue.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
+            return True
         elif _card_no == 4:
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
+            return True
         elif _card_no == 5 or _card_no == 6:
             try:
                 execute_chance_5(player)
@@ -56,6 +60,7 @@ class ChanceTile(SpecialTiles):
             player.get_out_of_jail_free_card += 1
         elif _card_no == 10:
             player.move(-3)
+            printing_and_logging(f'{player} moved three steps back')
         elif _card_no == 11:
             player.move_to(10, collect_go_cash_flag=False)
         elif _card_no == 12:
@@ -64,6 +69,7 @@ class ChanceTile(SpecialTiles):
             player.bank_transaction(-15)
         elif _card_no == 14:
             player.move_to(reading_railroad.tile_no, collect_go_cash_flag=True)
+            return True
         elif _card_no == 15:
             execute_chance_15(player, kwargs['all_players_list'])
         elif _card_no == 16:
