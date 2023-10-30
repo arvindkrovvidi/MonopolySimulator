@@ -82,7 +82,6 @@ def check_can_buy_asset(player, asset):
     :param asset: Property, Railroad or utility
     :return: True if the player can buy the asset. Else False.
     """
-    printing_and_logging(f'{asset} costs {asset.cost}')
     if asset.owner is not None:
         raise PropertyNotFreeError(asset)
     if asset.owner is player:
