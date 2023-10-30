@@ -17,11 +17,11 @@ game_details.field_names = ["Turn", "Player", "Dice throw", "Current Property", 
 player_broke = False
 while turn <= total_turns or not check_any_player_broke(players):
     for player in players:
-        printing_and_logging(f'{player} turn')
+        printing_and_logging(f'{player} turn. Cash: {player.cash}')
         throw = player.throw_dice()
         player.move(throw)
         current_tile = all_tiles_list[player.tile_no]
-        printing_and_logging(f'{player} landed on {current_tile}')
+        printing_and_logging(f'{player} landed on {current_tile}.')
         try:
             play_turn(player, current_tile, throw)
             printing_and_logging(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
@@ -37,3 +37,5 @@ while turn <= total_turns or not check_any_player_broke(players):
         break
     turn += 1
     printing_and_logging('=================================================================')
+
+#TODO Add trading properties
