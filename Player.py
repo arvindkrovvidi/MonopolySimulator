@@ -132,7 +132,7 @@ class Player:
             self.cash += 200
         if tile_no == 10:
             self.in_jail = True
-        printing_and_logging(f'{self} moved to {tile_no}')
+        printing_and_logging(f'{self} moved to {self.current_tile}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
