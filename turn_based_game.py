@@ -4,7 +4,7 @@ from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
 from errors import PlayerBrokeError
 from player_turn import play_turn
-from utils import check_any_player_broke, print_player_summary, printing_and_logging
+from utils import check_any_player_broke, print_player_summary, printing_and_logging, get_display_options
 
 # TODO: Take all inputs for the program from a file
 total_turns = 1000
@@ -27,7 +27,14 @@ while turn <= total_turns or not check_any_player_broke(players):
             current_tile = all_tiles_list[player.tile_no]
             printing_and_logging(f'{player} is in Jail')
             # TODO: This throw should show two dice individually
-            throw = player.throw_dice()
+            available_options = current_tile.get_available_options(player)
+            print(get_display_options(available_options))
+            player_option = int(input(f'Select an option from the above: '))
+            if current_tile.execute(player, player_option):
+                throw = player.throw_dice()
+                play_turn(player, player.current_tile, throw=None)
+            else:
+                break
         try:
             play_turn(player, current_tile, throw)
             printing_and_logging(f"Turn: {turn}, Player: {str(player)}, cash: {player.cash} ")
