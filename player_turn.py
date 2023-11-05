@@ -19,7 +19,7 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
 
 def play_turn(player, current_tile, throw=None):
     if type(current_tile) in [Property, Railroad, Utility]:
-        printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}    Color: {current_tile.color} ')
+        printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
         available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
         option_function_dict = dict(list(enumerate(available_options)))
         print(get_display_options(available_options))
