@@ -1,5 +1,3 @@
-from prettytable import PrettyTable
-
 from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
 from errors import PlayerBrokeError
