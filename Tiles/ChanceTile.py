@@ -23,18 +23,23 @@ class ChanceTile(SpecialTiles):
         """
         printing_and_logging(f'{player} picked chance card number {_card_no}')
         if _card_no == 1:
+            printing_and_logging(f'Advance to Boardwalk')
             player.move_to(boardwalk.tile_no, collect_go_cash_flag=False)
             return True
         elif _card_no == 2:
-            player.move_to(go.tile_no, collect_go_cash_flag=False)
+            printing_and_logging(f'Advance to Go(collect 200)')
+            player.move_to(go.tile_no, collect_go_cash_flag=True)
             return True
         elif _card_no == 3:
+            printing_and_logging(f'Advance to Illinois Avenue. If you pass Go, collect $200')
             player.move_to(illinois_avenue.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
             return True
         elif _card_no == 4:
+            printing_and_logging(f'Advance to St. Charles Place. If you pass Go, collect $200')
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
             return True
         elif _card_no == 5 or _card_no == 6:
+            printing_and_logging(f'Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled')
             try:
                 execute_chance_5(player)
             except InsufficientFundsError as e:
@@ -45,6 +50,7 @@ class ChanceTile(SpecialTiles):
             else:
                 return True
         elif _card_no == 7:
+            printing_and_logging(f'Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.')
             try:
                 execute_chance_7(player, kwargs['throw'])
             except InsufficientFundsError as e:
@@ -55,24 +61,34 @@ class ChanceTile(SpecialTiles):
             else:
                 return True
         elif _card_no == 8:
+            printing_and_logging(f'Bank pays you dividend of $50')
             player.bank_transaction(50)
         elif _card_no == 9:
+            printing_and_logging(f'Get Out of Jail Free')
             player.get_out_of_jail_free_card += 1
         elif _card_no == 10:
+            printing_and_logging(f'Go Back 3 Spaces')
             player.move(-3)
             printing_and_logging(f'{player} moved three steps back')
+            return True
         elif _card_no == 11:
+            printing_and_logging(f'Go to Jail. Go directly to Jail, do not pass Go, do not collect $200')
             player.move_to(10, collect_go_cash_flag=False)
         elif _card_no == 12:
+            printing_and_logging(f'Make general repairs on all your property. For each house pay$25. For each hotel pay $100')
             execute_chance_12(player)
         elif _card_no == 13:
+            printing_and_logging(f'Speeding fine $15')
             player.bank_transaction(-15)
         elif _card_no == 14:
+            printing_and_logging(f'Take a trip to Reading Railroad. If you pass Go, collect $200')
             player.move_to(reading_railroad.tile_no, collect_go_cash_flag=True)
             return True
         elif _card_no == 15:
+            printing_and_logging(f'You have been elected Chairman of the Board. Pay each player $50')
             execute_chance_15(player, kwargs['all_players_list'])
         elif _card_no == 16:
+            printing_and_logging(f'Your building loan matures. Collect $150')
             player.bank_transaction(150)
 
 
