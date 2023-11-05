@@ -120,6 +120,7 @@ class Player:
                     pass
                 else:
                     self.cash += go_cash
+                    printing_and_logging(f'{self} collected {go_cash} for passing Go')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
@@ -130,6 +131,7 @@ class Player:
         self.tile_no = tile_no
         if collect_go_cash_flag:
             self.cash += 200
+            printing_and_logging(f'{self} collected {go_cash} for passing Go')
         if tile_no == 10:
             self.in_jail = True
         printing_and_logging(f'{self} moved to {all_tiles_list[tile_no]}')
