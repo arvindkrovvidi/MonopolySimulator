@@ -54,12 +54,11 @@ def main():
 if __name__ == "__main__":
     main()
 #TODO Add trading properties
-#TODO Location of player not updating
-#TODO Chance tile moving player to location but not giving option to buy property
 #TODO Add mortgaging
 #TODO Game hanging after last double throw try
 #TODO Display Properties in color in terminal
-#TODO Check if you can pay fine and move in the same turn
+#TODO Check if you can pay fine and move in the same turn - yes
 #TODO Go cash should be paid before options are shown
 #TODO View player portfolio during game
 #TODO: Display community chest/chance cards information in game
+#TODO Add "purchase get out of jail free card from another player" function
