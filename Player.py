@@ -67,7 +67,7 @@ class Player:
         :param asset: Property, Railroad or Utility.
         """
         if check_can_buy_asset(self, asset):
-            self.cash -= asset.cost
+            self.bank_transaction(-asset.cost)
             self.player_portfolio.append(asset)
             asset.owner = self
         if type(asset) is Property:
@@ -119,7 +119,7 @@ class Player:
                 if self.tile_no == 0:
                     pass
                 else:
-                    self.cash += go_cash
+                    self.bank_transaction(go_cash)
                     printing_and_logging(f'{self} collected {go_cash} for passing Go')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
@@ -130,7 +130,7 @@ class Player:
         """
         self.tile_no = tile_no
         if collect_go_cash_flag:
-            self.cash += 200
+            self.bank_transaction(go_cash)
             printing_and_logging(f'{self} collected {go_cash} for passing Go')
         if tile_no == 10:
             self.in_jail = True
@@ -147,8 +147,7 @@ class Player:
             return
         if self.cash - rent < 0:
             raise PlayerBrokeError(player)
-        self.cash -= rent
-        player.cash += rent
+        self.player_transaction(player, -rent)
         printing_and_logging(f'{self} paid {player} rent of amount {rent}')
 
     def player_transaction(self, player, amount: int) -> None:
@@ -190,7 +189,7 @@ class Player:
         try:
             if check_can_build_house(self, asset):
                 asset._houses += 1
-                self.cash -= asset.building_cost
+                self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a house on {asset}')
             else:
                 printing_and_logging(f'{self} cannot build a house on {asset}')
@@ -212,7 +211,7 @@ class Player:
         try:
             if check_can_build_hotel(self, asset):
                 asset._hotel = True
-                self.cash -= asset.building_cost
+                self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a hotel on {asset}')
             else:
                 printing_and_logging(f'{self} cannot build a hotel on {asset}')
