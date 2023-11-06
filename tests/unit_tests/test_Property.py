@@ -1,5 +1,6 @@
 import pytest
 
+from Board import ANSI_COLOR_CODES
 from Tiles.Property import Property
 
 
@@ -20,10 +21,6 @@ def test_rent(st_charles_place, color_set, houses, hotel, expected_rent):
     assert st_charles_place.rent == expected_rent
 
 
-def test_str(states_avenue):
-    assert str(states_avenue) == "States Avenue"
-
-
 def test_eq(states_avenue, property_rent_data):
-    test_property = Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100)
+    test_property = Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES['PINK'])
     assert test_property == states_avenue

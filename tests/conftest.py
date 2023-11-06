@@ -14,6 +14,7 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles.SpecialTiles import SpecialTiles
+from Board import ANSI_COLOR_CODES
 
 @pytest.fixture
 def property_rent_data():
@@ -25,27 +26,27 @@ def property_rent_data():
 
 @pytest.fixture
 def reading_railroad(property_rent_data):
-    return Railroad(5, "Reading Railroad", 200, property_rent_data["Reading Railroad"]["Rent"], "Railroad")
+    return Railroad(5, "Reading Railroad", 200, property_rent_data["Reading Railroad"]["Rent"], "Railroad", ANSI_COLOR_CODES["WHITE"])
 
 @pytest.fixture
 def bo_railroad(property_rent_data):
-    return Railroad(25, "B & O Railroad", 200, property_rent_data["B & O Railroad"]["Rent"], "Railroad")
+    return Railroad(25, "B & O Railroad", 200, property_rent_data["B & O Railroad"]["Rent"], "Railroad", ANSI_COLOR_CODES["WHITE"])
 
 @pytest.fixture
 def short_line_railroad(property_rent_data):
-    return Railroad(35, "Short Line", 200, property_rent_data["Short Line"]["Rent"], "Railroad")
+    return Railroad(35, "Short Line", 200, property_rent_data["Short Line"]["Rent"], "Railroad", ANSI_COLOR_CODES["WHITE"])
 
 @pytest.fixture
 def pennsylvania_railroad(property_rent_data):
-    return Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"], "Railroad")
+    return Railroad(15, "Pennsylvania Railroad", 200, property_rent_data["Pennsylvania Railroad"]["Rent"], "Railroad", ANSI_COLOR_CODES["WHITE"])
 
 @pytest.fixture
 def electric_company(property_rent_data):
-    return Utility(12, "Electric Company", 150, None, "Utility")
+    return Utility(12, "Electric Company", 150, None, "Utility", ANSI_COLOR_CODES["WHITE"])
 
 @pytest.fixture
 def water_works(property_rent_data):
-    return Utility(28, "Water Works", 150, None, "Utility")
+    return Utility(28, "Water Works", 150, None, "Utility", ANSI_COLOR_CODES["WHITE"])
 
 
 @pytest.fixture
@@ -74,21 +75,21 @@ def jail():
 
 @pytest.fixture
 def st_james_place(property_rent_data):
-    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100)
+    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["ORANGE"])
 
 @pytest.fixture
 def states_avenue(property_rent_data):
-    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100)
+    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
 
 
 @pytest.fixture
 def st_charles_place(property_rent_data):
-    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"], "Pink", 100)
+    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
 
 
 @pytest.fixture
 def virginia_avenue(property_rent_data):
-    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink", 100)
+    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
 
 @pytest.fixture
 def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue):

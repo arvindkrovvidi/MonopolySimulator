@@ -67,7 +67,7 @@ class Player:
         :param asset: Property, Railroad or Utility.
         """
         if check_can_buy_asset(self, asset):
-            self.cash -= asset.cost
+            self.bank_transaction(-asset.cost)
             self.player_portfolio.append(asset)
             asset.owner = self
         if type(asset) is Property:
@@ -101,6 +101,8 @@ class Player:
         else:
             self.double_counter = 0
         printing_and_logging(f'{self} threw a {dice1 + dice2}')
+        if self.double_counter == 3:
+            printing_and_logging(f'{self} threw three doubles in a row.')
         return dice1 + dice2
 
     def move(self, throw: int) -> None:
@@ -110,8 +112,6 @@ class Player:
         """
         if not self.in_jail:
             self.tile_no += throw
-            if self.tile_no == 30:
-                self.in_jail = True
             if self.tile_no < 0:
                 self.tile_no = 40 + throw
             if self.tile_no  > max_tile_no:
@@ -119,7 +119,8 @@ class Player:
                 if self.tile_no == 0:
                     pass
                 else:
-                    self.cash += go_cash
+                    self.bank_transaction(go_cash)
+                    printing_and_logging(f'{self} collected {go_cash} for passing Go')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
@@ -129,10 +130,11 @@ class Player:
         """
         self.tile_no = tile_no
         if collect_go_cash_flag:
-            self.cash += 200
+            self.bank_transaction(go_cash)
+            printing_and_logging(f'{self} collected {go_cash} for passing Go')
         if tile_no == 10:
             self.in_jail = True
-        printing_and_logging(f'{self} moved to {tile_no}')
+        printing_and_logging(f'{self} moved to {all_tiles_list[tile_no]}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
@@ -145,8 +147,7 @@ class Player:
             return
         if self.cash - rent < 0:
             raise PlayerBrokeError(player)
-        self.cash -= rent
-        player.cash += rent
+        self.player_transaction(player, -rent)
         printing_and_logging(f'{self} paid {player} rent of amount {rent}')
 
     def player_transaction(self, player, amount: int) -> None:
@@ -188,7 +189,7 @@ class Player:
         try:
             if check_can_build_house(self, asset):
                 asset._houses += 1
-                self.cash -= asset.building_cost
+                self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a house on {asset}')
             else:
                 printing_and_logging(f'{self} cannot build a house on {asset}')
@@ -210,7 +211,7 @@ class Player:
         try:
             if check_can_build_hotel(self, asset):
                 asset._hotel = True
-                self.cash -= asset.building_cost
+                self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a hotel on {asset}')
             else:
                 printing_and_logging(f'{self} cannot build a hotel on {asset}')
@@ -241,18 +242,20 @@ class Player:
         printing_and_logging(f'dice 1: {dice1} ')
         dice2 = self.throw_one_dice()
         printing_and_logging(f'dice 2: {dice2} ')
+        self.jail_throw_counter += 1
         if dice1 == dice2:
             self.in_jail = False
             printing_and_logging(f'{self} threw a double and got out of jail')
             self.move(dice1 + dice2)
+            return dice1 + dice2
         else:
-            self.jail_throw_counter += 1
             printing_and_logging(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
-            if self.jail_throw_counter == 3:
-                self.pay_jail_fine()
-                self.in_jail = False
-                self.jail_throw_counter = 0
-                printing_and_logging(f'{self} used all of their three chances to throw a double.')
+        if self.jail_throw_counter == 3:
+            self.pay_jail_fine()
+            self.in_jail = False
+            self.jail_throw_counter = 0
+            printing_and_logging(f'{self} used all of their three chances to throw a double.')
+            return dice1 + dice2
 
 
     def get_out_of_jail_free(self):

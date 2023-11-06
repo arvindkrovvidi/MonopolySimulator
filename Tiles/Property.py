@@ -3,8 +3,8 @@ from Tiles.Tile import Tile
 
 class Property(Tile):
 
-    def __init__(self, tile_no, name, cost, rent, color, building_cost):
-        super().__init__(tile_no, name)
+    def __init__(self, tile_no, name, cost, rent, color, building_cost, color_code):
+        super().__init__(tile_no, name, color_code)
         self.cost = cost
         self.color = color
         self._rent = rent

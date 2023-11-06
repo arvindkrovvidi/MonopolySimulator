@@ -15,3 +15,14 @@ color_data = {
     "Railroad": 4,
     "Utility": 2
 }
+ANSI_COLOR_CODES = {
+    "RED": "\033[91m",
+    "GREEN": "\033[92m",
+    "YELLOW": "\033[38;5;226m",
+    "ORANGE": "\033[38;5;208m",
+    "BROWN": "\033[38;2;150;75;0m",
+    "LIGHT BLUE": "\033[0;94m",
+    "PINK": "\033[0;95m",
+    "BLUE": "\033[0;34m",
+    "WHITE": "\033[0;97m"
+}

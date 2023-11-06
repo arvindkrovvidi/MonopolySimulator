@@ -1,7 +1,7 @@
 from Tiles.Tile import Tile
 class Railroad(Tile):
-    def __init__(self, tile_no, name, cost, rent, color):
-        Tile.__init__(self, tile_no, name)
+    def __init__(self, tile_no, name, cost, rent, color, color_code):
+        Tile.__init__(self, tile_no, name, color_code)
         self.cost = cost
         self._rent = rent
         self._owner = None

@@ -153,6 +153,8 @@ def check_can_build_hotel(player, asset):
         return False
     data = copy.deepcopy(asset.owner.player_portfolio)
     for each_property in data:
+        if type(each_property) in [Railroad, Utility]:
+            break
         if each_property._houses < 4:
             return False
     return True

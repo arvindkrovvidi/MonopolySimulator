@@ -19,6 +19,7 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
 
 def play_turn(player, current_tile, throw=None):
     if type(current_tile) in [Property, Railroad, Utility]:
+        printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
         available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
         option_function_dict = dict(list(enumerate(available_options)))
         print(get_display_options(available_options))
@@ -42,16 +43,13 @@ def play_turn(player, current_tile, throw=None):
         current_tile.execute(player)
     elif type(current_tile) == GoToJail:
         current_tile.execute(player)
-        player.in_jail = True
-        available_options = current_tile.get_available_options(player)
-        print(get_display_options(available_options))
-        player_option = int(input(f'Select an option from the above: '))
-        if current_tile.execute(player, player_option):
-            play_turn(player, player.current_tile, throw=throw)
     elif type(current_tile) == Jail:
+        # available_options = current_tile.get_available_options(player)
+        # print(get_display_options(available_options))
+        # player_option = int(input(f'Select an option from the above: '))
+        # if current_tile.execute(player, player_option):
+        #     play_turn(player, player.current_tile, throw=throw)
         pass
-
-
 
 def get_available_options_properties(current_tile, player, throw=None):
     """
