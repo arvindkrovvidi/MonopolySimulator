@@ -59,3 +59,5 @@ if __name__ == "__main__":
 #TODO Game hanging after last double throw try
 #TODO View player portfolio during game
 #TODO Add "purchase get out of jail free card from another player" function
+#TODO Add ability to keep playing until the player selects end turn option
+#TODO Player need not land on a property to build houses/hotels on it.
