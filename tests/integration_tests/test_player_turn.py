@@ -1,21 +1,8 @@
 import pytest
 
 from player_turn import run_player_option, get_available_options_properties
+from tests.common import build_houses, build_all_hotels, buy_color_set
 
-
-def buy_color_set(player, asset_1, asset_2, asset_3):
-    for asset in [asset_1, asset_2, asset_3]:
-        player.buy_asset(asset)
-def build_houses(player, asset_1, asset_2, asset_3, num_houses):
-    buy_color_set(player, asset_1, asset_2, asset_3)
-    for i in range(0,num_houses):
-        for asset in [asset_1, asset_2, asset_3]:
-            player.build_house(asset)
-
-def build_all_hotels(player, asset_1, asset_2, asset_3):
-    build_houses(player, asset_1, asset_2, asset_3, 4)
-    for asset in [asset_1, asset_2, asset_3]:
-        player.build_hotel(asset)
 
 @pytest.mark.parametrize("asset",["st_charles_place", "pennsylvania_railroad", "electric_company"])
 @pytest.mark.parametrize("option", [0])

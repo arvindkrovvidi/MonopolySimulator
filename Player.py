@@ -309,3 +309,25 @@ class Player:
         except PropertyNotFreeError as e:
             logger.error(e.exc_message, exc_info=True)
             raise CannotSellHotelError(self, asset)
+
+    def sell_all_hotels(self, color):
+        """
+        Sell hotels on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for each_property in property_list:
+                self.sell_hotel(each_property)
+
+    def sell_all_houses(self, color):
+        """
+        Sell all houses on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if
+                         (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for i in range(0, 4):
+            for each_property in property_list:
+                if each_property._houses != 0:
+                    if not self.sell_house(each_property):
+                        continue
