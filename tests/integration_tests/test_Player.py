@@ -354,21 +354,21 @@ def test_sell_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenu
 
 
 def test_sell_all_houses_1(arvind, st_charles_place, virginia_avenue, states_avenue):
-        """
+    """
         Test sell_all_houses function when each property in the color set has 4 houses
         """
-        arvind.cash = 2000
-        build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
+    arvind.cash = 2000
+    build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
 
-        assert st_charles_place._houses == 4
-        assert virginia_avenue._houses == 4
-        assert states_avenue._houses == 4
+    assert st_charles_place._houses == 4
+    assert virginia_avenue._houses == 4
+    assert states_avenue._houses == 4
 
-        arvind.sell_all_houses(states_avenue.color)
+    arvind.sell_all_houses(states_avenue.color)
 
-        assert st_charles_place._houses == 0
-        assert virginia_avenue._houses == 0
-        assert states_avenue._houses == 0
+    assert st_charles_place._houses == 0
+    assert virginia_avenue._houses == 0
+    assert states_avenue._houses == 0
 
 
 def test_sell_all_houses_2(arvind, st_charles_place, virginia_avenue, states_avenue):
@@ -392,4 +392,36 @@ def test_sell_all_houses_2(arvind, st_charles_place, virginia_avenue, states_ave
     assert st_charles_place._houses == 0
     assert virginia_avenue._houses == 0
     assert states_avenue._houses == 0
+
+
+def test_mortgage_property_1(arvind, arun, st_charles_place):
+    """
+    Test mortgage_property when property has no houses and hotels
+    """
+    arvind.cash = 2000
+    arvind.buy_asset(st_charles_place)
+    arvind.mortgage_property(st_charles_place)
+    assert arvind.cash == 1930
+
+    arun.pay_rent(arvind, st_charles_place.rent)
+
+    assert arvind.cash == 1930
+    assert arun.cash == 200
+
+def test_mortgage_property_2(arvind, arun, st_charles_place, states_avenue, virginia_avenue):
+    """
+    Test mortgage_property when property has hotels
+    """
+    arvind.cash = 2000
+    build_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue)
+    assert arvind.cash == 60
+    arvind.mortgage_property(st_charles_place)
+    assert arvind.cash == 880
+
+    arun.pay_rent(arvind, st_charles_place.rent)
+
+    assert arvind.cash == 880
+    assert arun.cash == 200
+
+
 

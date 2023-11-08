@@ -6,12 +6,12 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
-from config import logger
+from config import logger, printing_and_logging
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
 from utils import check_player_has_color_set, check_can_build_hotel, \
     set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house, \
-    UnownedPropertyError, PropertyNotFreeError, printing_and_logging
+    UnownedPropertyError, PropertyNotFreeError
 
 
 class Player:
@@ -331,3 +331,20 @@ class Player:
                 if each_property._houses != 0:
                     if not self.sell_house(each_property):
                         continue
+
+    def mortgage_property(self, asset):
+        """
+        Mortgage a property. Receive the mortgage value of the property. Rent cannot be collected on mortgaged property.
+        :param asset: The asset being mortgaged.
+        """
+        self.sell_all_hotels(asset.color)
+        self.sell_all_houses(asset.color)
+        self.bank_transaction(asset.cost / 2)
+        asset.mortgaged = True
+        printing_and_logging(f'{self} mortgaged {asset}')
+
+
+
+
+
+
