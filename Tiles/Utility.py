@@ -6,8 +6,8 @@ class Utility(Tile):
         self.cost = cost
         self._rent = rent
         self._owner = None
-        self._utilities_owned = 0
         self.color = color
+        self.mortgaged = False
 
     @property
     def owner(self):
@@ -20,7 +20,10 @@ class Utility(Tile):
             value.player_portfolio.append(self)
 
     def get_rent(self, throw):
-        if self.owner._utilities_owned == 1:
+        if self.mortgaged:
+            return 0
+        utilities_owned = len([asset for asset in self.owner.player_portfolio if type(asset) is Utility])
+        if utilities_owned == 1:
             return 4 * throw
         elif utilities_owned == 2:
             return 10 * throw
