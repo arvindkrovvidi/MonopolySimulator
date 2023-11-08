@@ -34,6 +34,7 @@ class Property(Tile):
     @property
     def rent(self):
         if self.mortgaged:
+            printing_and_logging(f'{self} is mortgaged')
             return 0
         if not self._color_set:
             return self._rent["Site"]
