@@ -9,7 +9,7 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
-from config import logger
+from config import printing_and_logging
 from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError
 
 
@@ -257,8 +257,3 @@ def get_display_options(*args):
          options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
     return options_string
 
-def printing_and_logging(message, log=True, print_console=True):
-    if log:
-        logger.info(message)
-    if print_console:
-        print(message)

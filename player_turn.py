@@ -12,9 +12,10 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
+from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
-    check_can_sell_hotel, check_can_sell_house, get_display_options, printing_and_logging
+    check_can_sell_hotel, check_can_sell_house, get_display_options
 
 
 def play_turn(player, current_tile, throw=None):

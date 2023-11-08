@@ -1,4 +1,5 @@
 from Tiles.Tile import Tile
+from config import printing_and_logging
 
 
 class Property(Tile):

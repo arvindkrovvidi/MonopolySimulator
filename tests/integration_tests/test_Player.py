@@ -1,7 +1,7 @@
 import pytest
 
 from errors import PropertyNotFreeError
-from tests.common import build_houses, buy_color_set
+from tests.common import build_houses, buy_color_set, build_all_hotels
 
 
 def test_buy_asset_1(arvind, st_charles_place):
@@ -318,7 +318,8 @@ def test_sell_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue):
     assert virginia_avenue._hotel == False
     assert arvind.cash == 160
 
-@pytest.mark.parametrize('asset1_hotels, asset2_hotels, asset3_hotels',[
+
+@pytest.mark.parametrize('asset1_hotels, asset2_hotels, asset3_hotels', [
     (False, False, False),
     (False, False, True),
     (False, True, False),
@@ -328,7 +329,8 @@ def test_sell_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue):
     (True, True, False),
     (True, True, True)
 ])
-def test_sell_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue, asset1_hotels, asset2_hotels, asset3_hotels, pennsylvania_railroad, electric_company):
+def test_sell_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue, asset1_hotels, asset2_hotels,
+                         asset3_hotels, pennsylvania_railroad, electric_company):
     """
     Test sell_all_hotels function
     """
@@ -349,6 +351,7 @@ def test_sell_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenu
     assert st_charles_place._hotel == False
     assert virginia_avenue._hotel == False
     assert states_avenue._hotel == False
+
 
 def test_sell_all_houses_1(arvind, st_charles_place, virginia_avenue, states_avenue):
         """

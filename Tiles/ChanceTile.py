@@ -5,8 +5,9 @@ from Tiles_data.Property_data import boardwalk, illinois_avenue, st_charles_plac
 from Tiles_data.railroad_property_data import reading_railroad, railroad_properties_list
 from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
+from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError
-from utils import check_passing_go, check_player_has_color_set, check_can_buy_asset, printing_and_logging
+from utils import check_passing_go, check_player_has_color_set, check_can_buy_asset
 
 
 class ChanceTile(SpecialTiles):

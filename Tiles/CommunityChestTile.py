@@ -2,7 +2,7 @@ from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
 from Tiles_data.special_tiles_data import go
-from utils import printing_and_logging
+from config import printing_and_logging
 
 
 class CommunityChestTile(SpecialTiles):
