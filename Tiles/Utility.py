@@ -22,6 +22,6 @@ class Utility(Tile):
     def get_rent(self, throw):
         if self.owner._utilities_owned == 1:
             return 4 * throw
-        elif self.owner._utilities_owned == 2:
+        elif utilities_owned == 2:
             return 10 * throw
 

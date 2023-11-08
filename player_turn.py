@@ -152,9 +152,9 @@ def player_turn_utility(current_tile, player, throw):
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, throw * 10)
+            player.pay_rent(landlord, current_tile.get_rent(throw))
         else:
-            player.pay_rent(landlord, throw * 4)
+            player.pay_rent(landlord, current_tile.get_rent(throw))
     else:
         available_options.append('Buy property')
     return available_options

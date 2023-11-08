@@ -181,8 +181,8 @@ def execute_chance_7(player, throw):
     except PropertyNotFreeError:
         landlord = nearest_utility.owner
         if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, throw * 10)
+            player.pay_rent(landlord, nearest_utility.get_rent(throw))
         else:
-            player.pay_rent(landlord, throw * 4)
+            player.pay_rent(landlord, nearest_utility.get_rent(throw))
     else:
         return True

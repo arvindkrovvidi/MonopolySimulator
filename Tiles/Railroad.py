@@ -20,3 +20,5 @@ class Railroad(Tile):
     @property
     def rent(self):
         return self._rent[self.owner._railroads_owned - 1]
+        railroads_owned = len([asset for asset in self.owner.player_portfolio if type(asset) is Railroad])
+        return self._rent[railroads_owned - 1]
