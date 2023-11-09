@@ -6,12 +6,12 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
-from config import logger
+from config import logger, printing_and_logging
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
 from utils import check_player_has_color_set, check_can_build_hotel, \
     set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house, \
-    UnownedPropertyError, PropertyNotFreeError, printing_and_logging
+    UnownedPropertyError, PropertyNotFreeError
 
 
 class Player:
@@ -166,7 +166,7 @@ class Player:
         else:
             printing_and_logging(f'{self} paid the {player} an amount of {amount}')
 
-    def bank_transaction(self, amount: int) -> None:
+    def bank_transaction(self, amount: float) -> None:
         """
         Collect or pay the bank a certain amount.
         :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
@@ -309,3 +309,51 @@ class Player:
         except PropertyNotFreeError as e:
             logger.error(e.exc_message, exc_info=True)
             raise CannotSellHotelError(self, asset)
+
+    def sell_all_hotels(self, color):
+        """
+        Sell hotels on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for each_property in property_list:
+                self.sell_hotel(each_property)
+
+    def sell_all_houses(self, color):
+        """
+        Sell all houses on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if
+                         (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for i in range(0, 4):
+            for each_property in property_list:
+                if each_property._houses != 0:
+                    if not self.sell_house(each_property):
+                        continue
+
+    def mortgage_property(self, asset):
+        """
+        Mortgage a property. Receive the mortgage value of the property. Rent cannot be collected on mortgaged property.
+        :param asset: The asset being mortgaged.
+        """
+        self.sell_all_hotels(asset.color)
+        self.sell_all_houses(asset.color)
+        self.bank_transaction(asset.cost / 2)
+        asset.mortgaged = True
+        printing_and_logging(f'{self} mortgaged {asset}')
+
+    def unmortgage_property(self, asset):
+        """
+        Unmortgage a mortgaged property. Pay an additional 10% on top of the mortgage amount to unmortgage it. Rent can be collected once the property is unmortgaged.
+        :param asset: The asset being unmortgaged.
+        """
+        unmortgage_amount = (asset.cost / 2) * 1.1
+        self.bank_transaction(-unmortgage_amount)
+        asset.mortgaged = False
+        printing_and_logging(f'{self} unmortgaged {asset}')
+
+
+
+
+

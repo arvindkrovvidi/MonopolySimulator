@@ -12,9 +12,10 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
+from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
-    check_can_sell_hotel, check_can_sell_house, get_display_options, printing_and_logging
+    check_can_sell_hotel, check_can_sell_house, get_display_options
 
 
 def play_turn(player, current_tile, throw=None):
@@ -44,11 +45,6 @@ def play_turn(player, current_tile, throw=None):
     elif type(current_tile) == GoToJail:
         current_tile.execute(player)
     elif type(current_tile) == Jail:
-        # available_options = current_tile.get_available_options(player)
-        # print(get_display_options(available_options))
-        # player_option = int(input(f'Select an option from the above: '))
-        # if current_tile.execute(player, player_option):
-        #     play_turn(player, player.current_tile, throw=throw)
         pass
 
 def get_available_options_properties(current_tile, player, throw=None):
@@ -157,9 +153,9 @@ def player_turn_utility(current_tile, player, throw):
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, throw * 10)
+            player.pay_rent(landlord, current_tile.get_rent(throw))
         else:
-            player.pay_rent(landlord, throw * 4)
+            player.pay_rent(landlord, current_tile.get_rent(throw))
     else:
         available_options.append('Buy property')
     return available_options

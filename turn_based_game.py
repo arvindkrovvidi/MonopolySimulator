@@ -1,8 +1,11 @@
 from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
+from config import printing_and_logging
 from errors import PlayerBrokeError
 from player_turn import play_turn
-from utils import check_any_player_broke, print_player_summary, printing_and_logging, get_display_options
+from utils import check_any_player_broke, print_player_summary, get_display_options
+
+
 def main():
     turn = 1
     total_turns = 1000
@@ -56,3 +59,5 @@ if __name__ == "__main__":
 #TODO Game hanging after last double throw try
 #TODO View player portfolio during game
 #TODO Add "purchase get out of jail free card from another player" function
+#TODO Add ability to keep playing until the player selects end turn option
+#TODO Player need not land on a property to build houses/hotels on it.

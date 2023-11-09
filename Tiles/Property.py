@@ -1,4 +1,5 @@
 from Tiles.Tile import Tile
+from config import printing_and_logging
 
 
 class Property(Tile):
@@ -13,6 +14,7 @@ class Property(Tile):
         self._houses = 0
         self._hotel = False
         self._building_cost = building_cost
+        self.mortgaged = False
 
     def __eq__(self, other):
         if self.name == other.name and self.tile_no == other.tile_no and self.cost == other.cost and self.color == other.color:
@@ -31,6 +33,9 @@ class Property(Tile):
 
     @property
     def rent(self):
+        if self.mortgaged:
+            printing_and_logging(f'{self} is mortgaged')
+            return 0
         if not self._color_set:
             return self._rent["Site"]
         if self._houses != 0:

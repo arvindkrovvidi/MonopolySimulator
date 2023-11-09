@@ -6,6 +6,7 @@ class Railroad(Tile):
         self._rent = rent
         self._owner = None
         self.color = color
+        self.mortgaged = False
 
     @property
     def owner(self):
@@ -19,4 +20,7 @@ class Railroad(Tile):
 
     @property
     def rent(self):
-        return self._rent[self.owner._railroads_owned - 1]
+        if self.mortgaged:
+            return 0
+        railroads_owned = len([asset for asset in self.owner.player_portfolio if type(asset) is Railroad])
+        return self._rent[railroads_owned - 1]

@@ -25,11 +25,10 @@ def test_execute_chance_5_railroad_occupied(arvind, arun, mocker, short_line_rai
     arvind.tile_no = 36
     short_line_railroad.owner = arun
     arun.player_portfolio.append(short_line_railroad)
-    arun.railroads_owned = 2
     mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
     execute_chance_5(arvind)
-    assert arun.cash == 300
-    assert arvind.cash == 100
+    assert arun.cash == 250
+    assert arvind.cash == 150
     assert arvind.tile_no == short_line_railroad.tile_no
 
 
