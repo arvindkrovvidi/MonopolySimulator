@@ -166,7 +166,7 @@ class Player:
         else:
             printing_and_logging(f'{self} paid the {player} an amount of {amount}')
 
-    def bank_transaction(self, amount: int) -> None:
+    def bank_transaction(self, amount: float) -> None:
         """
         Collect or pay the bank a certain amount.
         :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
@@ -343,6 +343,15 @@ class Player:
         asset.mortgaged = True
         printing_and_logging(f'{self} mortgaged {asset}')
 
+    def unmortgage_property(self, asset):
+        """
+        Unmortgage a mortgaged property. Pay an additional 10% on top of the mortgage amount to unmortgage it. Rent can be collected once the property is unmortgaged.
+        :param asset: The asset being unmortgaged.
+        """
+        unmortgage_amount = (asset.cost / 2) * 1.1
+        self.bank_transaction(-unmortgage_amount)
+        asset.mortgaged = False
+        printing_and_logging(f'{self} unmortgaged {asset}')
 
 
 

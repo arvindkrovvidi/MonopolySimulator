@@ -408,6 +408,7 @@ def test_mortgage_property_1(arvind, arun, st_charles_place):
     assert arvind.cash == 1930
     assert arun.cash == 200
 
+
 def test_mortgage_property_2(arvind, arun, st_charles_place, states_avenue, virginia_avenue):
     """
     Test mortgage_property when property has hotels
@@ -424,4 +425,79 @@ def test_mortgage_property_2(arvind, arun, st_charles_place, states_avenue, virg
     assert arun.cash == 200
 
 
+def test_unmortgage_property_1(arvind, arun, st_charles_place, states_avenue, virginia_avenue):
+    """
+    Test unmortgage_property for properties
+    """
 
+    arvind.cash = 2000
+    build_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue)
+    assert arvind.cash == 60
+    arvind.mortgage_property(st_charles_place)
+    assert arvind.cash == 880
+
+    arun.pay_rent(arvind, st_charles_place.rent)
+
+    assert arvind.cash == 880
+    assert arun.cash == 200
+
+    arvind.unmortgage_property(st_charles_place)
+
+    assert arvind.cash == 803
+
+    arun.pay_rent(arvind, st_charles_place.rent)
+
+    assert arvind.cash == 823
+    assert arun.cash == 180
+
+def test_unmortgage_property_2(arvind, arun, pennsylvania_railroad, short_line_railroad, bo_railroad, reading_railroad):
+    """
+    Test unmortgage_property for railroads
+    """
+
+    arvind.cash = 2000
+    buy_color_set(arvind, [pennsylvania_railroad, short_line_railroad, bo_railroad, reading_railroad])
+
+    assert arvind.cash == 1200
+    arvind.mortgage_property(pennsylvania_railroad)
+    assert arvind.cash == 1300
+
+    arun.pay_rent(arvind, pennsylvania_railroad.rent)
+
+    assert arvind.cash == 1300
+    assert arun.cash == 200
+
+    arvind.unmortgage_property(pennsylvania_railroad)
+
+    assert arvind.cash == 1190
+
+    arun.pay_rent(arvind, pennsylvania_railroad.rent)
+
+    assert arvind.cash == 1390
+    assert arun.cash == 0
+
+def test_unmortgage_property_3(arvind, arun, electric_company, water_works):
+    """
+    Test unmortgage_property for utilities
+    """
+
+    arvind.cash = 2000
+    buy_color_set(arvind, [electric_company, water_works])
+
+    assert arvind.cash == 1700
+    arvind.mortgage_property(electric_company)
+    assert arvind.cash == 1775
+
+    arun.pay_rent(arvind, electric_company.get_rent(10))
+
+    assert arvind.cash == 1775
+    assert arun.cash == 200
+
+    arvind.unmortgage_property(electric_company)
+
+    assert arvind.cash == 1692.5
+
+    arun.pay_rent(arvind, electric_company.get_rent(10))
+
+    assert arvind.cash == 1792.5
+    assert arun.cash == 100
