@@ -335,7 +335,7 @@ def test_sell_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenu
     Test sell_all_hotels function
     """
     arvind.cash = 2000
-    build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
+    build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 4)
     arvind.buy_asset(pennsylvania_railroad)
     arvind.buy_asset(electric_company)
 
@@ -358,7 +358,7 @@ def test_sell_all_houses_1(arvind, st_charles_place, virginia_avenue, states_ave
         Test sell_all_houses function when each property in the color set has 4 houses
         """
     arvind.cash = 2000
-    build_houses(arvind, st_charles_place, states_avenue, virginia_avenue, 4)
+    build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 4)
 
     assert st_charles_place._houses == 4
     assert virginia_avenue._houses == 4
@@ -376,7 +376,7 @@ def test_sell_all_houses_2(arvind, st_charles_place, virginia_avenue, states_ave
     Test sell_all_houses function when each property in the color set has unequal number of houses
     """
     arvind.cash = 2000
-    buy_color_set(arvind, st_charles_place, virginia_avenue, states_avenue)
+    buy_color_set(arvind, [st_charles_place, virginia_avenue, states_avenue])
     arvind.build_house(st_charles_place)
     arvind.build_house(virginia_avenue)
     arvind.build_house(states_avenue)
@@ -414,7 +414,7 @@ def test_mortgage_property_2(arvind, arun, st_charles_place, states_avenue, virg
     Test mortgage_property when property has hotels
     """
     arvind.cash = 2000
-    build_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue)
+    build_all_hotels(arvind, [st_charles_place, states_avenue, virginia_avenue])
     assert arvind.cash == 60
     arvind.mortgage_property(st_charles_place)
     assert arvind.cash == 880
@@ -431,7 +431,7 @@ def test_unmortgage_property_1(arvind, arun, st_charles_place, states_avenue, vi
     """
 
     arvind.cash = 2000
-    build_all_hotels(arvind, st_charles_place, states_avenue, virginia_avenue)
+    build_all_hotels(arvind, [st_charles_place, states_avenue, virginia_avenue])
     assert arvind.cash == 60
     arvind.mortgage_property(st_charles_place)
     assert arvind.cash == 880
