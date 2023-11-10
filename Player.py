@@ -98,9 +98,10 @@ class Player:
         dice2 = self.throw_one_dice()
         if dice1 == dice2:
             self.double_counter += 1
+            printing_and_logging(f'{self} threw a double: {dice1} and {dice2}. Total: {dice1 + dice2}')
         else:
             self.double_counter = 0
-        printing_and_logging(f'{self} threw a {dice1 + dice2}')
+            printing_and_logging(f'{self} threw a {dice1 + dice2}')
         if self.double_counter == 3:
             printing_and_logging(f'{self} threw three doubles in a row.')
         return dice1 + dice2
@@ -162,9 +163,9 @@ class Player:
         self.cash += amount
         player.cash -= amount
         if amount > 0:
-            printing_and_logging(f'{self} collected {amount} from the {player}')
+            printing_and_logging(f'{self} collected {amount} from {player}')
         else:
-            printing_and_logging(f'{self} paid the {player} an amount of {amount}')
+            printing_and_logging(f'{self} paid {player} an amount of {-amount}')
 
     def bank_transaction(self, amount: float) -> None:
         """
@@ -172,7 +173,7 @@ class Player:
         :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
         """
         if self.cash + amount < 0:
-            printing_and_logging(f'{self} cannot pay the bank amount of {-amount}')
+            printing_and_logging(f'{self} cannot pay the bank an amount of {-amount}')
             raise PlayerBrokeError(self)
         self.cash += amount
         if amount > 0:
