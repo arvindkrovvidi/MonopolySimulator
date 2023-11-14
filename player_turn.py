@@ -159,3 +159,23 @@ def player_turn_utility(current_tile, player, throw):
     else:
         available_options.append('Buy property')
     return available_options
+
+def play_turn_jail(player):
+    """
+    Defines how to proceed if player is in jail at the beginning of their turn
+    :param player: The player that is in jail.
+    """
+    current_tile = all_tiles_list[player.tile_no]
+    printing_and_logging(f'{player} is in Jail')
+    available_options = current_tile.get_available_options(player)
+    print(get_display_options(available_options))
+    player_option = int(input(f'Select an option from the above: '))
+    jail_output = current_tile.execute(player, player_option)
+    if jail_output == 'Paid fine':
+        throw = player.throw_dice()
+        player.move(throw)
+        current_tile = all_tiles_list[player.tile_no]
+        printing_and_logging(f'{player} landed on {current_tile}.')
+        play_turn(player, current_tile, throw)
+    elif type(jail_output) == int:
+        play_turn(player, current_tile, jail_output)
