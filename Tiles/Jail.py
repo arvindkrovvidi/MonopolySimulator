@@ -10,7 +10,7 @@ class Jail(SpecialTiles):
         if player.in_jail:
             if option == 0:
                 player.pay_jail_fine()
-                return True
+                return 'Paid fine'
             elif option == 1:
                 throw = player.try_jail_double_throw()
                 if not player.in_jail:
