@@ -155,7 +155,7 @@ def test_get_available_options_properties_5(arvind, states_avenue, st_charles_pl
     assert 'End turn' in available_options
 
 
-def test_play_turn_jail_1(mocker, arvind, states_avenue, jail):
+def test_play_turn_jail_1(mocker, arvind, states_avenue):
     """
     Test play_turn_jail when the player chooses to pay the fine
     """
@@ -168,7 +168,18 @@ def test_play_turn_jail_1(mocker, arvind, states_avenue, jail):
     assert arvind.tile_no == 13
     assert states_avenue in arvind.player_portfolio
 
-def test_play_turn_jail_2(arvind):
+def test_play_turn_jail_2(mocker, arvind, virginia_avenue):
     """
-    Test play_turn_jail when the player chooses to try double throw
+    Test play_turn_jail when the player chooses to try double throw and throws a double
     """
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', side_effect=['1', '0'])
+    mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
+    mocker.patch.object(arvind, 'throw_dice', return_value=2)
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 340
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 14
+    assert virginia_avenue in arvind.player_portfolio
