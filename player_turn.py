@@ -178,4 +178,6 @@ def play_turn_jail(player):
         printing_and_logging(f'{player} landed on {current_tile}.')
         play_turn(player, current_tile, throw)
     elif type(jail_output) == int:
+        current_tile = all_tiles_list[player.tile_no]
+        printing_and_logging(f'{player} landed on {current_tile}.')
         play_turn(player, current_tile, jail_output)
