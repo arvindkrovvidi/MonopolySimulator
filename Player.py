@@ -103,7 +103,7 @@ class Player:
             self.double_counter = 0
             printing_and_logging(f'{self} threw a {dice1 + dice2}')
         if self.double_counter == 3:
-            self.in_jail = True
+            self.move_to(10, collect_go_cash_flag=False)
             printing_and_logging(f'{self} threw three doubles in a row.')
         return dice1 + dice2
 
