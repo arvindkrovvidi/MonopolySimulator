@@ -47,7 +47,5 @@ if __name__ == "__main__":
 #TODO "No more houses to sell" remove this print statement
 #TODO When Arvind lands in jail and chooses to try double throw, he gets his 3 chances immediately without other players getting their chances in the middle
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
-#TODO It is your birthday. Collect $10 from every player. Collecting from self.
-#TODO After passing go, display cash
 #TODO Player not getting second turn for throwing double when the first turn of the double gave only 1 option(end turn)
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
