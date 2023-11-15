@@ -197,3 +197,23 @@ def test_play_turn_jail_3(mocker, arvind):
     assert arvind.in_jail == True
     assert arvind.cash == 500
     assert arvind.tile_no == 10
+
+def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
+    """
+    Test play_turn_jail when the player fails to throw doubles three times
+    """
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', side_effect=['1', '1', '1', '0'])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3, 2, 3])
+
+    play_turn_jail(arvind)
+    play_turn_jail(arvind)
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 250
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 15
+    assert pennsylvania_railroad in arvind.player_portfolio
+
+

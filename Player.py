@@ -255,6 +255,7 @@ class Player:
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
             self.in_jail = False
+            self.move(dice1 + dice2)
             self.jail_throw_counter = 0
             printing_and_logging(f'{self} used all of their three chances to throw a double.')
             return dice1 + dice2
