@@ -183,3 +183,17 @@ def test_play_turn_jail_2(mocker, arvind, virginia_avenue):
     assert arvind.in_jail == False
     assert arvind.tile_no == 14
     assert virginia_avenue in arvind.player_portfolio
+
+def test_play_turn_jail_3(mocker, arvind):
+    """
+    Test play_turn_jail when the player chooses to try double throw and does not throw a double
+    """
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', return_value='1')
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3])
+    play_turn_jail(arvind)
+
+    assert arvind.in_jail == True
+    assert arvind.cash == 500
+    assert arvind.tile_no == 10
