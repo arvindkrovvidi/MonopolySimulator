@@ -180,3 +180,9 @@ def play_turn_jail(player):
         player.move(jail_output)
         current_tile = all_tiles_list[player.tile_no]
         play_turn(player, current_tile, jail_output)
+
+def throw_move_and_play_turn(player):
+    throw = player.throw_dice()
+    player.move(throw)
+    current_tile = all_tiles_list[player.tile_no]
+    play_turn(player, current_tile, throw)
