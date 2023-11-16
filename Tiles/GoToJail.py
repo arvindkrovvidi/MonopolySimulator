@@ -8,4 +8,5 @@ class GoToJail(SpecialTiles):
     def execute(self, player):
         player.move_to(10, collect_go_cash_flag=False)
         player.in_jail = True
+        player.double_counter = 0
 
