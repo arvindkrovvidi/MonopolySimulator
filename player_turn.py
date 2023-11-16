@@ -92,7 +92,7 @@ def play_turn_property(current_tile, player):
     except InsufficientFundsError as e:
         printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
+    except PropertyNotFreeError:
         if current_tile.owner is player:
             if check_can_build_house(player, current_tile):
                 available_options.append('Build house')
