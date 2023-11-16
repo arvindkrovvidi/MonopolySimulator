@@ -17,6 +17,8 @@ class Jail(SpecialTiles):
                     return throw
             elif option is not None and option == 2:
                 player.get_out_of_jail_free()
+                throw = player.throw_dice()
+                return throw
         else:
             if option == 0:
                 pass
