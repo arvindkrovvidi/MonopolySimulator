@@ -178,6 +178,8 @@ def check_can_sell_house(player, asset):
         printing_and_logging(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
+        if type(each_property) in [Railroad, Utility]:
+            break
         if asset._houses < each_property._houses:
             return False
     return True
