@@ -28,10 +28,14 @@ def main():
             except PlayerBrokeError:
                 printing_and_logging(f'turn: {turn}, player: {player}, cash: {player.cash}')
                 print_player_summary(players)
+                player_broke = True
+                break
             else:
                 turn += 1
                 printing_and_logging('---------------------------------------------------------------')
         printing_and_logging('=================================================================')
+        if player_broke:
+            break
 
 if __name__ == "__main__":
     main()
