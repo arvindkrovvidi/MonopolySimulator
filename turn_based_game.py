@@ -16,14 +16,22 @@ def main():
             try:
                 printing_and_logging(f'{player} turn. Location: {all_tiles_list[player.tile_no]}  Cash: {player.cash}')
                 if not player.in_jail:
-                    while player.double_counter < 3:
+                    throw = player.throw_dice()
+                    player.move(throw)
+                    current_tile = all_tiles_list[player.tile_no]
+                    play_turn(player, current_tile, throw)
+                    if player.double_counter == 1:
                         throw = player.throw_dice()
                         player.move(throw)
                         current_tile = all_tiles_list[player.tile_no]
-                        printing_and_logging(f'{player} landed on {current_tile}.')
                         play_turn(player, current_tile, throw)
-                        if player.double_counter == 0:
-                            break
+                    if player.double_counter == 2:
+                        throw = player.throw_dice()
+                        player.move(throw)
+                        current_tile = all_tiles_list[player.tile_no]
+                        play_turn(player, current_tile, throw)
+                    if player.double_counter == 3:
+                        player.move_to(10, collect_go_cash_flag=False)
                 else:
                     play_turn_jail(player)
             except PlayerBrokeError:
@@ -49,3 +57,8 @@ if __name__ == "__main__":
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
 #TODO Player not getting second turn for throwing double when the first turn of the double gave only 1 option(end turn)
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
+#TODO Player should not be able to play the turn and instead go to jail on the third double.
+#TODO Set double counter to 0 after player lands in jail. Player does not get to play again when they throw a double to get out of jail(using any of the three methods)
+#TODO Build hotel option appearing without player building 4 houses on all properties in the color set
+#TODO Printing infinite  ====== when player tries double throw in one turn and then tries to pay fine and get out of jail in next turn.
+#TODO Print the tile player landed on in the move function
