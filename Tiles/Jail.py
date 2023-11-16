@@ -26,7 +26,7 @@ class Jail(SpecialTiles):
     def get_available_options(self, player):
         if player.in_jail:
             available_options = ['Pay fine', 'Try double throw']
-            if player.get_out_of_jail_free_card:
+            if player.get_out_of_jail_free_card > 0:
                 available_options.append('Use get out of jail free card')
         else:
             available_options = ['End turn']

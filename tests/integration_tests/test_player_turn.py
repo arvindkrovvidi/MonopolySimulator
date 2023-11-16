@@ -216,4 +216,36 @@ def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
     assert arvind.tile_no == 15
     assert pennsylvania_railroad in arvind.player_portfolio
 
+def test_play_turn_jail_5(mocker, arvind, pennsylvania_railroad):
+    """
+    Test play_turn_jail when the player fails to throw double in first try and pays fine in second try.
+    """
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', side_effect=['1', '0', '0'])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3])
 
+    play_turn_jail(arvind)
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 250
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 15
+    assert pennsylvania_railroad in arvind.player_portfolio
+
+def test_play_turn_jail_6(mocker, arvind, pennsylvania_railroad):
+    """
+    Test play_turn_jail when the player uses get out of jail free card.
+    """
+    arvind.get_out_of_jail_free_card = 1
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', side_effect=['2', '0'])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3])
+
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 300
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 15
+    assert pennsylvania_railroad in arvind.player_portfolio
