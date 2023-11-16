@@ -123,6 +123,7 @@ class Player:
                 else:
                     self.bank_transaction(go_cash)
                     printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+        printing_and_logging(f'{self} landed on {all_tiles_list[self.tile_no]}')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
