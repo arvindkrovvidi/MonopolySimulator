@@ -45,14 +45,9 @@ if __name__ == "__main__":
 #TODO Add "purchase get out of jail free card from another player" function
 #TODO Add ability to keep playing until the player selects end turn option
 #TODO Player need not land on a property to build houses/hotels on it.
-#TODO If player does not roll a double in third turn, they pay 50 and get out of jail and move to the tile with that third throw. Player should be able to play their turn after landing ona tile.
-#TODO If player pays fine, they can get out in the same turn and be able to play that turn.
 #TODO "No more houses to sell" remove this print statement
-#TODO When Arvind lands in jail and chooses to try double throw, he gets his 3 chances immediately without other players getting their chances in the middle
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
-#TODO Player not getting second turn for throwing double when the first turn of the double gave only 1 option(end turn)
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
-#TODO Player should not be able to play the turn and instead go to jail on the third double.
 #TODO Set double counter to 0 after player lands in jail. Player does not get to play again when they throw a double to get out of jail(using any of the three methods)
 #TODO Build hotel option appearing without player building 4 houses on all properties in the color set
 #TODO Handle invalid inputs
