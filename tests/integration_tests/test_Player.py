@@ -450,6 +450,7 @@ def test_unmortgage_property_1(arvind, arun, st_charles_place, states_avenue, vi
     assert arvind.cash == 823
     assert arun.cash == 180
 
+
 def test_unmortgage_property_2(arvind, arun, pennsylvania_railroad, short_line_railroad, bo_railroad, reading_railroad):
     """
     Test unmortgage_property for railroads
@@ -476,6 +477,7 @@ def test_unmortgage_property_2(arvind, arun, pennsylvania_railroad, short_line_r
     assert arvind.cash == 1390
     assert arun.cash == 0
 
+
 def test_unmortgage_property_3(arvind, arun, electric_company, water_works):
     """
     Test unmortgage_property for utilities
@@ -501,3 +503,37 @@ def test_unmortgage_property_3(arvind, arun, electric_company, water_works):
 
     assert arvind.cash == 1792.5
     assert arun.cash == 100
+
+
+def test_throw_dice_1(mocker, arvind):
+    """
+    Test throw_dice when ignore_double is False
+    """
+    mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
+
+    assert arvind.throw_dice() == 4
+    assert arvind.double_counter == 1
+
+def test_throw_dice_2(mocker, arvind):
+    """
+    Test throw_dice when ignore_double is True
+    """
+    mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
+
+    assert arvind.throw_dice(ignore_double=True) == 4
+    assert arvind.double_counter == 0
+
+def test_throw_dice_3(mocker, arvind):
+    """
+    Test throw_dice when ignore_double is False and player throws three doubles
+    """
+    mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
+
+    arvind.throw_dice()
+    arvind.throw_dice()
+    throw = arvind.throw_dice()
+
+    assert throw == 4
+    assert arvind.double_counter == 3
+    assert arvind.tile_no == 10
+
