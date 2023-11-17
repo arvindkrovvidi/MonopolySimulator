@@ -26,7 +26,7 @@ def main():
                 else:
                     play_turn_jail(player)
             except PlayerBrokeError:
-                printing_and_logging(f'turn: {turn}, player: {player}, cash: {player.cash}')
+                printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
                 print_player_summary(players)
                 player_broke = True
                 break
