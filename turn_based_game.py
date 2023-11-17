@@ -48,6 +48,5 @@ if __name__ == "__main__":
 #TODO "No more houses to sell" remove this print statement
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
-#TODO Set double counter to 0 after player lands in jail. Player does not get to play again when they throw a double to get out of jail(using any of the three methods)
 #TODO Build hotel option appearing without player building 4 houses on all properties in the color set
 #TODO Handle invalid inputs
