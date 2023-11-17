@@ -151,34 +151,16 @@ def test_check_can_build_house_3(arvind, st_charles_place, states_avenue, virgin
     (2, 2, 1, False)
 ])
 def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                 property_2_house, property_3_house, expected):
-    arvind.player_portfolio.append(st_charles_place)
-    arvind.player_portfolio.append(states_avenue)
-    arvind.player_portfolio.append(virginia_avenue)
+                                 property_2_house, property_3_house, expected_1, expected_2, expected_3):
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
-    assert check_can_build_hotel(arvind, st_charles_place) == expected
-
-
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (4, 4, 4, True)
-])
-def test_check_can_build_hotel_2(arvind, mocker, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                 property_2_house, property_3_house, expected, property_data_by_color):
-    arvind.player_portfolio.append(st_charles_place)
-    arvind.player_portfolio.append(states_avenue)
-    arvind.player_portfolio.append(virginia_avenue)
-    st_charles_place.owner = arvind
-    states_avenue.owner = arvind
-    virginia_avenue.owner = arvind
-    st_charles_place._houses = property_1_house
-    states_avenue._houses = property_2_house
-    virginia_avenue._houses = property_3_house
-    assert check_can_build_hotel(arvind, st_charles_place) == expected
+    assert check_can_build_hotel(arvind, st_charles_place) == expected_1
+    assert check_can_build_hotel(arvind, states_avenue) == expected_2
+    assert check_can_build_hotel(arvind, virginia_avenue) == expected_3
 
 
 @pytest.mark.parametrize("arvind_cash, arun_cash, padma_cash, adityam_cash, expected", [
