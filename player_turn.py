@@ -66,6 +66,9 @@ def get_available_options_properties(current_tile, player, throw=None):
     return available_options
 
 def run_player_option(player, current_tile, option_function_dict, user_input):
+    """
+    Run the function corresponding to the option the player selects.
+    """
     if option_function_dict[user_input] == 'Buy property':
         player.buy_asset(current_tile)
     elif option_function_dict[user_input] == 'Build house':
