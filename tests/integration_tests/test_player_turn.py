@@ -1,7 +1,7 @@
 import pytest
 
 from player_turn import run_player_option, get_available_options_properties, play_turn_jail, play_turn_property, \
-    play_turn_railroad
+    play_turn_railroad, play_turn_utility
 from tests.common import build_houses, build_all_hotels, buy_color_set
 
 
@@ -368,6 +368,44 @@ def test_play_turn_railroad_3(arvind, arun, pennsylvania_railroad):
     assert arun.cash == 25
 
 def test_play_turn_railroad_4(arvind, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad):
+    """
+    Test play_turn_property when player already owns all the railroads
+    """
+    arvind.cash = 2000
+    buy_color_set(arvind, [pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad])
+
+    assert play_turn_railroad(pennsylvania_railroad, arvind) == []
+
+def test_play_turn_utility_1(arvind, electric_company):
+    """
+    Test play_turn_property when the utility is free.
+    """
+    throw = arvind.throw_dice()
+    assert play_turn_utility(electric_company, arvind, throw) == ['Buy property']
+    assert arvind.cash == 200
+
+def test_play_turn_utility_2(arvind, electric_company):
+    """
+    Test play_turn_property when the player already owns the utility.
+    """
+    throw = arvind.throw_dice()
+    arvind.buy_asset(electric_company)
+    assert play_turn_utility(electric_company, arvind, throw) == []
+    assert arvind.cash == 50
+
+def test_play_turn_utility_3(mocker, arvind, arun, electric_company):
+    """
+    Test play_turn_property when another player already owns the railroad.
+    """
+    mocker.patch.object(arun, 'throw_dice', return_value=5)
+    throw = arun.throw_dice()
+    arun.buy_asset(electric_company)
+
+    assert play_turn_utility(electric_company, arvind, throw) == []
+    assert arvind.cash == 180
+    assert arun.cash == 70
+
+def test_play_turn_utility_4(arvind, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad):
     """
     Test play_turn_property when player already owns all the railroads
     """
