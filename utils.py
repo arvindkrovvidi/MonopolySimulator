@@ -146,6 +146,8 @@ def check_can_build_hotel(player, asset):
         raise UnownedPropertyError(asset)
     if asset.owner is not player:
         raise PropertyNotFreeError(asset)
+    if asset._hotel:
+        return False
     if player.cash < asset.building_cost:
         printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
