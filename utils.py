@@ -124,10 +124,11 @@ def check_can_build_house(player, asset):
     elif asset._houses == 4:
         printing_and_logging(f'Can build only 4 houses on a property')
         return False
-    data = copy.deepcopy(player.player_portfolio)
-    for each_property in data:
-        if type(each_property) in [Railroad, Utility]:
-            break
+    for each_property in asset.owner.player_portfolio:
+        if each_property.color != asset.color:
+            continue
+        if each_property == asset:
+            continue
         if asset._houses > each_property._houses:
             return False
     return True
