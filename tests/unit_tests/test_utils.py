@@ -239,7 +239,7 @@ def test_check_can_sell_hotel_1(arvind, pennsylvania_railroad):
 
 def test_check_can_sell_hotel_2(arvind, st_charles_place):
     """
-    Test check_can_sell_hotel
+    Test check_can_sell_hotel when there is a hotel on the property.
     """
 
     st_charles_place.owner = arvind
