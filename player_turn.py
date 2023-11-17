@@ -58,9 +58,9 @@ def get_available_options_properties(current_tile, player, throw=None):
     if type(current_tile) == Property:
         available_options = play_turn_property(current_tile, player)
     elif type(current_tile) == Railroad:
-        available_options = player_turn_railroad(current_tile, player)
+        available_options = play_turn_railroad(current_tile, player)
     elif type(current_tile) == Utility:
-        available_options = player_turn_utility(current_tile, player, throw)
+        available_options = play_turn_utility(current_tile, player, throw)
 
     available_options.append('End turn')
     return available_options
@@ -118,7 +118,7 @@ def play_turn_property(current_tile, player):
 
     return available_options
 
-def player_turn_railroad(current_tile, player):
+def play_turn_railroad(current_tile, player):
     """
     Play turn if the player lands on a Railroad
     :param current_tile: Railroad
@@ -139,7 +139,7 @@ def player_turn_railroad(current_tile, player):
 
     return available_options
 
-def player_turn_utility(current_tile, player, throw):
+def play_turn_utility(current_tile, player, throw):
     """
     Play turn if the player lands on a Utility
     :param current_tile: Utility
