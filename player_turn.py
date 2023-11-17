@@ -172,7 +172,7 @@ def play_turn_jail(player):
     player_option = int(input(f'Select an option from the above: '))
     jail_output = current_tile.execute(player, player_option)
     if jail_output == 'Paid fine':
-        throw = player.throw_dice()
+        throw = player.throw_dice(ignore_double=True)
         player.move(throw)
         current_tile = all_tiles_list[player.tile_no]
         play_turn(player, current_tile, throw)
