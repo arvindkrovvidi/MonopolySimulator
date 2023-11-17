@@ -16,8 +16,9 @@ class Utility(Tile):
     @owner.setter
     def owner(self, value):
         self._owner = value
-        if self not in value.player_portfolio:
-            value.player_portfolio.append(self)
+        if value is not None:
+            if self not in value.player_portfolio:
+                value.player_portfolio.append(self)
 
     def get_rent(self, throw):
         if self.mortgaged:
