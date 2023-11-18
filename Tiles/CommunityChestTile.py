@@ -90,4 +90,5 @@ def execute_chest_9(player, players) -> None:
     :param players: The players paying the amount.
     """
     for each_player in players:
-        player.player_transaction(each_player, 10)
+        if each_player is not player:
+            player.player_transaction(each_player, 10)

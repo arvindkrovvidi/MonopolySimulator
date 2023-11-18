@@ -75,21 +75,21 @@ def jail():
 
 @pytest.fixture
 def st_james_place(property_rent_data):
-    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["ORANGE"])
+    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["PINK"])
 
 @pytest.fixture
 def states_avenue(property_rent_data):
-    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
+    return Property(13, "States Avenue", 140, property_rent_data["States Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["PINK"])
 
 
 @pytest.fixture
 def st_charles_place(property_rent_data):
-    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
+    return Property(11, "St. Charles Place", 140, property_rent_data["St. Charles Place"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["PINK"])
 
 
 @pytest.fixture
 def virginia_avenue(property_rent_data):
-    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["ORANGE"])
+    return Property(14, "Virginia Avenue", 160, property_rent_data["Virginia Avenue"]["Rent"], "Pink", 100, ANSI_COLOR_CODES["PINK"])
 
 @pytest.fixture
 def property_list(states_avenue, st_charles_place, pennsylvania_railroad, virginia_avenue):

@@ -1,4 +1,3 @@
-import copy
 import inspect
 from random import randint
 
@@ -84,9 +83,7 @@ def check_can_buy_asset(player, asset):
     """
     if asset.owner is not None:
         raise PropertyNotFreeError(asset)
-    if asset.owner is player:
-        raise PropertyNotFreeError(asset)
-    if asset.cost > player.cash:
+    elif asset.cost > player.cash:
         raise InsufficientFundsError(player)
     return True
 
@@ -114,23 +111,24 @@ def check_can_build_house(player, asset):
     """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset.owner is None:
+    elif asset.owner is None:
         raise UnownedPropertyError(asset)
-    if asset.owner is not player:
+    elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset.building_cost > player.cash:
+    elif asset.building_cost > player.cash:
         printing_and_logging(f'{player} does not have enough cash to build a house on {asset}')
         return False
-    if not check_player_has_color_set(player,asset.color):
+    elif not check_player_has_color_set(player,asset.color):
         printing_and_logging(f'{player} does not own all the properties in {asset.color} color set')
         return False
-    if asset._houses == 4:
+    elif asset._houses == 4:
         printing_and_logging(f'Can build only 4 houses on a property')
         return False
-    data = copy.deepcopy(player.player_portfolio)
-    for each_property in data:
-        if type(each_property) in [Railroad, Utility]:
-            break
+    for each_property in asset.owner.player_portfolio:
+        if each_property.color != asset.color:
+            continue
+        if each_property == asset:
+            continue
         if asset._houses > each_property._houses:
             return False
     return True
@@ -144,17 +142,18 @@ def check_can_build_hotel(player, asset):
     """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset.owner is None:
+    elif asset.owner is None:
         raise UnownedPropertyError(asset)
-    if asset.owner is not player:
+    elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if player.cash < asset.building_cost:
+    elif asset._hotel:
+        return False
+    elif player.cash < asset.building_cost:
         printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
-    data = copy.deepcopy(asset.owner.player_portfolio)
-    for each_property in data:
+    for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
-            break
+            continue
         if each_property._houses < 4:
             return False
     return True
@@ -167,17 +166,21 @@ def check_can_sell_house(player, asset):
     """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset.owner is None:
+    elif asset.owner is None:
         raise UnownedPropertyError(asset)
-    if asset.owner is not player:
+    elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset._hotel == True:
+    elif asset._hotel == True:
         printing_and_logging(f'Cannot sell house before selling hotel')
         return False
-    if asset._houses <= 0:
+    elif asset._houses <= 0:
         printing_and_logging(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
+        if type(each_property) in [Railroad, Utility]:
+            continue
+        if each_property == asset:
+            continue
         if asset._houses < each_property._houses:
             return False
     return True
@@ -190,11 +193,11 @@ def check_can_sell_hotel(player, asset):
     """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset.owner is None:
+    elif asset.owner is None:
         raise UnownedPropertyError(asset)
-    if asset.owner is not player:
+    elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
-    if asset._hotel == True:
+    elif asset._hotel == True:
         return True
     return False
 

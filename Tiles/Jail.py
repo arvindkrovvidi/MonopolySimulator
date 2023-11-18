@@ -10,13 +10,15 @@ class Jail(SpecialTiles):
         if player.in_jail:
             if option == 0:
                 player.pay_jail_fine()
-                return True
+                return 'Paid fine'
             elif option == 1:
                 throw = player.try_jail_double_throw()
                 if not player.in_jail:
                     return throw
             elif option is not None and option == 2:
                 player.get_out_of_jail_free()
+                throw = player.throw_dice()
+                return throw
         else:
             if option == 0:
                 pass
@@ -24,7 +26,7 @@ class Jail(SpecialTiles):
     def get_available_options(self, player):
         if player.in_jail:
             available_options = ['Pay fine', 'Try double throw']
-            if player.get_out_of_jail_free_card:
+            if player.get_out_of_jail_free_card > 0:
                 available_options.append('Use get out of jail free card')
         else:
             available_options = ['End turn']

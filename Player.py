@@ -89,21 +89,23 @@ class Player:
     def throw_one_dice(self):
         return random.randint(1, 6)
 
-    def throw_dice(self) -> int:
+    def throw_dice(self, ignore_double=False) -> int:
         """
         Simulates a two dice throw by generating a random number between 2 and 12.
         :return: Random integer between 2 and 12
         """
         dice1 = self.throw_one_dice()
         dice2 = self.throw_one_dice()
-        if dice1 == dice2:
-            self.double_counter += 1
-            printing_and_logging(f'{self} threw a double: {dice1} and {dice2}. Total: {dice1 + dice2}')
-        else:
-            self.double_counter = 0
-            printing_and_logging(f'{self} threw a {dice1 + dice2}')
-        if self.double_counter == 3:
-            printing_and_logging(f'{self} threw three doubles in a row.')
+        if not ignore_double:
+            if dice1 == dice2:
+                self.double_counter += 1
+                printing_and_logging(f'{self} threw a double: {dice1} and {dice2}. Total: {dice1 + dice2}')
+            else:
+                self.double_counter = 0
+                printing_and_logging(f'{self} threw a {dice1 + dice2}')
+            if self.double_counter == 3:
+                self.move_to(10, collect_go_cash_flag=False)
+                printing_and_logging(f'{self} threw three doubles in a row.')
         return dice1 + dice2
 
     def move(self, throw: int) -> None:
@@ -121,7 +123,8 @@ class Player:
                     pass
                 else:
                     self.bank_transaction(go_cash)
-                    printing_and_logging(f'{self} collected {go_cash} for passing Go')
+                    printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+        printing_and_logging(f'{self} landed on {all_tiles_list[self.tile_no]}')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
@@ -247,7 +250,6 @@ class Player:
         if dice1 == dice2:
             self.in_jail = False
             printing_and_logging(f'{self} threw a double and got out of jail')
-            self.move(dice1 + dice2)
             return dice1 + dice2
         else:
             printing_and_logging(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')

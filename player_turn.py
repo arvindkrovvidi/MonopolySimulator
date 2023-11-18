@@ -58,14 +58,17 @@ def get_available_options_properties(current_tile, player, throw=None):
     if type(current_tile) == Property:
         available_options = play_turn_property(current_tile, player)
     elif type(current_tile) == Railroad:
-        available_options = player_turn_railroad(current_tile, player)
+        available_options = play_turn_railroad(current_tile, player)
     elif type(current_tile) == Utility:
-        available_options = player_turn_utility(current_tile, player, throw)
+        available_options = play_turn_utility(current_tile, player, throw)
 
     available_options.append('End turn')
     return available_options
 
 def run_player_option(player, current_tile, option_function_dict, user_input):
+    """
+    Run the function corresponding to the option the player selects.
+    """
     if option_function_dict[user_input] == 'Buy property':
         player.buy_asset(current_tile)
     elif option_function_dict[user_input] == 'Build house':
@@ -92,7 +95,7 @@ def play_turn_property(current_tile, player):
     except InsufficientFundsError as e:
         printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
+    except PropertyNotFreeError:
         if current_tile.owner is player:
             if check_can_build_house(player, current_tile):
                 available_options.append('Build house')
@@ -115,7 +118,7 @@ def play_turn_property(current_tile, player):
 
     return available_options
 
-def player_turn_railroad(current_tile, player):
+def play_turn_railroad(current_tile, player):
     """
     Play turn if the player lands on a Railroad
     :param current_tile: Railroad
@@ -136,7 +139,7 @@ def player_turn_railroad(current_tile, player):
 
     return available_options
 
-def player_turn_utility(current_tile, player, throw):
+def play_turn_utility(current_tile, player, throw):
     """
     Play turn if the player lands on a Utility
     :param current_tile: Utility
@@ -159,3 +162,30 @@ def player_turn_utility(current_tile, player, throw):
     else:
         available_options.append('Buy property')
     return available_options
+
+def play_turn_jail(player):
+    """
+    Defines how to proceed if player is in jail at the beginning of their turn
+    :param player: The player that is in jail.
+    """
+    current_tile = all_tiles_list[player.tile_no]
+    printing_and_logging(f'{player} is in Jail')
+    available_options = current_tile.get_available_options(player)
+    print(get_display_options(available_options))
+    player_option = int(input(f'Select an option from the above: '))
+    jail_output = current_tile.execute(player, player_option)
+    if jail_output == 'Paid fine':
+        throw = player.throw_dice(ignore_double=True)
+        player.move(throw)
+        current_tile = all_tiles_list[player.tile_no]
+        play_turn(player, current_tile, throw)
+    elif type(jail_output) == int:
+        player.move(jail_output)
+        current_tile = all_tiles_list[player.tile_no]
+        play_turn(player, current_tile, jail_output)
+
+def throw_move_and_play_turn(player):
+    throw = player.throw_dice()
+    player.move(throw)
+    current_tile = all_tiles_list[player.tile_no]
+    play_turn(player, current_tile, throw)
