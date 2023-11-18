@@ -201,7 +201,7 @@ def check_can_sell_hotel(player, asset):
         return True
     return False
 
-def check_can_mortgage_property(player, asset):
+def check_can_mortgage_asset(player, asset):
     """
     Check whether the property can be mortgaged
     """
@@ -211,7 +211,7 @@ def check_can_mortgage_property(player, asset):
         return False
     return True
 
-def check_can_unmortgage_property(player, asset):
+def check_can_unmortgage_asset(player, asset):
     """
     Check whether the property can be unmortgaged
     """
