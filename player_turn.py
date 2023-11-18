@@ -24,8 +24,9 @@ def play_turn(player, current_tile, throw=None):
         available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
         option_function_dict = dict(list(enumerate(available_options)))
         print(get_display_options(available_options))
-        user_input = int(input(f'Select an option from the above: '))
-        run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
+        user_input_num = int(input(f'Select an option from the above: '))
+        user_input_function = option_function_dict[user_input_num]
+        run_player_option(player, all_tiles_list[player.tile_no], user_input_function)
     elif type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
@@ -33,8 +34,9 @@ def play_turn(player, current_tile, throw=None):
             available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
             option_function_dict = dict(list(enumerate(available_options)))
             print(get_display_options(available_options))
-            user_input = int(input(f'Select an option from the above: '))
-            run_player_option(player, all_tiles_list[player.tile_no], option_function_dict, user_input)
+            user_input_num = int(input(f'Select an option from the above: '))
+            user_input_function = option_function_dict[user_input_num]
+            run_player_option(player, all_tiles_list[player.tile_no], user_input_function)
     elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
         current_tile.execute(player, card_no, all_players_list=all_players_list)
@@ -65,22 +67,22 @@ def get_available_options_properties(current_tile, player, throw=None):
     available_options.append('End turn')
     return available_options
 
-def run_player_option(player, current_tile, option_function_dict, user_input):
+def run_player_option(player, current_tile, user_input_function):
     """
     Run the function corresponding to the option the player selects.
     """
-    if option_function_dict[user_input] == 'Buy property':
+    if user_input_function == 'Buy property':
         player.buy_asset(current_tile)
-    elif option_function_dict[user_input] == 'Build house':
+    elif user_input_function == 'Build house':
         player.build_house(current_tile)
-    elif option_function_dict[user_input] == 'Build hotel':
+    elif user_input_function == 'Build hotel':
         player.build_hotel(current_tile)
-    elif option_function_dict[user_input] == 'Sell house':
+    elif user_input_function == 'Sell house':
         player.sell_house(current_tile)
-    elif option_function_dict[user_input] == 'Sell hotel':
+    elif user_input_function == 'Sell hotel':
         player.sell_hotel(current_tile)
-    elif option_function_dict[user_input] == 'End turn':
-        printing_and_logging(f'{player} did nothing this turn')
+    elif user_input_function == 'End turn':
+        printing_and_logging(f'{player} ended their turn')
         pass
 
 def play_turn_property(current_tile, player):

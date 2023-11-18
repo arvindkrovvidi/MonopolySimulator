@@ -14,7 +14,7 @@ def test_run_player_option_buy_asset(arvind, st_charles_place, pennsylvania_rail
     """
     option_function_dict = {0: 'Buy property', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
-    run_player_option(arvind, asset, option_function_dict, option)
+    run_player_option(arvind, asset, option_function_dict[option])
 
     assert asset.owner == arvind
     assert asset in arvind.player_portfolio
@@ -29,7 +29,7 @@ def test_run_player_option_build_house(arvind, st_charles_place, virginia_avenue
     arvind.buy_asset(st_charles_place)
     arvind.buy_asset(virginia_avenue)
     arvind.buy_asset(states_avenue)
-    run_player_option(arvind, st_charles_place, option_function_dict, 0)
+    run_player_option(arvind, st_charles_place, option_function_dict[0])
 
     assert st_charles_place._houses == 1
 
@@ -41,7 +41,7 @@ def test_run_player_option_build_hotel(arvind, st_charles_place, virginia_avenue
     arvind.cash = 2000
     option_function_dict = {0: 'Build hotel', 1: 'End turn'}
     build_houses(arvind, [st_charles_place, virginia_avenue, states_avenue], 4)
-    run_player_option(arvind, states_avenue, option_function_dict, 0)
+    run_player_option(arvind, states_avenue, option_function_dict[0])
 
     assert states_avenue._hotel == True
 
@@ -55,7 +55,7 @@ def test_run_player_option_sell_house(arvind, st_charles_place, virginia_avenue,
     buy_color_set(arvind, [st_charles_place, states_avenue, virginia_avenue])
     arvind.build_house(states_avenue)
     assert states_avenue._houses == 1
-    run_player_option(arvind, states_avenue, option_function_dict, 0)
+    run_player_option(arvind, states_avenue, option_function_dict[0])
     assert states_avenue._houses == 0
 
 
@@ -68,7 +68,7 @@ def test_run_player_option_sell_hotel(arvind, st_charles_place, virginia_avenue,
     build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 4)
     arvind.build_hotel(states_avenue)
     assert states_avenue._hotel == True
-    run_player_option(arvind, states_avenue, option_function_dict, 0)
+    run_player_option(arvind, states_avenue, option_function_dict[0])
 
     assert states_avenue._hotel == False
 
