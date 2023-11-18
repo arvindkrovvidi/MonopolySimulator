@@ -109,6 +109,7 @@ def test_check_player_has_color_set_utility(arvind, electric_company, water_work
 def test_check_can_build_house_1(mocker, arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
                                  property_2_house, property_3_house, expected_1, expected_2, expected_3, pennsylvania_railroad):
     arvind.cash = 500
+    pennsylvania_railroad.owner = arvind
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind
@@ -141,7 +142,8 @@ def test_check_can_build_house_2(arvind, pennsylvania_railroad, electric_company
     (4, 4, 4, True, True, True)
 ])
 def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                 property_2_house, property_3_house, expected_1, expected_2, expected_3):
+                                 property_2_house, property_3_house, expected_1, expected_2, expected_3, pennsylvania_railroad):
+    pennsylvania_railroad.owner = arvind
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind

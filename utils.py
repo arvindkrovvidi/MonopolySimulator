@@ -153,7 +153,7 @@ def check_can_build_hotel(player, asset):
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
-            break
+            continue
         if each_property._houses < 4:
             return False
     return True
@@ -178,7 +178,9 @@ def check_can_sell_house(player, asset):
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
-            break
+            continue
+        if each_property == asset:
+            continue
         if asset._houses < each_property._houses:
             return False
     return True
