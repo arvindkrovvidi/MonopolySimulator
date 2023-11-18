@@ -342,7 +342,7 @@ class Player:
         """
         self.sell_all_hotels(asset.color)
         self.sell_all_houses(asset.color)
-        self.bank_transaction(asset.cost / 2)
+        self.bank_transaction(asset.mortgage_value)
         asset.mortgaged = True
         printing_and_logging(f'{self} mortgaged {asset}')
 
@@ -351,10 +351,9 @@ class Player:
         Unmortgage a mortgaged property. Pay an additional 10% on top of the mortgage amount to unmortgage it. Rent can be collected once the property is unmortgaged.
         :param asset: The asset being unmortgaged.
         """
-        unmortgage_amount = (asset.cost / 2) * 1.1
-        self.bank_transaction(-unmortgage_amount)
-        asset.mortgaged = False
         printing_and_logging(f'{self} unmortgaged {asset}')
+        self.bank_transaction(-asset.unmortgage_cost)
+        asset.mortgaged = False
 
 
 
