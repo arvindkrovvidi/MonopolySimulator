@@ -25,6 +25,7 @@ def main():
                         player.move_to(10, collect_go_cash_flag=False)
                 else:
                     play_turn_jail(player)
+                printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
             except PlayerBrokeError:
                 printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
                 print_player_summary(players)

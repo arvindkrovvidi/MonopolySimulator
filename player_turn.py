@@ -191,3 +191,4 @@ def throw_move_and_play_turn(player):
     player.move(throw)
     current_tile = all_tiles_list[player.tile_no]
     play_turn(player, current_tile, throw)
+    printing_and_logging(f'Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
