@@ -1,7 +1,7 @@
 import pytest
 
 from player_turn import run_player_option, get_available_options_properties, play_turn_jail, play_turn_property, \
-    play_turn_railroad, play_turn_utility
+    play_turn_railroad, play_turn_utility, play_turn
 from tests.common import build_houses, build_all_hotels, buy_color_set
 
 
@@ -416,3 +416,42 @@ def test_play_turn_utility_4(arvind, pennsylvania_railroad, bo_railroad, reading
     buy_color_set(arvind, [pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad])
 
     assert play_turn_railroad(pennsylvania_railroad, arvind) == []
+
+def test_play_turn_1(mocker, arvind, chance_22):
+    """
+    Test play_turn when player lands on chance 22 and picks chance card 10
+    """
+    arvind.move_to(22, collect_go_cash_flag=False)
+    mocker.patch('player_turn.randint', return_value=10)
+    current_tile = chance_22
+    mocker.patch('player_turn.input', return_value=0)
+    play_turn(arvind, current_tile)
+
+    assert arvind.tile_no == 19
+    assert arvind.cash == 0
+
+def test_play_turn_2(mocker, arvind, chance_7):
+    """
+    Test play_turn when player lands on chance 7 and picks chance card 10
+    """
+    arvind.move_to(7, collect_go_cash_flag=False)
+    current_tile = chance_7
+    mocker.patch('player_turn.randint', return_value=10)
+
+    play_turn(arvind, current_tile)
+
+    assert arvind.tile_no == 4
+    assert arvind.cash == 0
+
+def test_play_turn_3(mocker, arvind, chance_36):
+    """
+    Test play_turn when player lands on chance 36 and picks chance card 10
+    """
+    arvind.move_to(36, collect_go_cash_flag=False)
+    current_tile = chance_36
+    mocker.patch('player_turn.randint', side_effect=[10, 8])
+
+    play_turn(arvind, current_tile)
+
+    assert arvind.tile_no == 33
+    assert arvind.cash == 220

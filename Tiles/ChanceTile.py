@@ -71,7 +71,7 @@ class ChanceTile(SpecialTiles):
             printing_and_logging(f'Go Back 3 Spaces')
             player.move(-3)
             printing_and_logging(f'{player} moved three steps back')
-            return True
+            return player.tile_no
         elif _card_no == 11:
             printing_and_logging(f'Go to Jail. Go directly to Jail, do not pass Go, do not collect $200')
             player.move_to(10, collect_go_cash_flag=False)
