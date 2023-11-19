@@ -21,12 +21,7 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
 def play_turn(player, current_tile, throw=None):
     if type(current_tile) in [Property, Railroad, Utility]:
         printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
-        available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
-        option_function_dict = dict(list(enumerate(available_options)))
-        print(get_display_options(available_options))
-        user_input_num = int(input(f'Select an option from the above: '))
-        user_input_function = option_function_dict[user_input_num]
-        run_player_option(player, all_tiles_list[player.tile_no], user_input_function)
+        handle_player_input(player, throw)
     elif type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
@@ -192,3 +187,11 @@ def throw_move_and_play_turn(player):
     current_tile = all_tiles_list[player.tile_no]
     play_turn(player, current_tile, throw)
     printing_and_logging(f'Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
+
+def handle_player_input(player, throw=None):
+    available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
+    option_function_dict = dict(list(enumerate(available_options)))
+    print(get_display_options(available_options))
+    user_input_num = int(input(f'Select an option from the above: '))
+    user_input_function = option_function_dict[user_input_num]
+    run_player_option(player, all_tiles_list[player.tile_no], user_input_function)
