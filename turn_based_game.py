@@ -53,3 +53,4 @@ if __name__ == "__main__":
 #TODO Get go cash before playing turn
 #TODO Community chest 10 not giving the option to buy property after moving three steps back
 #TODO Display cash at the end of the turn
+#TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
