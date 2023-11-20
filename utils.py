@@ -116,13 +116,13 @@ def check_can_build_house(player, asset):
     elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
     elif asset.building_cost > player.cash:
-        printing_and_logging(f'{player} does not have enough cash to build a house on {asset}')
+        # printing_and_logging(f'{player} does not have enough cash to build a house on {asset}')
         return False
     elif not check_player_has_color_set(player,asset.color):
-        printing_and_logging(f'{player} does not own all the properties in {asset.color} color set')
+        # printing_and_logging(f'{player} does not own all the properties in {asset.color} color set')
         return False
     elif asset._houses == 4:
-        printing_and_logging(f'Can build only 4 houses on a property')
+        # printing_and_logging(f'Can build only 4 houses on a property')
         return False
     for each_property in asset.owner.player_portfolio:
         if each_property.color != asset.color:
@@ -149,7 +149,7 @@ def check_can_build_hotel(player, asset):
     elif asset._hotel:
         return False
     elif player.cash < asset.building_cost:
-        printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
+        # printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
@@ -171,10 +171,10 @@ def check_can_sell_house(player, asset):
     elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
     elif asset._hotel == True:
-        printing_and_logging(f'Cannot sell house before selling hotel')
+        # printing_and_logging(f'Cannot sell house before selling hotel')
         return False
     elif asset._houses <= 0:
-        printing_and_logging(f'No more houses to sell')
+        # printing_and_logging(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
