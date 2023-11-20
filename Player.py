@@ -1,6 +1,6 @@
 import random
 
-from Board import max_tile_no, go_cash
+from Board import go_cash
 from TileIterators import TileList
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
@@ -114,16 +114,18 @@ class Player:
         :param throw: The dice throw
         """
         if not self.in_jail:
-            self.tile_no += throw
-            if self.tile_no < 0:
-                self.tile_no = 40 + throw
-            if self.tile_no  > max_tile_no:
-                self.tile_no -= (max_tile_no + 1)
-                if self.tile_no == 0:
-                    pass
-                else:
-                    self.bank_transaction(go_cash)
-                    printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+            if self.tile_no == 0:
+                self.tile_no += throw
+                self.bank_transaction(go_cash)
+                printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+            elif self.tile_no + throw < 40:
+                self.tile_no += throw
+            elif self.tile_no + throw == 40:
+                self.tile_no = 0
+            else:
+                self.tile_no += throw - 40
+                self.bank_transaction(go_cash)
+                printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
         printing_and_logging(f'{self} landed on {all_tiles_list[self.tile_no]}')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:

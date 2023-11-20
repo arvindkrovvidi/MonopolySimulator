@@ -87,9 +87,10 @@ def test_buy_asset_multiple_railroads(arvind, pennsylvania_railroad, bo_railroad
 
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash", [
-    (0, 12, 200),
+    (0, 12, 400),
     (28, 0, 200),
-    (39, 11, 400)
+    (39, 11, 400),
+    (1, 13, 200)
 ])
 def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expected_current_tile,
               expected_cash):
@@ -97,7 +98,7 @@ def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expec
     arvind.move(12)
     assert arvind.tile_no == expected_current_tile
     assert arvind.cash == expected_cash
-    assert arvind.tile_no < 39
+    assert arvind.tile_no < 40
 
 @pytest.mark.parametrize("current_tile, expected_tile",[
     (15, 12),
