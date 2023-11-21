@@ -46,7 +46,7 @@ def play_turn(player, current_tile, throw=None):
     elif type(current_tile) == Jail:
         pass
 
-def get_available_options_properties(current_tile, player, throw=None):
+def get_available_options_assets(current_tile, player, throw=None):
     """
     Play turn after throwing the dice and moving to a tile.
     :param current_tile: Tile the player landed on after throwing dice

@@ -1,6 +1,6 @@
 import pytest
 
-from player_turn import run_player_option, get_available_options_properties, play_turn_jail, play_turn_property, \
+from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn_property, \
     play_turn_railroad, play_turn_utility, play_turn
 from tests.common import build_houses, build_all_hotels, buy_color_set
 
@@ -79,7 +79,7 @@ def test_get_available_options_properties_1(arvind, states_avenue):
     """
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
-    available_options = get_available_options_properties(current_tile, arvind)
+    available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
@@ -95,7 +95,7 @@ def test_get_available_options_properties_2(arvind, states_avenue):
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     arvind.buy_asset(states_avenue)
-    available_options = get_available_options_properties(current_tile, arvind)
+    available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
@@ -113,7 +113,7 @@ def test_get_available_options_properties_3(arvind, states_avenue, st_charles_pl
     current_tile = states_avenue
     buy_color_set(arvind, [st_charles_place, states_avenue, virginia_avenue])
 
-    available_options = get_available_options_properties(current_tile, arvind)
+    available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' in available_options
     assert 'Build hotel' not in available_options
@@ -130,7 +130,7 @@ def test_get_available_options_properties_4(arvind, states_avenue, st_charles_pl
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 4)
-    available_options = get_available_options_properties(current_tile, arvind)
+    available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' in available_options
@@ -147,7 +147,7 @@ def test_get_available_options_properties_5(arvind, states_avenue, st_charles_pl
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
     build_all_hotels(arvind, [st_charles_place, states_avenue, virginia_avenue])
-    available_options = get_available_options_properties(current_tile, arvind)
+    available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' not in available_options
     assert 'Build house' not in available_options
     assert 'Build hotel' not in available_options
