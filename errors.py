@@ -6,7 +6,7 @@ class PlayerBrokeError(Exception):
 class PropertyNotFreeError(Exception):
     def __init__(self, asset):
         self.asset = asset
-        self.exc_message = str(self.asset) + " is already owned by " + str(self.asset.owner)
+        self.exc_message = str(self.asset) + " is owned by " + str(self.asset.owner)
 
 class InvalidPropertyTypeError(Exception):
     def __init__(self, function, asset):
@@ -48,3 +48,9 @@ class UnownedPropertyError(Exception):
     def __init__(self, asset):
         self.asset = asset
         self.exc_message = f'No one owns {str(self.asset)}'
+
+class SelfOwnedPropertyError(Exception):
+    def __init__(self, player, asset):
+        self.player = player
+        self.asset = asset
+        self.exc_message = f'{self.player} already owns {self.asset}'

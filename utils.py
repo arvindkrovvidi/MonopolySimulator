@@ -9,7 +9,8 @@ from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
 from config import printing_and_logging
-from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError
+from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError, \
+    SelfOwnedPropertyError
 
 
 def calculate_networth(player) -> int:
@@ -81,10 +82,12 @@ def check_can_buy_asset(player, asset):
     :param asset: Property, Railroad or utility
     :return: True if the player can buy the asset. Else False.
     """
-    if asset.owner is not None:
+    if asset.owner not in [None, player]:
         raise PropertyNotFreeError(asset)
     elif asset.cost > player.cash:
         raise InsufficientFundsError(player)
+    elif asset.owner is player:
+        raise SelfOwnedPropertyError(player, asset)
     return True
 
 def check_player_has_color_set(player, color):
@@ -116,13 +119,10 @@ def check_can_build_house(player, asset):
     elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
     elif asset.building_cost > player.cash:
-        # printing_and_logging(f'{player} does not have enough cash to build a house on {asset}')
         return False
     elif not check_player_has_color_set(player,asset.color):
-        # printing_and_logging(f'{player} does not own all the properties in {asset.color} color set')
         return False
     elif asset._houses == 4:
-        # printing_and_logging(f'Can build only 4 houses on a property')
         return False
     for each_property in asset.owner.player_portfolio:
         if each_property.color != asset.color:
@@ -149,7 +149,6 @@ def check_can_build_hotel(player, asset):
     elif asset._hotel:
         return False
     elif player.cash < asset.building_cost:
-        # printing_and_logging(f'{player} does not have enough cash to build a hotel on {asset}')
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:
@@ -171,10 +170,8 @@ def check_can_sell_house(player, asset):
     elif asset.owner is not player:
         raise PropertyNotFreeError(asset)
     elif asset._hotel == True:
-        # printing_and_logging(f'Cannot sell house before selling hotel')
         return False
     elif asset._houses <= 0:
-        # printing_and_logging(f'No more houses to sell')
         return False
     for each_property in asset.owner.player_portfolio:
         if type(each_property) in [Railroad, Utility]:

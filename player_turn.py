@@ -13,7 +13,7 @@ from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import printing_and_logging
-from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError
+from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError, SelfOwnedPropertyError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
     check_can_sell_hotel, check_can_sell_house, get_display_options
 
@@ -95,26 +95,22 @@ def play_turn_property(current_tile, player):
         printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
     except PropertyNotFreeError:
-        if current_tile.owner is player:
-            if check_can_build_house(player, current_tile):
-                available_options.append('Build house')
-
-            if check_can_build_hotel(player, current_tile):
-                available_options.append('Build hotel')
-
-            if check_can_sell_house(player, current_tile):
-                available_options.append('Sell house')
-
-            if check_can_sell_hotel(player, current_tile):
-                available_options.append('Sell hotel')
-        else:
-            landlord = current_tile.owner
-            player.pay_rent(landlord, current_tile.rent)
+        landlord = current_tile.owner
+        player.pay_rent(landlord, current_tile.rent)
+    except SelfOwnedPropertyError as e:
+        printing_and_logging(e.exc_message)
+        if check_can_build_house(player, current_tile):
+            available_options.append('Build house')
+        if check_can_build_hotel(player, current_tile):
+            available_options.append('Build hotel')
+        if check_can_sell_house(player, current_tile):
+            available_options.append('Sell house')
+        if check_can_sell_hotel(player, current_tile):
+            available_options.append('Sell hotel')
     except InvalidPropertyTypeError as e:
         printing_and_logging(e.exc_message)
     else:
         available_options.append('Buy property')
-
     return available_options
 
 def play_turn_railroad(current_tile, player):
@@ -133,9 +129,10 @@ def play_turn_railroad(current_tile, player):
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
         player.pay_rent(landlord, current_tile.rent)
+    except SelfOwnedPropertyError as e:
+        printing_and_logging(e.exc_message)
     else:
         available_options.append('Buy property')
-
     return available_options
 
 def play_turn_utility(current_tile, player, throw):
@@ -150,7 +147,6 @@ def play_turn_utility(current_tile, player, throw):
         check_can_buy_asset(player, current_tile)
     except InsufficientFundsError as e:
         printing_and_logging(f'{player} cannot buy {current_tile}')
-        printing_and_logging(e.exc_message)
     except PropertyNotFreeError as e:
         printing_and_logging(e.exc_message)
         landlord = current_tile.owner
@@ -158,6 +154,8 @@ def play_turn_utility(current_tile, player, throw):
             player.pay_rent(landlord, current_tile.get_rent(throw))
         else:
             player.pay_rent(landlord, current_tile.get_rent(throw))
+    except SelfOwnedPropertyError as e:
+        printing_and_logging(e.exc_message)
     else:
         available_options.append('Buy property')
     return available_options
