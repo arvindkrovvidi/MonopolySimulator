@@ -23,6 +23,11 @@ def property_rent_data():
         property_rent_data = json.load(f)
         return property_rent_data
 
+@pytest.fixture
+def all_tiles_list(states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2):
+    return TileList([states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2])
+
+
 
 @pytest.fixture
 def reading_railroad(property_rent_data):

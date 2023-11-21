@@ -21,7 +21,7 @@ from utils import check_player_has_color_set, check_can_buy_asset, check_can_bui
 def play_turn(player, current_tile, throw=None):
     if type(current_tile) in [Property, Railroad, Utility]:
         printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
-        handle_player_input(player, throw)
+        handle_player_input(player, current_tile, throw)
     elif type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
@@ -30,7 +30,7 @@ def play_turn(player, current_tile, throw=None):
         elif chance_return_value == 4:
             all_tiles_list[chance_return_value].execute(player)
         elif chance_return_value == 19:
-            handle_player_input(player, throw)
+            handle_player_input(player, all_tiles_list[player.tile_no], throw)
         elif chance_return_value == 33:
             card_no = randint(1, 16)
             all_tiles_list[chance_return_value].execute(player, card_no, all_players_list=all_players_list)
@@ -190,10 +190,12 @@ def throw_move_and_play_turn(player):
     play_turn(player, current_tile, throw)
     printing_and_logging(f'Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
 
-def handle_player_input(player, throw=None):
-    available_options = get_available_options_properties(all_tiles_list[player.tile_no], player, throw)
-    option_function_dict = dict(list(enumerate(available_options)))
-    print(get_display_options(available_options))
-    user_input_num = int(input(f'Select an option from the above: '))
-    user_input_function = option_function_dict[user_input_num]
-    run_player_option(player, all_tiles_list[player.tile_no], user_input_function)
+def handle_player_input(player, current_tile, throw=None):
+    user_input_function = ''
+    while user_input_function != 'End turn':
+        available_options = get_available_options_assets(current_tile, player, throw)
+        option_function_dict = dict(list(enumerate(available_options)))
+        print(get_display_options(available_options))
+        user_input_num = int(input(f'Select an option from the above: '))
+        user_input_function = option_function_dict[user_input_num]
+        run_player_option(player, current_tile, user_input_function)

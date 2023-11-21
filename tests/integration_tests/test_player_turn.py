@@ -176,7 +176,7 @@ def test_play_turn_jail_2(mocker, arvind, virginia_avenue):
     """
     arvind.cash = 500
     arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.input', side_effect=['1', '0'])
+    mocker.patch('player_turn.input', side_effect=['1', '0', '0'])
     mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
     mocker.patch.object(arvind, 'throw_dice', return_value=2)
     play_turn_jail(arvind)
@@ -209,7 +209,7 @@ def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
     """
     arvind.cash = 500
     arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.input', side_effect=['1', '1', '1', '0'])
+    mocker.patch('player_turn.input', side_effect=['1', '1', '1', '0', '0'])
     mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3, 2, 3])
 
     play_turn_jail(arvind)
@@ -455,3 +455,25 @@ def test_play_turn_3(mocker, arvind, chance_36):
 
     assert arvind.tile_no == 33
     assert arvind.cash == 220
+
+def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list):
+    """
+    Test play_turn when player builds 2 houses in the same turn
+    """
+    arvind.cash = 2000
+    mocker.patch('player_turn.input', side_effect=['0', '0', '1'])
+    mocker.patch('player_turn.all_tiles_list', return_value=all_tiles_list)
+    build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 1)
+    arvind.build_house(st_charles_place)
+    arvind.build_house(virginia_avenue)
+    arvind.move_to(states_avenue.tile_no)
+    current_tile = states_avenue
+
+    assert st_charles_place._houses == 2
+    assert virginia_avenue._houses == 2
+
+    play_turn(arvind, current_tile)
+
+    assert states_avenue._houses == 3
+
+
