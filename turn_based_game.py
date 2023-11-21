@@ -50,7 +50,6 @@ if __name__ == "__main__":
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
 #TODO Handle invalid inputs
-#TODO Get go cash before playing turn
 #TODO Community chest 10 not giving the option to buy property after moving three steps back
 #TODO Display cash at the end of the turn
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
