@@ -151,9 +151,9 @@ def check_can_build_hotel_on_property(player, asset):
     elif player.cash < asset.building_cost:
         return False
     for each_property in asset.owner.player_portfolio:
-        if type(each_property) in [Railroad, Utility]:
+        if each_property.color != asset.color:
             continue
-        if each_property._houses < 4:
+        if each_property._houses != 4:
             return False
     return True
 
