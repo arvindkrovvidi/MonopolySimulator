@@ -208,3 +208,11 @@ def get_properties_for_building_houses(player):
             if check_can_build_house_on_property(player, asset):
                 eligible_properties_list.append(asset)
     return eligible_properties_list
+
+def get_properties_for_selling_houses(player):
+    eligible_properties_list = []
+    for asset in player.player_portfolio:
+        if type(asset) not in [Railroad, Utility]:
+            if check_can_sell_house_on_property(player, asset):
+                eligible_properties_list.append(asset)
+    return eligible_properties_list

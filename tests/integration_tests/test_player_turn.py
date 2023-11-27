@@ -1,8 +1,8 @@
 import pytest
 
-from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn_property, \
-    play_turn_railroad, play_turn_utility, play_turn
-from tests.common import build_houses, build_all_hotels, buy_color_set
+from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn_asset, play_turn, \
+    get_properties_for_building_houses, get_properties_for_selling_houses
+from tests.common import build_houses, build_all_hotels, buy_assets
 
 
 @pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
@@ -541,6 +541,71 @@ def test_get_properties_for_building_houses_3(states_avenue, st_charles_place, v
     assert states_avenue not in properties_list
     assert st_charles_place in properties_list
     assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_building_houses_4(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad,
+                                              electric_company, arvind, st_james_place, tennessee_avenue, new_york_avenue):
+    """
+    Test get_properties_for_building_houses when the player has one color set and the properties in the color set have equal number of houses
+    """
+    arvind.cash = 5000
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
+    build_houses(arvind, [tennessee_avenue, st_james_place, new_york_avenue], 1)
+    properties_list = get_properties_for_building_houses(arvind)
+
+    assert states_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place in properties_list
+    assert tennessee_avenue in properties_list
+    assert new_york_avenue in properties_list
+
+def test_get_properties_for_selling_houses_1(arvind, states_avenue, st_charles_place, virginia_avenue, st_james_place, pennsylvania_railroad, electric_company):
+    """
+    Test get_properties_for_selling_houses when player has hotels on all properties in the color set
+    """
+    arvind.cash = 3000
+    build_all_hotels(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    buy_assets(arvind, [pennsylvania_railroad, electric_company, st_james_place])
+
+    properties_list = get_properties_for_selling_houses(arvind)
+
+    assert properties_list == []
+
+def test_get_properties_for_selling_houses_2(arvind, states_avenue, st_charles_place, virginia_avenue, st_james_place, pennsylvania_railroad, electric_company):
+    """
+    Test get_properties_for_selling_houses when player has 4 houses on all properties in the color set
+    """
+    arvind.cash = 3000
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 4)
+    buy_assets(arvind, [pennsylvania_railroad, electric_company, st_james_place])
+    properties_list = get_properties_for_selling_houses(arvind)
+
+    assert states_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_selling_houses_3(arvind, states_avenue, st_charles_place, virginia_avenue, st_james_place, pennsylvania_railroad, electric_company):
+    """
+    Test get_properties_for_selling_houses when player has 4 houses on all properties in the color set
+    """
+    arvind.cash = 3000
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 3)
+    buy_assets(arvind, [pennsylvania_railroad, electric_company, st_james_place])
+    arvind.build_house(states_avenue)
+    arvind.build_house(st_charles_place)
+    properties_list = get_properties_for_selling_houses(arvind)
+
+    assert states_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue not in properties_list
     assert pennsylvania_railroad not in properties_list
     assert electric_company not in properties_list
     assert st_james_place not in properties_list

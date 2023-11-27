@@ -80,7 +80,15 @@ def jail():
 
 @pytest.fixture
 def st_james_place(property_rent_data):
-    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["PINK"])
+    return Property(16, "St. James Place", 180, property_rent_data["St. James Place"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["ORANGE"])
+
+@pytest.fixture
+def tennessee_avenue(property_rent_data):
+    return Property(16, "Tennessee Avenue", 180, property_rent_data["Tennessee Avenue"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["ORANGE"])
+
+@pytest.fixture
+def new_york_avenue(property_rent_data):
+    return Property(16, "New York Avenue", 200, property_rent_data["New York Avenue"]["Rent"], "Orange", 100, ANSI_COLOR_CODES["ORANGE"])
 
 @pytest.fixture
 def states_avenue(property_rent_data):
