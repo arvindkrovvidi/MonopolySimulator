@@ -1,11 +1,9 @@
-from Tiles.Property import Property
 class TileList(list):
     """
         A list of Properties. Data is a list.
     """
     def __init__(self, data):
         self.data = data
-        super().__init__(data)
         # self.index = 0
 
     def __getitem__(self, key: int):
@@ -20,12 +18,8 @@ class TileList(list):
             for asset in self.data:
                 if asset.tile_no == key:
                     return asset
-        elif isinstance(key, Property):
-            for asset in self.data:
-                if asset == key:
-                    return asset
         else:
-            raise TypeError(f"Tile number {key} does not exist")
+            raise KeyError(f"Tile number {key} does not exist")
 
     # def __iter__(self):
     #     self.index = 0
@@ -44,13 +38,13 @@ class TileList(list):
     #         self.index = 0
     #         raise StopIteration
     #
-    # def append(self, asset):
-    #     """
-    #     Add a tile to the list
-    #     :param asset: The tile to be added to the list
-    #     """
-    #     if asset not in self.data:
-    #         self.data.append(asset)
+    def append(self, asset):
+        """
+        Add a tile to the list
+        :param asset: The tile to be added to the list
+        """
+        if asset not in self.data:
+            self.data.append(asset)
     #
     def __contains__(self, item):
         """
@@ -72,11 +66,11 @@ class TileList(list):
             self.append(each)
         return self
 
-    # def __len__(self):
-    #     return len(self.data)
+    def __len__(self):
+        return len(self.data)
 
-    # def remove(self, asset):
-    #     return TileList(self.data.remove(asset))
+    def remove(self, asset):
+        return TileList(self.data.remove(asset))
 
 class TileDict:
     """
