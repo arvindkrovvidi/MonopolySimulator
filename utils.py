@@ -105,7 +105,7 @@ def check_player_has_color_set(player, color):
         return True
     return False
 
-def check_can_build_house(player, asset):
+def check_can_build_house_on_property(player, asset):
     """
     Check if a house can be built on the property.
     :param player: The player trying to build the house
@@ -133,7 +133,7 @@ def check_can_build_house(player, asset):
             return False
     return True
 
-def check_can_build_hotel(player, asset):
+def check_can_build_hotel_on_property(player, asset):
     """
     Check if a hotel can be built on the given property. A hotel can be built only if all the properties in the color set have 4 houses each.
     :param player: The player trying to build the hotel
@@ -157,7 +157,7 @@ def check_can_build_hotel(player, asset):
             return False
     return True
 
-def check_can_sell_house(player, asset):
+def check_can_sell_house_on_property(player, asset):
     """
     Check whether a house on this property can be sold
     :param player: The player trying to sell the house
@@ -182,7 +182,7 @@ def check_can_sell_house(player, asset):
             return False
     return True
 
-def check_can_sell_hotel(player, asset):
+def check_can_sell_hotel_on_property(player, asset):
     """
     Check whether the hotel on this property can be sold.
     :param player: The player trying to see the hotel
