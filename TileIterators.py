@@ -21,9 +21,8 @@ class TileList(list):
         else:
             raise KeyError(f"Tile number {key} does not exist")
 
-    # def __iter__(self):
-    #     self.index = 0
-    #     return self
+    def __iter__(self):
+        return iter(self.data)
 
     # def __next__(self):
     #     """
@@ -54,7 +53,8 @@ class TileList(list):
         """
         for asset in self.data:
             if asset.tile_no == item.tile_no:
-                return item
+                return True
+        return False
 
     def __add__(self, other):
         """
@@ -70,7 +70,7 @@ class TileList(list):
         return len(self.data)
 
     def remove(self, asset):
-        return TileList(self.data.remove(asset))
+        self.data.remove(asset)
 
 class TileDict:
     """
