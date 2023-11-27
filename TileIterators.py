@@ -1,11 +1,12 @@
 from Tiles.Property import Property
-class TileList:
+class TileList(list):
     """
         A list of Properties. Data is a list.
     """
     def __init__(self, data):
         self.data = data
-        self.index = 0
+        super().__init__(data)
+        # self.index = 0
 
     def __getitem__(self, key: int):
         """
@@ -15,7 +16,7 @@ class TileList:
         """
         if isinstance(key, int):
             if key < 0:
-                raise IndexError("Tile number does not exist")
+                raise IndexError(f"Tile number cannot be less than 0: {key}")
             for asset in self.data:
                 if asset.tile_no == key:
                     return asset
@@ -24,33 +25,33 @@ class TileList:
                 if asset == key:
                     return asset
         else:
-            raise TypeError("Invalid key")
+            raise TypeError(f"Tile number {key} does not exist")
 
-    def __iter__(self):
-        self.index = 0
-        return self
+    # def __iter__(self):
+    #     self.index = 0
+    #     return self
 
-    def __next__(self):
-        """
-        Get the next tile in the list
-        :return: next tile in the list
-        """
-        if self.index < len(self.data):
-            result = self.data[self.index]
-            self.index += 1
-            return result
-        else:
-            self.index = 0
-            raise StopIteration
-
-    def append(self, asset):
-        """
-        Add a tile to the list
-        :param asset: The tile to be added to the list
-        """
-        if asset not in self.data:
-            self.data.append(asset)
-
+    # def __next__(self):
+    #     """
+    #     Get the next tile in the list
+    #     :return: next tile in the list
+    #     """
+    #     if self.index < len(self.data):
+    #         result = self.data[self.index]
+    #         self.index += 1
+    #         return result
+    #     else:
+    #         self.index = 0
+    #         raise StopIteration
+    #
+    # def append(self, asset):
+    #     """
+    #     Add a tile to the list
+    #     :param asset: The tile to be added to the list
+    #     """
+    #     if asset not in self.data:
+    #         self.data.append(asset)
+    #
     def __contains__(self, item):
         """
         Check if a tile exists in the list
@@ -71,11 +72,11 @@ class TileList:
             self.append(each)
         return self
 
-    def __len__(self):
-        return len(self.data)
+    # def __len__(self):
+    #     return len(self.data)
 
-    def remove(self, asset):
-        return TileList(self.data.remove(asset))
+    # def remove(self, asset):
+    #     return TileList(self.data.remove(asset))
 
 class TileDict:
     """
