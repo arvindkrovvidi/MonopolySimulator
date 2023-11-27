@@ -1,7 +1,8 @@
 import pytest
 
 from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn_asset, play_turn, \
-    get_properties_for_building_houses, get_properties_for_selling_houses, get_properties_for_building_hotels
+    get_properties_for_building_houses, get_properties_for_selling_houses, get_properties_for_building_hotels, \
+    get_properties_for_selling_hotels
 from tests.common import build_houses, build_all_hotels, buy_assets
 
 
@@ -671,3 +672,60 @@ def test_get_properties_for_building_hotels_4(arvind, states_avenue, st_charles_
     assert st_james_place in properties_list
     assert tennessee_avenue in properties_list
     assert new_york_avenue in properties_list
+
+
+def test_get_properties_for_selling_hotels_1(arvind, states_avenue, st_charles_place, virginia_avenue,
+                                              pennsylvania_railroad, electric_company, st_james_place):
+    """
+    Test get_properties_for_selling_hotels when player has hotels in all properties in the color set
+    """
+    arvind.cash = 3000
+    build_all_hotels(arvind, [states_avenue, st_charles_place, virginia_avenue])
+
+    properties_list = get_properties_for_selling_hotels(arvind)
+
+    assert states_avenue in properties_list
+    assert virginia_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_selling_hotels_2(arvind, states_avenue, st_charles_place, virginia_avenue,
+                                              pennsylvania_railroad, electric_company, st_james_place):
+    """
+    Test get_properties_for_selling_hotels when player has hotels in some of the properties in the color set
+    """
+    arvind.cash = 3000
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 4)
+    arvind.build_hotel(states_avenue)
+    arvind.build_hotel(st_charles_place)
+
+    properties_list = get_properties_for_selling_hotels(arvind)
+
+    assert states_avenue in properties_list
+    assert virginia_avenue not in properties_list
+    assert st_charles_place in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_selling_hotels_3(arvind, states_avenue, st_charles_place, virginia_avenue,
+                                              pennsylvania_railroad, electric_company, st_james_place, tennessee_avenue, new_york_avenue):
+    """
+    Test get_properties_for_selling_hotels when player has hotels in all the properties for 2 color sets
+    """
+    arvind.cash = 5000
+    build_all_hotels(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    build_all_hotels(arvind, [tennessee_avenue, new_york_avenue, st_james_place])
+
+    properties_list = get_properties_for_selling_hotels(arvind)
+
+    assert states_avenue in properties_list
+    assert virginia_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place in properties_list
+    assert new_york_avenue in properties_list
+    assert tennessee_avenue in properties_list
