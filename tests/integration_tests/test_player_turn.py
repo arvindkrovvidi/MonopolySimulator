@@ -496,3 +496,51 @@ def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_a
     assert states_avenue._houses == 3
 
 
+def test_get_properties_for_building_houses_1(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, arvind, st_james_place):
+    """
+    Test get_properties_for_building_houses when the player has one color set and the properties in the color set do not have any houses
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    arvind.buy_asset(pennsylvania_railroad)
+    arvind.buy_asset(electric_company)
+    arvind.buy_asset(st_james_place)
+
+    properties_list = get_properties_for_building_houses(arvind)
+    assert states_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_building_houses_2(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, arvind, st_james_place):
+    """
+    Test get_properties_for_building_houses when the player has one color set and the properties in the color set have equal number of houses
+    """
+    arvind.cash = 1500
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
+
+    properties_list = get_properties_for_building_houses(arvind)
+    assert states_avenue in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list
+
+def test_get_properties_for_building_houses_3(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, arvind, st_james_place):
+    """
+    Test get_properties_for_building_houses when the player has one color set and the properties in the color set have equal number of houses
+    """
+    arvind.cash = 1500
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
+    arvind.build_house(states_avenue)
+    properties_list = get_properties_for_building_houses(arvind)
+
+    assert states_avenue not in properties_list
+    assert st_charles_place in properties_list
+    assert virginia_avenue in properties_list
+    assert pennsylvania_railroad not in properties_list
+    assert electric_company not in properties_list
+    assert st_james_place not in properties_list

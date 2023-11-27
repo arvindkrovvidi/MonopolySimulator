@@ -197,3 +197,14 @@ def handle_player_input(player, current_tile, throw=None):
         user_input_num = int(input(f'Select an option from the above: '))
         user_input_function = option_function_dict[user_input_num]
         run_player_option(player, current_tile, user_input_function)
+
+def get_properties_for_building_houses(player):
+    """
+    Get list of properties  from the player's portfolio that are eligible for building houses.
+    """
+    eligible_properties_list = []
+    for asset in player.player_portfolio:
+        if type(asset) not in [Railroad, Utility]:
+            if check_can_build_house_on_property(player, asset):
+                eligible_properties_list.append(asset)
+    return eligible_properties_list
