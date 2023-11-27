@@ -3,8 +3,9 @@ import pytest
 from Player import Player
 from errors import InvalidPropertyTypeError, PropertyNotFreeError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_can_build_house, check_can_build_hotel, check_any_player_broke, set_color_set_value, \
-    check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, InsufficientFundsError, get_display_options
+    check_can_build_house_on_property, check_can_build_hotel_on_property, check_any_player_broke, set_color_set_value, \
+    check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, InsufficientFundsError, \
+    get_display_options
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,

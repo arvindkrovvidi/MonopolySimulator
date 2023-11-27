@@ -1,7 +1,7 @@
 import pytest
 
 from errors import PropertyNotFreeError
-from tests.common import build_houses, buy_color_set, build_all_hotels
+from tests.common import build_houses, buy_assets, build_all_hotels
 
 
 def test_buy_asset_1(arvind, st_charles_place):
@@ -376,7 +376,7 @@ def test_sell_all_houses_2(arvind, st_charles_place, virginia_avenue, states_ave
     Test sell_all_houses function when each property in the color set has unequal number of houses
     """
     arvind.cash = 2000
-    buy_color_set(arvind, [st_charles_place, virginia_avenue, states_avenue])
+    buy_assets(arvind, [st_charles_place, virginia_avenue, states_avenue])
     arvind.build_house(st_charles_place)
     arvind.build_house(virginia_avenue)
     arvind.build_house(states_avenue)
@@ -457,7 +457,7 @@ def test_unmortgage_property_2(arvind, arun, pennsylvania_railroad, short_line_r
     """
 
     arvind.cash = 2000
-    buy_color_set(arvind, [pennsylvania_railroad, short_line_railroad, bo_railroad, reading_railroad])
+    buy_assets(arvind, [pennsylvania_railroad, short_line_railroad, bo_railroad, reading_railroad])
 
     assert arvind.cash == 1200
     arvind.mortgage_property(pennsylvania_railroad)
@@ -484,7 +484,7 @@ def test_unmortgage_property_3(arvind, arun, electric_company, water_works):
     """
 
     arvind.cash = 2000
-    buy_color_set(arvind, [electric_company, water_works])
+    buy_assets(arvind, [electric_company, water_works])
 
     assert arvind.cash == 1700
     arvind.mortgage_property(electric_company)

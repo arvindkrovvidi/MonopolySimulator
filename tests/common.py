@@ -1,8 +1,8 @@
-def buy_color_set(player, assets):
+def buy_assets(player, assets):
     for asset in assets:
         player.buy_asset(asset)
 def build_houses(player, assets, num_houses):
-    buy_color_set(player, assets)
+    buy_assets(player, assets)
     for i in range(0,num_houses):
         for asset in assets:
             player.build_house(asset)

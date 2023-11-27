@@ -183,21 +183,21 @@ def test_bank_transaction(arvind, input_amount, expected):
 
 def test_build_house_true(arvind, st_charles_place, mocker):
     arvind._player_portfolio.append(st_charles_place)
-    mocker.patch('Player.check_can_build_house', return_value=True)
+    mocker.patch('Player.check_can_build_house_on_property', return_value=True)
     arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 1
     assert arvind.cash == 100
 
 
 def test_build_house_false(arvind, st_charles_place, mocker):
-    mocker.patch('Player.check_can_build_house', return_value=False)
+    mocker.patch('Player.check_can_build_house_on_property', return_value=False)
     arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 
 
 def test_build_hotel(mocker, arvind, st_charles_place):
-    mocker.patch('Player.check_can_build_hotel', return_value=True)
+    mocker.patch('Player.check_can_build_hotel_on_property', return_value=True)
     arvind.build_hotel(st_charles_place)
     assert st_charles_place._hotel == True
 
@@ -238,7 +238,7 @@ def test_sell_house_1(mocker, arvind, st_charles_place):
     """
     Sell houses when there is a hotel.
     """
-    mocker.patch('Player.check_can_sell_house', return_value=False)
+    mocker.patch('Player.check_can_sell_house_on_property', return_value=False)
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place.owner = arvind
     st_charles_place._hotel = True
@@ -266,9 +266,9 @@ def test_sell_house_2(arvind, st_charles_place):
 ])
 def test_sell_hotel_1(mocker, arvind, st_charles_place, check_can_sell_hotel_value, hotel_value, cash):
     """
-    Test check_can_sell_hotel
+    Test check_can_sell_hotel_on_property
     """
-    mocker.patch("Player.check_can_sell_hotel", return_value=check_can_sell_hotel_value)
+    mocker.patch("Player.check_can_sell_hotel_on_property", return_value=check_can_sell_hotel_value)
     st_charles_place.owner = arvind
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place._hotel = True

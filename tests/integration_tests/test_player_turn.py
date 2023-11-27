@@ -52,7 +52,7 @@ def test_run_player_option_sell_house(arvind, st_charles_place, virginia_avenue,
     """
     arvind.cash = 2000
     option_function_dict = {0: 'Sell house', 1: 'End turn'}
-    buy_color_set(arvind, [st_charles_place, states_avenue, virginia_avenue])
+    buy_assets(arvind, [st_charles_place, states_avenue, virginia_avenue])
     arvind.build_house(states_avenue)
     assert states_avenue._houses == 1
     run_player_option(arvind, states_avenue, option_function_dict[0])
@@ -111,7 +111,7 @@ def test_get_available_options_properties_3(arvind, states_avenue, st_charles_pl
     arvind.cash = 1500
     arvind.move_to(states_avenue.tile_no, collect_go_cash_flag=False)
     current_tile = states_avenue
-    buy_color_set(arvind, [st_charles_place, states_avenue, virginia_avenue])
+    buy_assets(arvind, [st_charles_place, states_avenue, virginia_avenue])
 
     available_options = get_available_options_assets(current_tile, arvind)
     assert 'Buy property' not in available_options
@@ -221,6 +221,7 @@ def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
     assert arvind.tile_no == 15
     assert pennsylvania_railroad in arvind.player_portfolio
 
+
 @pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test.")
 def test_play_turn_jail_5(mocker, arvind, pennsylvania_railroad, all_tiles_list):
     """
@@ -297,7 +298,7 @@ def test_play_turn_property_4(arvind, states_avenue, virginia_avenue, st_charles
     """
     arvind.cash = 2000
 
-    buy_color_set(arvind, [states_avenue, virginia_avenue, st_charles_place])
+    buy_assets(arvind, [states_avenue, virginia_avenue, st_charles_place])
     assert play_turn_asset(states_avenue, arvind) == ['Build house']
 
 
@@ -350,8 +351,17 @@ def test_play_turn_property_9(arvind, states_avenue, virginia_avenue, st_charles
     arvind.cash = 2000
 
     build_all_hotels(arvind, [states_avenue, virginia_avenue, st_charles_place])
-    assert play_turn_property(states_avenue, arvind) == ['Sell hotel']
     assert play_turn_asset(states_avenue, arvind) == ['Sell hotel']
+
+
+# def test_play_turn_railroad_1(arvind, pennsylvania_railroad):
+#     """
+#     Test play_turn_asset when the railroad is free.
+#     """
+#
+#     assert play_turn_railroad(pennsylvania_railroad, arvind) == ['Buy property']
+#     assert arvind.cash == 200
+
 
 def test_play_turn_railroad_1(arvind, pennsylvania_railroad):
     """
