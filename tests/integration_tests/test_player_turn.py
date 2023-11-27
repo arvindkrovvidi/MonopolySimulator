@@ -262,87 +262,96 @@ def test_play_turn_jail_6(mocker, arvind, pennsylvania_railroad):
 
 def test_play_turn_property_1(arvind, states_avenue):
     """
-    Test play_turn_property when the property is free.
+    Test play_turn_asset when the property is free.
     """
 
-    assert play_turn_property(states_avenue, arvind) == ['Buy property']
+    assert play_turn_asset(states_avenue, arvind) == ['Buy property']
     assert arvind.cash == 200
+
 
 def test_play_turn_property_2(arvind, states_avenue):
     """
-    Test play_turn_property when the player already owns the property.
+    Test play_turn_asset when the player already owns the property.
     """
 
     arvind.buy_asset(states_avenue)
-    assert play_turn_property(states_avenue, arvind) == []
+    assert play_turn_asset(states_avenue, arvind) == []
     assert arvind.cash == 60
+
 
 def test_play_turn_property_3(arvind, states_avenue, arun):
     """
-    Test play_turn_property when another player owns the property.
+    Test play_turn_asset when another player owns the property.
     """
 
     arun.buy_asset(states_avenue)
-    assert play_turn_property(states_avenue, arvind) == []
+    assert play_turn_asset(states_avenue, arvind) == []
     assert arvind.cash == 190
     assert arun.cash == 70
     assert states_avenue in arun.player_portfolio
 
+
 def test_play_turn_property_4(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player owns the color set.
+    Test play_turn_asset when the player owns the color set.
     """
     arvind.cash = 2000
 
     buy_color_set(arvind, [states_avenue, virginia_avenue, st_charles_place])
-    assert play_turn_property(states_avenue, arvind) == ['Build house']
+    assert play_turn_asset(states_avenue, arvind) == ['Build house']
+
 
 def test_play_turn_property_5(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player has less than 4 houses on any property.
+    Test play_turn_asset when the player has less than 4 houses on any property.
     """
     arvind.cash = 2000
 
     build_houses(arvind, [states_avenue, virginia_avenue, st_charles_place], 3)
-    assert play_turn_property(states_avenue, arvind) == ['Build house', 'Sell house']
+    assert play_turn_asset(states_avenue, arvind) == ['Build house', 'Sell house']
+
 
 def test_play_turn_property_6(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player has 4 houses on all properties.
+    Test play_turn_asset when the player has 4 houses on all properties.
     """
     arvind.cash = 2000
 
     build_houses(arvind, [states_avenue, virginia_avenue, st_charles_place], 4)
-    assert play_turn_property(states_avenue, arvind) == ['Build hotel', 'Sell house']
+    assert play_turn_asset(states_avenue, arvind) == ['Build hotel', 'Sell house']
+
 
 def test_play_turn_property_7(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player has a hotel on the property.
+    Test play_turn_asset when the player has a hotel on the property.
     """
     arvind.cash = 2000
 
     build_houses(arvind, [states_avenue, virginia_avenue, st_charles_place], 4)
     arvind.build_hotel(states_avenue)
-    assert play_turn_property(states_avenue, arvind) == ['Sell hotel']
+    assert play_turn_asset(states_avenue, arvind) == ['Sell hotel']
+
 
 def test_play_turn_property_8(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player has a hotel on a different property in the same color set.
+    Test play_turn_asset when the player has a hotel on a different property in the same color set.
     """
     arvind.cash = 2000
 
     build_houses(arvind, [states_avenue, virginia_avenue, st_charles_place], 4)
     arvind.build_hotel(virginia_avenue)
-    assert play_turn_property(states_avenue, arvind) == ['Build hotel', 'Sell house']
+    assert play_turn_asset(states_avenue, arvind) == ['Build hotel', 'Sell house']
+
 
 def test_play_turn_property_9(arvind, states_avenue, virginia_avenue, st_charles_place):
     """
-    Test play_turn_property when the player has a hotel on all the properties in the color set.
+    Test play_turn_asset when the player has a hotel on all the properties in the color set.
     """
     arvind.cash = 2000
 
     build_all_hotels(arvind, [states_avenue, virginia_avenue, st_charles_place])
     assert play_turn_property(states_avenue, arvind) == ['Sell hotel']
+    assert play_turn_asset(states_avenue, arvind) == ['Sell hotel']
 
 def test_play_turn_railroad_1(arvind, pennsylvania_railroad):
     """
