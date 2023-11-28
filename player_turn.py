@@ -200,7 +200,7 @@ def handle_player_input(player, current_tile, throw=None):
 
 def get_properties_for_building_houses(player):
     """
-    Get list of properties  from the player's portfolio that are eligible for building houses.
+    Get list of properties from the player's portfolio that are eligible for building houses.
     """
     eligible_properties_list = []
     for asset in player.player_portfolio:
@@ -210,6 +210,9 @@ def get_properties_for_building_houses(player):
     return eligible_properties_list
 
 def get_properties_for_selling_houses(player):
+    """
+    Get list of properties from the player's portfolio that are eligible for selling houses.
+    """
     eligible_properties_list = []
     for asset in player.player_portfolio:
         if type(asset) not in [Railroad, Utility]:
@@ -218,6 +221,9 @@ def get_properties_for_selling_houses(player):
     return eligible_properties_list
 
 def get_properties_for_building_hotels(player):
+    """
+    Get list of properties  from the player's portfolio that are eligible for building hotels.
+    """
     eligible_properties_list = []
     for asset in player.player_portfolio:
         if type(asset) not in [Railroad, Utility]:
@@ -226,6 +232,9 @@ def get_properties_for_building_hotels(player):
     return eligible_properties_list
 
 def get_properties_for_selling_hotels(player):
+    """
+    Get list of properties  from the player's portfolio that are eligible for selling hotels.
+    """
     eligible_properties_list = []
     for asset in player.player_portfolio:
         if type(asset) not in [Railroad, Utility]:
