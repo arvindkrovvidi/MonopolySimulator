@@ -182,6 +182,9 @@ def play_turn_jail(player):
         play_turn(player, current_tile, jail_output)
 
 def throw_move_and_play_turn(player):
+    """
+    Throw dice, move player and play turn
+    """
     throw = player.throw_dice()
     player.move(throw)
     current_tile = all_tiles_list[player.tile_no]
@@ -189,6 +192,9 @@ def throw_move_and_play_turn(player):
     printing_and_logging(f'Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
 
 def handle_player_input(player, current_tile, throw=None):
+    """
+    Function to get available options, display the options and then run the corresponding function.
+    """
     user_input_function = ''
     while user_input_function != 'End turn':
         available_options = get_available_options_assets(current_tile, player, throw)
