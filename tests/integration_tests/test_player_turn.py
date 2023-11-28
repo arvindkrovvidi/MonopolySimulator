@@ -72,7 +72,7 @@ def test_run_player_option_sell_hotel(mocker, arvind, st_charles_place, virginia
     assert states_avenue._hotel == False
 
 
-def test_get_available_options_properties_1(arvind, states_avenue):
+def test_get_available_options_assets_1(arvind, states_avenue):
     """
     Test the available_options list when player lands on a free asset
     """
@@ -87,7 +87,7 @@ def test_get_available_options_properties_1(arvind, states_avenue):
     assert 'End turn' in available_options
 
 
-def test_get_available_options_properties_2(arvind, states_avenue):
+def test_get_available_options_assets_2(arvind, states_avenue):
     """
     Test the available_options list when player lands on an asset owned by him but with no color set
     """
@@ -103,7 +103,7 @@ def test_get_available_options_properties_2(arvind, states_avenue):
     assert 'End turn' in available_options
 
 
-def test_get_available_options_properties_3(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_passets_3(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have the color set
     """
@@ -121,7 +121,7 @@ def test_get_available_options_properties_3(arvind, states_avenue, st_charles_pl
     assert 'End turn' in available_options
 
 
-def test_get_available_options_properties_4(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_assets_4(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have 4 houses in all the properties in the color set.
     """
@@ -138,7 +138,7 @@ def test_get_available_options_properties_4(arvind, states_avenue, st_charles_pl
     assert 'End turn' in available_options
 
 
-def test_get_available_options_properties_5(arvind, states_avenue, st_charles_place, virginia_avenue):
+def test_get_available_options_assets_5(arvind, states_avenue, st_charles_place, virginia_avenue):
     """
     Test the available_options list when player lands on an asset owned by them, and they have hotels in all the properties in the color set.
     """
