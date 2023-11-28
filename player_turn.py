@@ -71,13 +71,25 @@ def run_player_option(player, current_tile, user_input_function):
     if user_input_function == 'Buy property':
         player.buy_asset(current_tile)
     elif user_input_function == 'Build house':
-        player.build_house(current_tile)
+        player_choice_property = int(input('Select the property to build house: '))
+        eligible_properties = get_properties_for_building_houses(player)
+        print(get_display_options(eligible_properties))
+        player.build_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Build hotel':
-        player.build_hotel(current_tile)
+        player_choice_property = int(input('Select the property to build hotel: '))
+        eligible_properties = get_properties_for_building_hotels(player)
+        print(get_display_options(eligible_properties))
+        player.build_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell house':
-        player.sell_house(current_tile)
+        player_choice_property = int(input('Select the property to sell house: '))
+        eligible_properties = get_properties_for_selling_houses(player)
+        print(get_display_options(eligible_properties))
+        player.sell_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell hotel':
-        player.sell_hotel(current_tile)
+        player_choice_property = int(input('Select the property to sell house: '))
+        eligible_properties = get_properties_for_selling_hotels(player)
+        print(get_display_options(eligible_properties))
+        player.sell_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'End turn':
         printing_and_logging(f'{player} ended their turn')
         pass

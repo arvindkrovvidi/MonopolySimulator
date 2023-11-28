@@ -13,64 +13,62 @@ def test_run_player_option_buy_asset(arvind, st_charles_place, pennsylvania_rail
     """
     Test run_player_option for buy_property
     """
-    option_function_dict = {0: 'Buy property', 1: 'End turn'}
     asset = request.getfixturevalue(asset)
-    run_player_option(arvind, asset, option_function_dict[option])
+    run_player_option(arvind, asset, 'Buy property')
 
     assert asset.owner == arvind
     assert asset in arvind.player_portfolio
 
 
-def test_run_player_option_build_house(arvind, st_charles_place, virginia_avenue, states_avenue):
+def test_run_player_option_build_house(mocker, arvind, st_charles_place, virginia_avenue, states_avenue):
     """
     Test run_player_option for build_house
     """
     arvind.cash = 1000
-    option_function_dict = {0: 'Build house', 1: 'End turn'}
+    mocker.patch('player_turn.input', return_value='0')
     arvind.buy_asset(st_charles_place)
     arvind.buy_asset(virginia_avenue)
     arvind.buy_asset(states_avenue)
-    run_player_option(arvind, st_charles_place, option_function_dict[0])
+    run_player_option(arvind, st_charles_place, 'Build house')
 
     assert st_charles_place._houses == 1
 
 
-def test_run_player_option_build_hotel(arvind, st_charles_place, virginia_avenue, states_avenue):
+def test_run_player_option_build_hotel(mocker, arvind, st_charles_place, virginia_avenue, states_avenue):
     """
     Test run_player_option for build_hotel
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Build hotel', 1: 'End turn'}
+    mocker.patch('player_turn.input', return_value='2')
     build_houses(arvind, [st_charles_place, virginia_avenue, states_avenue], 4)
-    run_player_option(arvind, states_avenue, option_function_dict[0])
+    run_player_option(arvind, states_avenue, 'Build hotel')
 
     assert states_avenue._hotel == True
 
 
-def test_run_player_option_sell_house(arvind, st_charles_place, virginia_avenue, states_avenue):
+def test_run_player_option_sell_house(mocker, arvind, st_charles_place, virginia_avenue, states_avenue):
     """
     Test run_player_option for sell_house
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Sell house', 1: 'End turn'}
+    mocker.patch('player_turn.input', return_value='0')
     buy_assets(arvind, [st_charles_place, states_avenue, virginia_avenue])
     arvind.build_house(states_avenue)
     assert states_avenue._houses == 1
-    run_player_option(arvind, states_avenue, option_function_dict[0])
+    run_player_option(arvind, states_avenue, 'Sell house')
     assert states_avenue._houses == 0
 
 
-def test_run_player_option_sell_hotel(arvind, st_charles_place, virginia_avenue, states_avenue):
+def test_run_player_option_sell_hotel(mocker, arvind, st_charles_place, virginia_avenue, states_avenue):
     """
     Test run_player_option for sell_hotel
     """
     arvind.cash = 2000
-    option_function_dict = {0: 'Sell hotel', 1: 'End turn'}
+    mocker.patch('player_turn.input', return_value='0')
     build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 4)
     arvind.build_hotel(states_avenue)
     assert states_avenue._hotel == True
-    run_player_option(arvind, states_avenue, option_function_dict[0])
-
+    run_player_option(arvind, states_avenue, 'Sell hotel')
     assert states_avenue._hotel == False
 
 
@@ -201,7 +199,6 @@ def test_play_turn_jail_3(mocker, arvind):
     assert arvind.in_jail == True
     assert arvind.cash == 500
     assert arvind.tile_no == 10
-
 
 
 def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
