@@ -298,25 +298,22 @@ def test_play_turn_3(mocker, arvind, chance_36):
     assert arvind.tile_no == 33
     assert arvind.cash == 220
 
-def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list):
+def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list, st_james_place):
     """
     Test play_turn when player builds 2 houses in the same turn
     """
     arvind.cash = 2000
-    mocker.patch('player_turn.input', side_effect=['0', '0', '1'])
-    mocker.patch('player_turn.all_tiles_list', return_value=all_tiles_list)
-    build_houses(arvind, [st_charles_place, states_avenue, virginia_avenue], 1)
+    mocker.patch('player_turn.input', side_effect=['1', '0', '1', '2', '3'])
+    build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
+    arvind.build_house(states_avenue)
     arvind.build_house(st_charles_place)
-    arvind.build_house(virginia_avenue)
-    arvind.move_to(states_avenue.tile_no)
-    current_tile = states_avenue
-
-    assert st_charles_place._houses == 2
-    assert virginia_avenue._houses == 2
-
+    arvind.move_to(16, collect_go_cash_flag=False)
+    current_tile = st_james_place
     play_turn(arvind, current_tile)
 
-    assert states_avenue._houses == 3
+    assert states_avenue._houses == 2
+    assert st_charles_place._houses == 2
+    assert virginia_avenue._houses == 3
 
 
 def test_get_properties_for_building_houses_1(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, arvind, st_james_place):
