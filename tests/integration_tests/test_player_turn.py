@@ -1,6 +1,6 @@
 import pytest
 
-from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn_asset, play_turn, \
+from player_turn import run_player_option, get_available_options_assets, play_turn_jail, play_turn, \
     get_properties_for_building_houses, get_properties_for_selling_houses, get_properties_for_building_hotels, \
     get_properties_for_selling_hotels
 from tests.common import build_houses, build_all_hotels, buy_assets
@@ -371,7 +371,7 @@ def test_get_properties_for_building_houses_3(states_avenue, st_charles_place, v
 def test_get_properties_for_building_houses_4(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad,
                                               electric_company, arvind, st_james_place, tennessee_avenue, new_york_avenue):
     """
-    Test get_properties_for_building_houses when the player has one color set and the properties in the color set have equal number of houses
+    Test get_properties_for_building_houses when the player has two color sets with each property having one house
     """
     arvind.cash = 5000
     build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
@@ -417,7 +417,7 @@ def test_get_properties_for_selling_houses_2(arvind, states_avenue, st_charles_p
 
 def test_get_properties_for_selling_houses_3(arvind, states_avenue, st_charles_place, virginia_avenue, st_james_place, pennsylvania_railroad, electric_company):
     """
-    Test get_properties_for_selling_houses when player has 4 houses on all properties in the color set
+    Test get_properties_for_selling_houses when player has different number of houses in properties in the color set
     """
     arvind.cash = 3000
     build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 3)
@@ -478,7 +478,7 @@ def test_get_properties_for_building_hotels_3(arvind, states_avenue, st_charles_
 
 def test_get_properties_for_building_hotels_4(arvind, states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, st_james_place, tennessee_avenue, new_york_avenue):
     """
-    Test get_properties_for_building_hotels when player has hotels in some properties in the color set
+    Test get_properties_for_building_hotels when player has 4 houses in all properties of 2 color sets
     """
     arvind.cash = 4000
     build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 4)
