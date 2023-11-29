@@ -279,7 +279,7 @@ def test_play_turn_2(mocker, arvind, chance_7):
     arvind.move_to(7, collect_go_cash_flag=False)
     current_tile = chance_7
     mocker.patch('player_turn.randint', return_value=10)
-
+    mocker.patch('player_turn.input', return_value='0')
     play_turn(arvind, current_tile)
 
     assert arvind.tile_no == 4
@@ -292,7 +292,7 @@ def test_play_turn_3(mocker, arvind, chance_36):
     arvind.move_to(36, collect_go_cash_flag=False)
     current_tile = chance_36
     mocker.patch('player_turn.randint', side_effect=[10, 8])
-
+    mocker.patch('player_turn.input', return_value='1')
     play_turn(arvind, current_tile)
 
     assert arvind.tile_no == 33

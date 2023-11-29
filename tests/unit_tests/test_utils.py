@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InvalidPropertyTypeError, PropertyNotFreeError
+from errors import InvalidPropertyTypeError, PropertyNotFreeError, SelfOwnedPropertyError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
     check_can_build_house_on_property, check_can_build_hotel_on_property, check_any_player_broke, set_color_set_value, \
     check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, InsufficientFundsError, \
@@ -274,7 +274,7 @@ def test_check_can_buy_asset_2(arvind, asset, request):
     arvind.player_portfolio.append(asset)
     asset.owner = arvind
 
-    with pytest.raises(PropertyNotFreeError):
+    with pytest.raises(SelfOwnedPropertyError):
         check_can_buy_asset(arvind, asset)
 
 
