@@ -14,15 +14,15 @@ from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError, SelfOwnedPropertyError
-from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house, check_can_build_hotel, \
-    check_can_sell_hotel, check_can_sell_house, get_display_options
+from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house_on_property, \
+    check_can_build_hotel_on_property, \
+    check_can_sell_hotel_on_property, check_can_sell_house_on_property, get_display_options
 
 
 def play_turn(player, current_tile, throw=None):
-    if type(current_tile) in [Property, Railroad, Utility]:
-        printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
-        handle_player_input(player, current_tile, throw)
-    elif type(current_tile) == ChanceTile:
+    # if type(current_tile) in [Property, Railroad, Utility]:
+    #     printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
+    if type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
         if type(chance_return_value) is bool:
@@ -37,14 +37,16 @@ def play_turn(player, current_tile, throw=None):
     elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
         current_tile.execute(player, card_no, all_players_list=all_players_list)
-    elif type(current_tile) == LuxuryTaxTile or type(current_tile) == IncomeTaxTile:
-        current_tile.execute(player)
     elif type(current_tile) in [LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
     elif type(current_tile) == GoToJail:
         current_tile.execute(player)
     elif type(current_tile) == Jail:
         pass
+    elif type(current_tile) in [Property, Railroad, Utility]:
+        printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
+        handle_player_input(player, current_tile, throw)
+
 
 def get_available_options_assets(current_tile, player, throw=None):
     """
@@ -54,14 +56,27 @@ def get_available_options_assets(current_tile, player, throw=None):
     :param throw: The dice throw
     """
     available_options = []
-    if type(current_tile) == Property:
-        available_options = play_turn_property(current_tile, player)
-    elif type(current_tile) == Railroad:
-        available_options = play_turn_railroad(current_tile, player)
-    elif type(current_tile) == Utility:
-        available_options = play_turn_utility(current_tile, player, throw)
-
-    available_options.append('End turn')
+    try:
+        play_turn_asset(current_tile, player, throw)
+    except InsufficientFundsError as e:
+        printing_and_logging(f'{player} cannot buy {current_tile}')
+        printing_and_logging(e.exc_message)
+    except SelfOwnedPropertyError as e:
+        printing_and_logging(e.exc_message)
+    except InvalidPropertyTypeError as e:
+        printing_and_logging(e.exc_message)
+    else:
+        available_options.append('Buy property')
+    finally:
+        if len(get_properties_for_building_houses(player)) != 0:
+            available_options.append('Build house')
+        if len(get_properties_for_selling_houses(player)) != 0:
+            available_options.append('Sell house')
+        if len(get_properties_for_building_hotels(player)) != 0:
+            available_options.append('Build hotel')
+        if len(get_properties_for_selling_hotels(player)) != 0:
+            available_options.append('Sell hotel')
+        available_options.append('End turn')
     return available_options
 
 def run_player_option(player, current_tile, user_input_function):
@@ -71,106 +86,57 @@ def run_player_option(player, current_tile, user_input_function):
     if user_input_function == 'Buy property':
         player.buy_asset(current_tile)
     elif user_input_function == 'Build house':
-        player_choice_property = int(input('Select the property to build house: '))
         eligible_properties = get_properties_for_building_houses(player)
         print(get_display_options(eligible_properties))
+        player_choice_property = int(input('Select the property to build house: '))
         player.build_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Build hotel':
-        player_choice_property = int(input('Select the property to build hotel: '))
         eligible_properties = get_properties_for_building_hotels(player)
         print(get_display_options(eligible_properties))
+        player_choice_property = int(input('Select the property to build hotel: '))
         player.build_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell house':
-        player_choice_property = int(input('Select the property to sell house: '))
         eligible_properties = get_properties_for_selling_houses(player)
         print(get_display_options(eligible_properties))
+        player_choice_property = int(input('Select the property to sell house: '))
         player.sell_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell hotel':
-        player_choice_property = int(input('Select the property to sell house: '))
         eligible_properties = get_properties_for_selling_hotels(player)
         print(get_display_options(eligible_properties))
+        player_choice_property = int(input('Select the property to sell house: '))
         player.sell_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'End turn':
         printing_and_logging(f'{player} ended their turn')
         pass
 
-def play_turn_property(current_tile, player):
+def play_turn_asset(current_tile, player, throw=None):
     """
     Play turn if the player lands on a Property
+    :param throw: The throw of the player
     :param current_tile: Property
     :param player: Player playing the turn
     """
-    available_options = []
-    try:
-        check_can_buy_asset(player, current_tile)
-    except InsufficientFundsError as e:
-        printing_and_logging(f'{player} cannot buy {current_tile}')
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError:
-        landlord = current_tile.owner
-        player.pay_rent(landlord, current_tile.rent)
-    except SelfOwnedPropertyError as e:
-        printing_and_logging(e.exc_message)
-        if check_can_build_house(player, current_tile):
-            available_options.append('Build house')
-        if check_can_build_hotel(player, current_tile):
-            available_options.append('Build hotel')
-        if check_can_sell_house(player, current_tile):
-            available_options.append('Sell house')
-        if check_can_sell_hotel(player, current_tile):
-            available_options.append('Sell hotel')
-    except InvalidPropertyTypeError as e:
-        printing_and_logging(e.exc_message)
-    else:
-        available_options.append('Buy property')
-    return available_options
-
-def play_turn_railroad(current_tile, player):
-    """
-    Play turn if the player lands on a Railroad
-    :param current_tile: Railroad
-    :param player: Player playing the turn
-    """
-    available_options = []
-    try:
-        check_can_buy_asset(player, current_tile)
-    except InsufficientFundsError as e:
-        printing_and_logging(f'{player} cannot buy {current_tile}')
-        printing_and_logging(e.exc_message)
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
-        landlord = current_tile.owner
-        player.pay_rent(landlord, current_tile.rent)
-    except SelfOwnedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    else:
-        available_options.append('Buy property')
-    return available_options
-
-def play_turn_utility(current_tile, player, throw):
-    """
-    Play turn if the player lands on a Utility
-    :param current_tile: Utility
-    :param player: Player playing the turn
-    :param throw: The dice throw
-    """
-    available_options = []
-    try:
-        check_can_buy_asset(player, current_tile)
-    except InsufficientFundsError as e:
-        printing_and_logging(f'{player} cannot buy {current_tile}')
-    except PropertyNotFreeError as e:
-        printing_and_logging(e.exc_message)
-        landlord = current_tile.owner
-        if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, current_tile.get_rent(throw))
-        else:
-            player.pay_rent(landlord, current_tile.get_rent(throw))
-    except SelfOwnedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    else:
-        available_options.append('Buy property')
-    return available_options
+    if type(current_tile) == Property:
+        try:
+            check_can_buy_asset(player, current_tile)
+        except PropertyNotFreeError:
+            landlord = current_tile.owner
+            player.pay_rent(landlord, current_tile.rent)
+    elif type(current_tile) == Railroad:
+        try:
+            check_can_buy_asset(player, current_tile)
+        except PropertyNotFreeError:
+            landlord = current_tile.owner
+            player.pay_rent(landlord, current_tile.rent)
+    elif type(current_tile) == Utility:
+        try:
+            check_can_buy_asset(player, current_tile)
+        except PropertyNotFreeError:
+            landlord = current_tile.owner
+            if check_player_has_color_set(landlord, "Utility"):
+                player.pay_rent(landlord, current_tile.get_rent(throw))
+            else:
+                player.pay_rent(landlord, current_tile.get_rent(throw))
 
 def play_turn_jail(player):
     """

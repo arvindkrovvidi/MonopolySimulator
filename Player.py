@@ -9,8 +9,9 @@ from Tiles_data.all_tiles_data import all_tiles_list
 from config import logger, printing_and_logging
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
-from utils import check_player_has_color_set, check_can_build_hotel, \
-    set_color_set_value, check_can_sell_house, check_can_sell_hotel, check_can_buy_asset, check_can_build_house, \
+from utils import check_player_has_color_set, check_can_build_hotel_on_property, \
+    set_color_set_value, check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, \
+    check_can_build_house_on_property, \
     UnownedPropertyError, PropertyNotFreeError
 
 
@@ -193,7 +194,7 @@ class Player:
         :param asset: A property where house is being built
         """
         try:
-            if check_can_build_house(self, asset):
+            if check_can_build_house_on_property(self, asset):
                 asset._houses += 1
                 self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a house on {asset}')
@@ -215,7 +216,7 @@ class Player:
         :param asset: The tile where the hotel is being built
         """
         try:
-            if check_can_build_hotel(self, asset):
+            if check_can_build_hotel_on_property(self, asset):
                 asset._hotel = True
                 self.bank_transaction(-asset.building_cost)
                 printing_and_logging(f'{self} built a hotel on {asset}')
@@ -277,7 +278,7 @@ class Player:
         :param asset: The asset with houses on it
         """
         try:
-            if check_can_sell_house(self, asset):
+            if check_can_sell_house_on_property(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._houses -= 1
                 printing_and_logging(f'{self} sold a house on {asset}')
@@ -299,7 +300,7 @@ class Player:
         :param asset: The property with hotel it
         """
         try:
-            if  check_can_sell_hotel(self, asset):
+            if  check_can_sell_hotel_on_property(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._hotel = False
                 printing_and_logging(f'{self} sold the hotel on {asset}')
