@@ -5,9 +5,7 @@ from prettytable import PrettyTable
 
 from Board import color_data
 from Tiles.Property import Property
-from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
-from Tiles.Utility import Utility
 from config import printing_and_logging
 from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError, \
     SelfOwnedPropertyError
@@ -174,7 +172,7 @@ def check_can_sell_house_on_property(player, asset):
     elif asset._houses <= 0:
         return False
     for each_property in asset.owner.player_portfolio:
-        if type(each_property) in [Railroad, Utility]:
+        if each_property.color != asset.color:
             continue
         if each_property == asset:
             continue
