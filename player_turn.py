@@ -26,11 +26,11 @@ def play_turn(player, current_tile, throw=None):
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
         if type(chance_return_value) is bool:
-            handle_player_input(player, current_tile, throw)
+            handle_player_input(player, player.current_tile, throw)
         elif chance_return_value == 4:
             all_tiles_list[chance_return_value].execute(player)
         elif chance_return_value == 19:
-            handle_player_input(player, all_tiles_list[player.tile_no], throw)
+            handle_player_input(player, player.current_tile, throw)
         elif chance_return_value == 33:
             card_no = randint(1, 16)
             all_tiles_list[chance_return_value].execute(player, card_no, all_players_list=all_players_list)
