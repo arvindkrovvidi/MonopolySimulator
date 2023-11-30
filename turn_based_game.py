@@ -44,13 +44,11 @@ if __name__ == "__main__":
 #TODO Add mortgaging
 #TODO View player portfolio during game
 #TODO Add "purchase get out of jail free card from another player" function
-#TODO Add ability to keep playing until the player selects end turn option
-#TODO Player need not land on a property to build houses/hotels on it.
 #TODO "No more houses to sell" remove this print statement
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
 #TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
 #TODO Handle invalid inputs
-#TODO Community chest 10 not giving the option to buy property after moving three steps back
-#TODO Display cash at the end of the turn
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
 #TODO Print messages can be a second return variable from the check functions that can be printed when required.
+#TODO Do not add 200 at the beginning of the game
+#TODO handle_player_input(player, current_tile, throw), send
