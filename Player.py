@@ -127,6 +127,7 @@ class Player:
                 self.tile_no += throw - 40
                 self.bank_transaction(go_cash)
                 printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+        self.current_tile = all_tiles_list[self.tile_no]
         printing_and_logging(f'{self} landed on {all_tiles_list[self.tile_no]}')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
@@ -141,7 +142,8 @@ class Player:
             printing_and_logging(f'{self} collected {go_cash} for passing Go')
         if tile_no == 10:
             self.in_jail = True
-        printing_and_logging(f'{self} moved to {all_tiles_list[tile_no]}')
+        self.current_tile = all_tiles_list[self.tile_no]
+        printing_and_logging(f'{self} moved to {all_tiles_list[self.tile_no]}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
