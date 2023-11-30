@@ -154,6 +154,22 @@ def test_get_available_options_assets_5(arvind, states_avenue, st_charles_place,
     assert 'Sell hotel' in available_options
     assert 'End turn' in available_options
 
+@pytest.mark.parametrize('throw, cash', [(5, 1175), (11, 1190), (12, 1152)])
+def test_get_available_options_assets_6(mocker, arvind, arun, st_charles_place, reading_railroad, electric_company, throw, all_tiles_list, cash):
+    """
+    Test the available_options list when player lands on an asset owned by another player.
+    """
+    mocker.patch.object(arvind, 'throw_dice', return_value=throw)
+    arun.cash = 1000
+    arvind.cash = 1000
+    buy_assets(arun, [st_charles_place, reading_railroad, electric_company])
+    arvind.move(arvind.throw_dice())
+    current_tile = all_tiles_list[arvind.tile_no]
+    available_options = get_available_options_assets(current_tile, arvind, throw)
+
+    assert arvind.cash == cash
+    assert available_options == ['End turn']
+
 
 def test_play_turn_jail_1(mocker, arvind, states_avenue):
     """
