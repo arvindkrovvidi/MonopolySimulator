@@ -57,7 +57,17 @@ def get_available_options_assets(current_tile, player, throw=None):
     """
     available_options = []
     try:
-        play_turn_asset(current_tile, player, throw)
+        check_can_buy_asset(player, current_tile)
+    except PropertyNotFreeError:
+        if type(current_tile) in [Property, Railroad]:
+            landlord = current_tile.owner
+            player.pay_rent(landlord, current_tile.rent)
+        elif type(current_tile) == Utility:
+            landlord = current_tile.owner
+            if check_player_has_color_set(landlord, "Utility"):
+                player.pay_rent(landlord, current_tile.get_rent(throw))
+            else:
+                player.pay_rent(landlord, current_tile.get_rent(throw))
     except InsufficientFundsError as e:
         printing_and_logging(f'{player} cannot buy {current_tile}')
         printing_and_logging(e.exc_message)
@@ -108,35 +118,6 @@ def run_player_option(player, current_tile, user_input_function):
     elif user_input_function == 'End turn':
         printing_and_logging(f'{player} ended their turn')
         pass
-
-def play_turn_asset(current_tile, player, throw=None):
-    """
-    Play turn if the player lands on a Property
-    :param throw: The throw of the player
-    :param current_tile: Property
-    :param player: Player playing the turn
-    """
-    if type(current_tile) == Property:
-        try:
-            check_can_buy_asset(player, current_tile)
-        except PropertyNotFreeError:
-            landlord = current_tile.owner
-            player.pay_rent(landlord, current_tile.rent)
-    elif type(current_tile) == Railroad:
-        try:
-            check_can_buy_asset(player, current_tile)
-        except PropertyNotFreeError:
-            landlord = current_tile.owner
-            player.pay_rent(landlord, current_tile.rent)
-    elif type(current_tile) == Utility:
-        try:
-            check_can_buy_asset(player, current_tile)
-        except PropertyNotFreeError:
-            landlord = current_tile.owner
-            if check_player_has_color_set(landlord, "Utility"):
-                player.pay_rent(landlord, current_tile.get_rent(throw))
-            else:
-                player.pay_rent(landlord, current_tile.get_rent(throw))
 
 def play_turn_jail(player):
     """
