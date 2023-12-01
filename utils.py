@@ -277,3 +277,20 @@ def get_display_options(*args):
          options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
     return options_string
 
+def get_player_input(text, available_options):
+    """
+    Get input from player
+    :param text: Text to be displayed while collecting input. This is passed to the python input() function
+    :param available_options: List of possible options
+    :return: The input given by the player
+    """
+    while True:
+        try:
+            player_input = int(input(text + ': '))
+            if player_input not in available_options:
+                raise ValueError
+        except ValueError:
+            print('Invalid input')
+            continue
+        else:
+            return player_input

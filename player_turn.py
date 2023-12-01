@@ -16,12 +16,10 @@ from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError, InvalidPropertyTypeError, SelfOwnedPropertyError
 from utils import check_player_has_color_set, check_can_buy_asset, check_can_build_house_on_property, \
     check_can_build_hotel_on_property, \
-    check_can_sell_hotel_on_property, check_can_sell_house_on_property, get_display_options
+    check_can_sell_hotel_on_property, check_can_sell_house_on_property, get_display_options, get_player_input
 
 
 def play_turn(player, current_tile, throw=None):
-    # if type(current_tile) in [Property, Railroad, Utility]:
-    #     printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
     if type(current_tile) == ChanceTile:
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
@@ -98,22 +96,22 @@ def run_player_option(player, current_tile, user_input_function):
     elif user_input_function == 'Build house':
         eligible_properties = get_properties_for_building_houses(player)
         print(get_display_options(eligible_properties))
-        player_choice_property = int(input('Select the property to build house: '))
+        player_choice_property = get_player_input('Select the property to build house', dict(enumerate(eligible_properties)).keys())
         player.build_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Build hotel':
         eligible_properties = get_properties_for_building_hotels(player)
         print(get_display_options(eligible_properties))
-        player_choice_property = int(input('Select the property to build hotel: '))
+        player_choice_property = get_player_input('Select the property to build hotel', dict(enumerate(eligible_properties)).keys())
         player.build_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell house':
         eligible_properties = get_properties_for_selling_houses(player)
         print(get_display_options(eligible_properties))
-        player_choice_property = int(input('Select the property to sell house: '))
+        player_choice_property = get_player_input('Select the property to sell house', dict(enumerate(eligible_properties)).keys())
         player.sell_house(eligible_properties[player_choice_property])
     elif user_input_function == 'Sell hotel':
         eligible_properties = get_properties_for_selling_hotels(player)
         print(get_display_options(eligible_properties))
-        player_choice_property = int(input('Select the property to sell house: '))
+        player_choice_property = get_player_input('Select the property to sell house', dict(enumerate(eligible_properties)).keys())
         player.sell_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'End turn':
         printing_and_logging(f'{player} ended their turn')
@@ -127,8 +125,9 @@ def play_turn_jail(player):
     current_tile = all_tiles_list[player.tile_no]
     printing_and_logging(f'{player} is in Jail')
     available_options = current_tile.get_available_options(player)
+    available_options_dict = dict(enumerate(available_options))
     print(get_display_options(available_options))
-    player_option = int(input(f'Select an option from the above: '))
+    player_option = get_player_input('Select an option from the above', available_options_dict.keys())
     jail_output = current_tile.execute(player, player_option)
     if jail_output == 'Paid fine':
         throw = player.throw_dice(ignore_double=True)
@@ -159,7 +158,7 @@ def handle_player_input(player, current_tile, throw=None):
         available_options = get_available_options_assets(current_tile, player, throw)
         option_function_dict = dict(list(enumerate(available_options)))
         print(get_display_options(available_options))
-        user_input_num = int(input(f'Select an option from the above: '))
+        user_input_num = get_player_input('Select an option from the above', option_function_dict.keys())
         user_input_function = option_function_dict[user_input_num]
         run_player_option(player, current_tile, user_input_function)
 
