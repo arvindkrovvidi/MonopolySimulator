@@ -6,6 +6,12 @@ class TileList(list):
         self.data = data
         # self.index = 0
 
+    def __str__(self):
+        return str(self.data)
+
+    def __repr__(self):
+        return f"TileList({repr(self.data)})"
+
     def __getitem__(self, key: int):
         """
         Get a tile from the list
@@ -18,6 +24,7 @@ class TileList(list):
             for asset in self.data:
                 if asset.tile_no == key:
                     return asset
+            raise KeyError(f'Tile number {key} does not exist')
         else:
             raise KeyError(f"Tile number {key} does not exist")
 
