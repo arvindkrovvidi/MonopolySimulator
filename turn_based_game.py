@@ -46,6 +46,5 @@ if __name__ == "__main__":
 #TODO Add "purchase get out of jail free card from another player" function
 #TODO "No more houses to sell" remove this print statement
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
-#TODO Player that goes bankrupt loses immediately. The other players calculate their networths. The one with highest networth wins the game.
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
 #TODO Print messages can be a second return variable from the check functions that can be printed when required.
