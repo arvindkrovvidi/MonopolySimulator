@@ -155,7 +155,7 @@ class Player:
         if player == self:
             return
         if self.cash - rent < 0:
-            raise PlayerBrokeError(player)
+            raise PlayerBrokeError(self)
         self.player_transaction(player, -rent)
         printing_and_logging(f'{self} paid {player} rent of amount {rent}')
 
