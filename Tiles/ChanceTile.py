@@ -174,15 +174,11 @@ def execute_chance_7(player, throw):
     """
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
-    # try:
-    #     check_can_buy_asset(player, nearest_utility)
-    # except InsufficientFundsError:
-    #     pass
-    # except PropertyNotFreeError:
-    #     landlord = nearest_utility.owner
-    #     if check_player_has_color_set(landlord, "Utility"):
-    #         player.pay_rent(landlord, nearest_utility.get_rent(throw))
-    #     else:
-    #         player.pay_rent(landlord, nearest_utility.get_rent(throw))
-    # else:
-    #     return True
+    try:
+        check_can_buy_asset(player, nearest_utility)
+    except InsufficientFundsError:
+        pass
+    except PropertyNotFreeError as e:
+        landlord = nearest_utility.owner
+        player.pay_rent(landlord, nearest_utility.rent * 2)
+        raise PropertyNotFreeError(nearest_utility)
