@@ -1,4 +1,5 @@
 import inspect
+from copy import deepcopy
 from random import randint
 
 from prettytable import PrettyTable
@@ -59,6 +60,7 @@ def get_positions(players):
         else:
             yield i + 1, winner, winner.networth
             prev = winner
+        players.pop(winner_index)
 
 def check_passing_go(player, tile: Tile) -> bool:
     """
@@ -231,14 +233,15 @@ def check_any_player_broke(player_list):
 def print_player_summary(players):
     """
     Print player summary with Position, player and their networth.
-    :param players: List of all players
+    :param players_copy: List of all players
     """
-    for player in players:
+    players_copy = deepcopy(players)
+    for player in players_copy:
         player.networth = calculate_networth(player)
 
     display_winners = PrettyTable()
     display_winners.field_names = ["Position", "Player", "Net Worth"]
-    for pos, win, nw in get_positions(players):
+    for pos, win, nw in get_positions(players_copy):
         display_winners.add_row((pos, str(win), nw))
     printing_and_logging(display_winners)
 
