@@ -7,7 +7,7 @@ from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
 from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError
-from utils import check_passing_go, check_player_has_color_set, check_can_buy_asset
+from utils import check_passing_go, check_can_buy_asset
 
 
 class ChanceTile(SpecialTiles):
@@ -146,11 +146,10 @@ def execute_chance_5(player):
         check_can_buy_asset(player, nearest_railroad)
     except InsufficientFundsError:
         pass
-    except PropertyNotFreeError:
+    except PropertyNotFreeError as e:
         landlord = nearest_railroad.owner
         player.pay_rent(landlord, nearest_railroad.rent * 2)
-    else:
-        return True
+        raise PropertyNotFreeError(nearest_railroad)
 
 def get_nearest_utility(player):
     """
@@ -175,15 +174,15 @@ def execute_chance_7(player, throw):
     """
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
-    try:
-        check_can_buy_asset(player, nearest_utility)
-    except InsufficientFundsError:
-        pass
-    except PropertyNotFreeError:
-        landlord = nearest_utility.owner
-        if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, nearest_utility.get_rent(throw))
-        else:
-            player.pay_rent(landlord, nearest_utility.get_rent(throw))
-    else:
-        return True
+    # try:
+    #     check_can_buy_asset(player, nearest_utility)
+    # except InsufficientFundsError:
+    #     pass
+    # except PropertyNotFreeError:
+    #     landlord = nearest_utility.owner
+    #     if check_player_has_color_set(landlord, "Utility"):
+    #         player.pay_rent(landlord, nearest_utility.get_rent(throw))
+    #     else:
+    #         player.pay_rent(landlord, nearest_utility.get_rent(throw))
+    # else:
+    #     return True
