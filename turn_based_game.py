@@ -5,7 +5,7 @@ from player_turn import play_turn_jail, throw_move_and_play_turn
 from utils import print_player_summary
 
 
-def main(players, total_turns, all_tiles_list=all_tiles_list):
+def main(players, total_turns=1000, all_tiles_list=all_tiles_list):
     turn = 1
     player_broke = False
 
@@ -31,15 +31,15 @@ def main(players, total_turns, all_tiles_list=all_tiles_list):
                 player_broke = True
                 break
             else:
-                turn += 1
                 printing_and_logging('---------------------------------------------------------------')
+        turn += 1
         printing_and_logging('=================================================================')
         if player_broke:
             break
 
 if __name__ == "__main__":
     from Player_data import all_players_list as players
-    main(players, 1000, all_tiles_list=all_tiles_list)
+    main(players)
 #TODO Add trading properties
 #TODO Add mortgaging
 #TODO View player portfolio during game
