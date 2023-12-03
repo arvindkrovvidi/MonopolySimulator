@@ -1,17 +1,15 @@
-from Player_data import all_players_list as players
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import printing_and_logging
 from errors import PlayerBrokeError
 from player_turn import play_turn_jail, throw_move_and_play_turn
-from utils import check_any_player_broke, print_player_summary
+from utils import print_player_summary
 
 
-def main():
+def main(players, total_turns, all_tiles_list=all_tiles_list):
     turn = 1
-    total_turns = 1000
     player_broke = False
 
-    while turn <= total_turns or not check_any_player_broke(players):
+    while turn <= total_turns:
         for player in players:
             try:
                 printing_and_logging(f'{player} turn. Location: {all_tiles_list[player.tile_no]}  Cash: {player.cash}')
@@ -26,8 +24,9 @@ def main():
                 else:
                     play_turn_jail(player)
                 printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
-            except PlayerBrokeError:
+            except PlayerBrokeError as e:
                 printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
+                players.remove(e.player)
                 print_player_summary(players)
                 player_broke = True
                 break
@@ -39,7 +38,8 @@ def main():
             break
 
 if __name__ == "__main__":
-    main()
+    from Player_data import all_players_list as players
+    main(players, 1000, all_tiles_list=all_tiles_list)
 #TODO Add trading properties
 #TODO Add mortgaging
 #TODO View player portfolio during game

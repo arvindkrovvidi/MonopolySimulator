@@ -59,7 +59,6 @@ def get_positions(players):
         else:
             yield i + 1, winner, winner.networth
             prev = winner
-        players.pop(winner_index)
 
 def check_passing_go(player, tile: Tile) -> bool:
     """
