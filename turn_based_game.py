@@ -48,3 +48,4 @@ if __name__ == "__main__":
 #TODO Arvind does not have enough cash to build a house on States Avenue printing twice
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
 #TODO Print messages can be a second return variable from the check functions that can be printed when required.
+#TODO Replace all_tiles_list with all_tiles_list fixture in tests
