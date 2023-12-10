@@ -1,7 +1,7 @@
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import printing_and_logging
 from errors import PlayerBrokeError
-from player_turn import play_turn_jail, throw_move_and_play_turn
+from player_turn import play_turn_jail, throw_move_and_play_turn, get_available_options_and_player_input
 from utils import print_player_summary
 
 
@@ -23,6 +23,7 @@ def main(players, total_turns=1000, all_tiles_list=all_tiles_list):
                         player.move_to(10, collect_go_cash_flag=False)
                 else:
                     play_turn_jail(player)
+                get_available_options_and_player_input(player, current_tile, throw)
                 printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
             except PlayerBrokeError as e:
                 printing_and_logging(f'Turn: {turn}    Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')

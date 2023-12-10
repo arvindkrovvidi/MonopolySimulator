@@ -24,11 +24,11 @@ def play_turn(player, current_tile, throw=None):
         card_no = randint(1, 16)
         chance_return_value = current_tile.execute(player, card_no, all_players_list=all_players_list, throw=throw)
         if type(chance_return_value) is bool:
-            handle_player_input(player, player.current_tile, throw)
+            get_available_options_and_player_input(player, player.current_tile, throw)
         elif chance_return_value == 4:
             all_tiles_list[chance_return_value].execute(player)
         elif chance_return_value == 19:
-            handle_player_input(player, player.current_tile, throw)
+            get_available_options_and_player_input(player, player.current_tile, throw)
         elif chance_return_value == 33:
             card_no = randint(1, 16)
             all_tiles_list[chance_return_value].execute(player, card_no, all_players_list=all_players_list)
@@ -43,7 +43,7 @@ def play_turn(player, current_tile, throw=None):
         pass
     elif type(current_tile) in [Property, Railroad, Utility]:
         printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
-        handle_player_input(player, current_tile, throw)
+        get_available_options_and_player_input(player, current_tile, throw)
 
 
 def get_available_options_assets(current_tile, player, throw=None):
@@ -149,7 +149,7 @@ def throw_move_and_play_turn(player):
     play_turn(player, current_tile, throw)
     printing_and_logging(f'Player: {player}    Location: {all_tiles_list[player.tile_no]}    Cash: {player.cash}')
 
-def handle_player_input(player, current_tile, throw=None):
+def get_available_options_and_player_input(player, current_tile, throw=None):
     """
     Function to get available options, display the options and then run the corresponding function.
     """
