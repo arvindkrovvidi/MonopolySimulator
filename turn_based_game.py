@@ -50,3 +50,6 @@ if __name__ == "__main__":
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
 #TODO Print messages can be a second return variable from the check functions that can be printed when required.
 #TODO Replace all_tiles_list with all_tiles_list fixture in tests
+#TODO Option to buy houses from non property tiles
+#TODO Jail double throws going negative. Check when to players are in jail at the same time.
+#TODO Test main for chance card no 2
