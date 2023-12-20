@@ -64,3 +64,13 @@ def test_main_4(mocker, arvind, states_avenue, st_charles_place, virginia_avenue
     main([arvind], all_tiles_list=all_tiles_list, total_turns=4)
 
     assert states_avenue._houses == 1
+
+def test_main_5(mocker, arvind, arun, all_tiles_list):
+    """
+    Test double throws when two players are in jail
+    """
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4])
+    mocker.patch.object(arun, 'throw_one_dice', side_effect=[6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4])
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0])
+    main([arvind, arun], total_turns=6, all_tiles_list=all_tiles_list)
+
