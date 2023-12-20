@@ -27,20 +27,25 @@ def play_turn(player, current_tile, throw=None):
             get_available_options_and_player_input(player, player.current_tile, throw)
         elif chance_return_value == 4:
             all_tiles_list[chance_return_value].execute(player)
+            get_available_options_and_player_input(player, player.current_tile, throw)
         elif chance_return_value == 19:
             get_available_options_and_player_input(player, player.current_tile, throw)
         elif chance_return_value == 33:
             card_no = randint(1, 16)
             all_tiles_list[chance_return_value].execute(player, card_no, all_players_list=all_players_list)
+            get_available_options_and_player_input(player, player.current_tile, throw)
     elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
         current_tile.execute(player, card_no, all_players_list=all_players_list)
+        get_available_options_and_player_input(player, player.current_tile, throw)
     elif type(current_tile) in [LuxuryTaxTile, IncomeTaxTile, FreeParkingTile]:
         current_tile.execute(player)
+        get_available_options_and_player_input(player, current_tile, throw)
     elif type(current_tile) == GoToJail:
         current_tile.execute(player)
+        get_available_options_and_player_input(player, current_tile, throw)
     elif type(current_tile) == Jail:
-        pass
+        get_available_options_and_player_input(player, player.current_tile, throw)
     elif type(current_tile) in [Property, Railroad, Utility]:
         printing_and_logging(f'Property: {current_tile}    Cost: {current_tile.cost}')
         get_available_options_and_player_input(player, current_tile, throw)

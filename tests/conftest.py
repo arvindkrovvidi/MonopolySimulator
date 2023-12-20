@@ -16,6 +16,8 @@ from Tiles.Utility import Utility
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.FreeParkingTile import FreeParkingTile
 from Board import ANSI_COLOR_CODES
+from Tiles.IncomeTaxTile import IncomeTaxTile
+from Tiles.LuxuryTaxTile import LuxuryTaxTile
 
 @pytest.fixture
 def property_rent_data():
@@ -34,8 +36,16 @@ def go_to_jail():
 def jail():
     return Jail(10, "Jail/Just visiting")
 @pytest.fixture
-def all_tiles_list(go, jail, free_parking_tile, states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2):
-    return TileList([go, jail, free_parking_tile, states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2])
+def income_tax():
+    return IncomeTaxTile(name="Income Tax", tile_no=4)
+
+@pytest.fixture
+def luxury_tax():
+    return LuxuryTaxTile(name="Luxury Tax", tile_no=38)
+
+@pytest.fixture
+def all_tiles_list(go, jail, income_tax, luxury_tax, free_parking_tile, states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2):
+    return TileList([go, jail, income_tax, luxury_tax, free_parking_tile, states_avenue, st_charles_place, st_james_place, virginia_avenue, pennsylvania_railroad, bo_railroad, reading_railroad, short_line_railroad, electric_company, water_works, chance_7, chance_36, chance_22, chest_2])
 
 @pytest.fixture
 def reading_railroad(property_rent_data):

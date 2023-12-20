@@ -295,7 +295,7 @@ def test_play_turn_2(mocker, arvind, chance_7):
     arvind.move_to(7, collect_go_cash_flag=False)
     current_tile = chance_7
     mocker.patch('player_turn.randint', return_value=10)
-    mocker.patch('player_turn.input', return_value='0')
+    mocker.patch('player_turn.get_player_input', return_value=0)
     play_turn(arvind, current_tile)
 
     assert arvind.tile_no == 4
@@ -308,7 +308,7 @@ def test_play_turn_3(mocker, arvind, chance_36):
     arvind.move_to(36, collect_go_cash_flag=False)
     current_tile = chance_36
     mocker.patch('player_turn.randint', side_effect=[10, 8])
-    mocker.patch('player_turn.input', return_value='1')
+    mocker.patch('player_turn.get_player_input', return_value=0)
     play_turn(arvind, current_tile)
 
     assert arvind.tile_no == 33
@@ -331,6 +331,44 @@ def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_a
     assert st_charles_place._houses == 2
     assert virginia_avenue._houses == 3
 
+@pytest.mark.parametrize('tile_no', [4, 10, 20, 38])
+def test_play_turn_5(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, tile_no, all_tiles_list):
+    """
+    Test play_turn when player lands on Income tax/Jail/free parking/Luxury tax tile and should have the option to build houses
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    arvind.move_to(tile_no)
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2])
+    play_turn(arvind, all_tiles_list[tile_no])
+
+    assert states_avenue._houses == 1
+
+def test_play_turn_6(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list):
+    """
+    Test play_turn when player lands on community chest tile and should have the option to build house
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    arvind.move_to(2)
+    mocker.patch('player_turn.randint', return_value=2)
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2])
+    play_turn(arvind, all_tiles_list[2])
+
+    assert states_avenue._houses == 1
+
+def test_play_turn_7(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list):
+    """
+    Test play_turn when player lands on chance tile and should have the option to build house
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
+    arvind.move_to(7)
+    mocker.patch('player_turn.randint', return_value=1)
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2])
+    play_turn(arvind, all_tiles_list[2])
+
+    assert states_avenue._houses == 1
 
 def test_get_properties_for_building_houses_1(states_avenue, st_charles_place, virginia_avenue, pennsylvania_railroad, electric_company, arvind, st_james_place):
     """

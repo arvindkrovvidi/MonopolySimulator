@@ -6,7 +6,9 @@ from prettytable import PrettyTable
 
 from Board import color_data
 from Tiles.Property import Property
+from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
+from Tiles.Utility import Utility
 from config import printing_and_logging
 from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError, \
     SelfOwnedPropertyError
@@ -81,7 +83,9 @@ def check_can_buy_asset(player, asset):
     :param asset: Property, Railroad or utility
     :return: True if the player can buy the asset. Else False.
     """
-    if asset.owner not in [None, player]:
+    if type(asset) not in [Property, Railroad, Utility]:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    elif asset.owner not in [None, player]:
         raise PropertyNotFreeError(asset)
     elif asset.cost > player.cash:
         raise InsufficientFundsError(player)
