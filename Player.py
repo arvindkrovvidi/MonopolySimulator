@@ -251,12 +251,13 @@ class Player:
         printing_and_logging(f'dice 1: {dice1} ')
         dice2 = self.throw_one_dice()
         printing_and_logging(f'dice 2: {dice2} ')
-        self.jail_throw_counter += 1
         if dice1 == dice2:
             self.in_jail = False
             printing_and_logging(f'{self} threw a double and got out of jail')
+            self.jail_throw_counter = 0
             return dice1 + dice2
         else:
+            self.jail_throw_counter += 1
             printing_and_logging(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
