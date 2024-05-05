@@ -148,7 +148,7 @@ def execute_chance_5(player):
         pass
     except PropertyNotFreeError as e:
         landlord = nearest_railroad.owner
-        player.pay_rent(landlord, nearest_railroad.rent * 2)
+        player.pay_rent(landlord, nearest_railroad.rent)
         raise PropertyNotFreeError(nearest_railroad)
 
 def get_nearest_utility(player):

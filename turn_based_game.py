@@ -51,4 +51,6 @@ if __name__ == "__main__":
 #TODO Replace all_tiles_list with all_tiles_list fixture in tests
 #TODO Option to buy houses from non property tiles
 #TODO Jail double throws going negative. Check when two players are in jail at the same time.
-#TODO Test main for chance card no 2
+# TODO Display remaining cash every time you pay cash for anything
+# TODO Add option to show property list of a player in every turn
+
