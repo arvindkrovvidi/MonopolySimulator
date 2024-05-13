@@ -53,4 +53,4 @@ class SelfOwnedPropertyError(Exception):
     def __init__(self, player, asset):
         self.player = player
         self.asset = asset
-        self.exc_message = f'{self.player} already owns {self.asset}'
+        self.exc_message = f'{self.player} owns {self.asset}'

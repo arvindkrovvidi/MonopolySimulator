@@ -61,6 +61,5 @@ if __name__ == "__main__":
 #TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
 #TODO Print messages can be a second return variable from the check functions that can be printed when required.
 #TODO Jail double throws going negative. Check when two players are in jail at the same time.
-# TODO Display remaining cash every time you pay cash for anything
 # TODO Add option to show property list of a player in every turn
 
