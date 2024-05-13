@@ -1,10 +1,11 @@
 from Tiles.Tile import Tile
+from config import printing_and_logging
 
 
 class Property(Tile):
 
-    def __init__(self, tile_no, name, cost, rent, color, building_cost):
-        super().__init__(tile_no, name)
+    def __init__(self, tile_no, name, cost, rent, color, building_cost, color_code):
+        super().__init__(tile_no, name, color_code)
         self.cost = cost
         self.color = color
         self._rent = rent
@@ -13,6 +14,9 @@ class Property(Tile):
         self._houses = 0
         self._hotel = False
         self._building_cost = building_cost
+        self.mortgaged = False
+        self.mortgage_value = self.cost / 2
+        self.unmortgage_cost = (self.cost / 2) * 1.1
 
     def __eq__(self, other):
         if self.name == other.name and self.tile_no == other.tile_no and self.cost == other.cost and self.color == other.color:
@@ -25,9 +29,16 @@ class Property(Tile):
     @owner.setter
     def owner(self, value):
         self._owner = value
+        if value is not None:
+            if self not in value.player_portfolio:
+                value.player_portfolio.append(self)
+
 
     @property
     def rent(self):
+        if self.mortgaged:
+            printing_and_logging(f'{self} is mortgaged')
+            return 0
         if not self._color_set:
             return self._rent["Site"]
         if self._houses != 0:

@@ -9,12 +9,6 @@ def test_tile_list_get_item(property_list, st_charles_place, states_avenue, virg
     assert property_list[15] == pennsylvania_railroad
 
 
-def test_tile_list_next(property_list, st_charles_place, states_avenue, virginia_avenue,
-                        pennsylvania_railroad):
-    for asset in property_list:
-        print(asset)
-
-
 def test_tile_list_contains(property_list, st_charles_place, states_avenue, virginia_avenue,
                             pennsylvania_railroad):
     assert states_avenue in property_list
@@ -30,6 +24,17 @@ def test_tile_list_append(st_charles_place, states_avenue, virginia_avenue,
     assert virginia_avenue in property_list
     property_list.append(pennsylvania_railroad)
     assert pennsylvania_railroad in property_list
+
+def test_tile_list_append_2(pennsylvania_railroad, states_avenue, st_charles_place, st_james_place, virginia_avenue):
+    tiles_list = []
+    portfolio = TileList([pennsylvania_railroad, states_avenue, st_charles_place, st_james_place, virginia_avenue])
+    for asset in portfolio:
+        if asset.color == 'Pink':
+            tiles_list.append(asset)
+
+    assert states_avenue in tiles_list
+    assert st_charles_place in tiles_list
+    assert virginia_avenue in tiles_list
 
 
 # def test_tile_dict_get_item(property_dict, st_charles_place, states_avenue, virginia_avenue,

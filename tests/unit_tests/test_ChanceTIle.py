@@ -20,20 +20,7 @@ def test_execute_chance_5_railroad_free(arvind, mocker, pennsylvania_railroad):
     arvind.tile_no = 36
     mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=pennsylvania_railroad)
     execute_chance_5(arvind)
-    assert arvind.tile_no == pennsylvania_railroad.tile_no
-
-
-def test_execute_chance_5_railroad_occupied(arvind, arun, mocker, short_line_railroad):
-    arvind.tile_no = 36
-    short_line_railroad.owner = arun
-    arun.player_portfolio.append(short_line_railroad)
-    arun.railroads_owned = 2
-    mocker.patch("Tiles.ChanceTile.get_nearest_railroad", return_value=short_line_railroad)
-    execute_chance_5(arvind)
-    assert arun.cash == 300
-    assert arvind.cash == 100
-    assert arvind.tile_no == short_line_railroad.tile_no
-
+    assert arvind.current_tile == pennsylvania_railroad
 
 @pytest.mark.parametrize("input_tile_no, expected", [
     (7, 12),
@@ -49,20 +36,7 @@ def test_execute_chance_7_utility_free(arvind, mocker, electric_company):
     arvind.tile_no = 36
     mocker.patch("Tiles.ChanceTile.get_nearest_utility", return_value=electric_company)
     execute_chance_7(arvind, 5)
-    assert electric_company in arvind.player_portfolio
-    assert arvind.tile_no == electric_company.tile_no
-
-
-def test_execute_chance_7_utility_occupied(arvind, arun, mocker, electric_company):
-    arvind.tile_no = 36
-    electric_company.owner = arun
-    arun.player_portfolio.append(electric_company)
-    mocker.patch("Tiles.ChanceTile.get_nearest_utility", return_value=electric_company)
-    execute_chance_7(arvind, 5)
-    assert arun.cash == 220
-    assert arvind.cash == 180
-    assert arvind.tile_no == electric_company.tile_no
-
+    assert arvind.current_tile == electric_company
 
 def test_execute_chance_15(arvind, arun, adityam, padma):
     arvind.cash = 500

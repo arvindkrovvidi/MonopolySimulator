@@ -1,5 +1,5 @@
-import copy
 import inspect
+from copy import deepcopy
 from random import randint
 
 from prettytable import PrettyTable
@@ -9,7 +9,9 @@ from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Tile import Tile
 from Tiles.Utility import Utility
-from errors import InvalidPropertyTypeError, CannotSellHouseError
+from config import printing_and_logging
+from errors import InvalidPropertyTypeError, PropertyNotFreeError, InsufficientFundsError, UnownedPropertyError, \
+    SelfOwnedPropertyError
 
 
 def calculate_networth(player) -> int:
@@ -74,6 +76,23 @@ def check_passing_go(player, tile: Tile) -> bool:
     else:
         return True
 
+def check_can_buy_asset(player, asset):
+    """
+    Check if player can buy the asset.
+    :param player: Player trying to buy the asset
+    :param asset: Property, Railroad or utility
+    :return: True if the player can buy the asset. Else False.
+    """
+    if type(asset) not in [Property, Railroad, Utility]:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    elif asset.owner not in [None, player]:
+        raise PropertyNotFreeError(asset)
+    elif asset.cost > player.cash:
+        raise InsufficientFundsError(player)
+    elif asset.owner is player:
+        raise SelfOwnedPropertyError(player, asset)
+    return True
+
 def check_player_has_color_set(player, color):
     """
     Check if the player has all the properties in the color set.
@@ -89,34 +108,119 @@ def check_player_has_color_set(player, color):
         return True
     return False
 
-def check_property_can_be_developed(asset):
+def check_can_build_house_on_property(player, asset):
     """
-    A house can be built in a property only if the property had the same number of houses as or less number of houses than the other properties in the color set.
-    :param asset: The asset being tested for development
-    :return: True if the property can be developed. False if the propert cannot be developed.
+    Check if a house can be built on the property.
+    :param player: The player trying to build the house
+    :param asset: Property
+    :return: True if the player has the cash, the color set and the asset does not already have the most houses among the assets in the color set.
     """
     if type(asset) is not Property:
         raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset.owner is None:
+    elif asset.owner is None:
+        raise UnownedPropertyError(asset)
+    elif asset.owner is not player:
+        raise PropertyNotFreeError(asset)
+    elif asset.building_cost > player.cash:
         return False
-    data = copy.deepcopy(asset.owner.player_portfolio)
-    for each_property in data:
-        if type(each_property) in [Railroad, Utility]:
-            break
+    elif not check_player_has_color_set(player,asset.color):
+        return False
+    elif asset._houses == 4:
+        return False
+    for each_property in asset.owner.player_portfolio:
+        if each_property.color != asset.color:
+            continue
+        if each_property == asset:
+            continue
         if asset._houses > each_property._houses:
             return False
     return True
 
-def check_can_build_hotel(asset):
+def check_can_build_hotel_on_property(player, asset):
     """
     Check if a hotel can be built on the given property. A hotel can be built only if all the properties in the color set have 4 houses each.
+    :param player: The player trying to build the hotel
     :param asset: The asset being tested if there can be a hotel built
     :return: True if all the properties in the color set have 4 houses. False if even one property does not have 4 houses.
     """
-    data = copy.deepcopy(asset.owner.player_portfolio)
-    for each_property in data:
-        if each_property._houses < 4:
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    elif asset.owner is None:
+        raise UnownedPropertyError(asset)
+    elif asset.owner is not player:
+        raise PropertyNotFreeError(asset)
+    elif asset._hotel:
+        return False
+    elif player.cash < asset.building_cost:
+        return False
+    for each_property in asset.owner.player_portfolio:
+        if each_property.color != asset.color:
+            continue
+        if each_property._houses != 4:
             return False
+    return True
+
+def check_can_sell_house_on_property(player, asset):
+    """
+    Check whether a house on this property can be sold
+    :param player: The player trying to sell the house
+    :param asset: Property
+    """
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    elif asset.owner is None:
+        raise UnownedPropertyError(asset)
+    elif asset.owner is not player:
+        raise PropertyNotFreeError(asset)
+    elif asset._hotel == True:
+        return False
+    elif asset._houses <= 0:
+        return False
+    for each_property in asset.owner.player_portfolio:
+        if each_property.color != asset.color:
+            continue
+        if each_property == asset:
+            continue
+        if asset._houses < each_property._houses:
+            return False
+    return True
+
+def check_can_sell_hotel_on_property(player, asset):
+    """
+    Check whether the hotel on this property can be sold.
+    :param player: The player trying to see the hotel
+    :param asset:
+    """
+    if type(asset) is not Property:
+        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
+    elif asset.owner is None:
+        raise UnownedPropertyError(asset)
+    elif asset.owner is not player:
+        raise PropertyNotFreeError(asset)
+    elif asset._hotel == True:
+        return True
+    return False
+
+def check_can_mortgage_asset(player, asset):
+    """
+    Check whether the property can be mortgaged
+    """
+    if asset.owner is None:
+        raise UnownedPropertyError(asset)
+    elif asset.owner is not player:
+        return False
+    return True
+
+def check_can_unmortgage_asset(player, asset):
+    """
+    Check whether the property can be unmortgaged
+    """
+    if asset.owner is None:
+        return False
+    elif asset.owner is not player:
+        return False
+    elif player.cash < asset.unmortgage_cost:
+        return False
     return True
 
 def check_any_player_broke(player_list):
@@ -133,16 +237,17 @@ def check_any_player_broke(player_list):
 def print_player_summary(players):
     """
     Print player summary with Position, player and their networth.
-    :param players: List of all players
+    :param players_copy: List of all players
     """
-    for player in players:
+    players_copy = deepcopy(players)
+    for player in players_copy:
         player.networth = calculate_networth(player)
 
     display_winners = PrettyTable()
     display_winners.field_names = ["Position", "Player", "Net Worth"]
-    for pos, win, nw in get_positions(players):
+    for pos, win, nw in get_positions(players_copy):
         display_winners.add_row((pos, str(win), nw))
-    print(display_winners)
+    printing_and_logging(display_winners)
 
 def set_color_set_value(player, asset):
     """
@@ -167,27 +272,31 @@ def randomly_play_jail_turn(player):
     elif num == 2:
         player.try_jail_double_throw()
 
-def check_can_sell_house(asset):
+def get_display_options(*args):
     """
-    Check whether a house on this property can be sold
-    :param asset: Property
+    Display the options that are passed to the function
+    :param args: List of options
+    :return: String in the format [s.no] <option>
     """
-    if type(asset) is not Property:
-        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset._hotel == True or asset._houses <= 0:
-        raise CannotSellHouseError(asset)
-    for each_property in asset.owner.player_portfolio:
-        if asset._houses < each_property._houses:
-            return False
-    return True
+    options_string = ''
+    for option in args[0]:
+         options_string += f'[{args[0].index(option)}] {str(option)}' + '    '
+    return options_string
 
-def check_can_sell_hotel(asset):
+def get_player_input(text, available_options):
     """
-    Check whether the hotel on this property can be sold.
-    :param asset:
+    Get input from player
+    :param text: Text to be displayed while collecting input. This is passed to the python input() function
+    :param available_options: List of possible options
+    :return: The input given by the player
     """
-    if type(asset) is not Property:
-        raise InvalidPropertyTypeError(inspect.stack()[0][3], asset)
-    if asset._hotel == True:
-        return True
-    return False
+    while True:
+        try:
+            player_input = int(input(text + ': '))
+            if player_input not in available_options:
+                raise ValueError
+        except ValueError:
+            print('Invalid input')
+            continue
+        else:
+            return player_input

@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, CannotBuildHouseError, CannotSellHouseError
+from errors import InsufficientFundsError, SelfOwnedPropertyError
 
 
 def test_init_default_values():
@@ -18,6 +18,9 @@ def test_init_correct_values():
     assert arvind.name == "Arvind"
     assert arvind.cash == 500
 
+def test_current_tile(go):
+    arvind = Player("Arvind", 500)
+    assert arvind.current_tile == go
 
 def test_buy_asset(states_avenue, arvind, st_charles_place):
     arvind.cash = 500
@@ -58,7 +61,8 @@ def test_buy_asset_multiple_utilities(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    arvind.buy_asset(electric_company)
+    with pytest.raises(SelfOwnedPropertyError):
+        arvind.buy_asset(electric_company)
     assert arvind.utilities_owned == 2
 
 
@@ -77,14 +81,16 @@ def test_buy_asset_multiple_railroads(arvind, pennsylvania_railroad, bo_railroad
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    arvind.buy_asset(pennsylvania_railroad)
+    with pytest.raises(SelfOwnedPropertyError):
+        arvind.buy_asset(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 
 @pytest.mark.parametrize("current_tile, expected_current_tile, expected_cash", [
-    (0, 12, 200),
+    (0, 12, 400),
     (28, 0, 200),
-    (39, 11, 400)
+    (39, 11, 400),
+    (1, 13, 200)
 ])
 def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expected_current_tile,
               expected_cash):
@@ -92,11 +98,12 @@ def test_move(arvind, pennsylvania_railroad, st_james_place, current_tile, expec
     arvind.move(12)
     assert arvind.tile_no == expected_current_tile
     assert arvind.cash == expected_cash
-    assert arvind.tile_no < 39
+    assert arvind.tile_no < 40
 
 @pytest.mark.parametrize("current_tile, expected_tile",[
-    (15, 12),
-    (0, 37)
+    (7, 4),
+    (22, 19),
+    (36, 33)
 ])
 def test_move_back(arvind, pennsylvania_railroad, electric_company, current_tile, expected_tile):
     arvind.tile_no = current_tile
@@ -176,24 +183,21 @@ def test_bank_transaction(arvind, input_amount, expected):
 
 def test_build_house_true(arvind, st_charles_place, mocker):
     arvind._player_portfolio.append(st_charles_place)
-    mocker.patch('Player.check_player_has_color_set', return_value=True)
-    mocker.patch('Player.check_property_can_be_developed', return_value=True)
+    mocker.patch('Player.check_can_build_house_on_property', return_value=True)
     arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 1
     assert arvind.cash == 100
 
 
 def test_build_house_false(arvind, st_charles_place, mocker):
-    mocker.patch('Player.check_player_has_color_set', return_value=False)
-    mocker.patch('Player.check_property_can_be_developed', return_value=True)
-    with pytest.raises(CannotBuildHouseError):
-        arvind.build_house(st_charles_place)
+    mocker.patch('Player.check_can_build_house_on_property', return_value=False)
+    arvind.build_house(st_charles_place)
     assert st_charles_place._houses == 0
     assert arvind.cash == 200
 
 
 def test_build_hotel(mocker, arvind, st_charles_place):
-    mocker.patch('Player.check_can_build_hotel', return_value=True)
+    mocker.patch('Player.check_can_build_hotel_on_property', return_value=True)
     arvind.build_hotel(st_charles_place)
     assert st_charles_place._hotel == True
 
@@ -234,7 +238,7 @@ def test_sell_house_1(mocker, arvind, st_charles_place):
     """
     Sell houses when there is a hotel.
     """
-    mocker.patch('Player.check_can_sell_house', side_effect=CannotSellHouseError(st_charles_place))
+    mocker.patch('Player.check_can_sell_house_on_property', return_value=False)
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place.owner = arvind
     st_charles_place._hotel = True
@@ -262,9 +266,9 @@ def test_sell_house_2(arvind, st_charles_place):
 ])
 def test_sell_hotel_1(mocker, arvind, st_charles_place, check_can_sell_hotel_value, hotel_value, cash):
     """
-    Test check_can_sell_hotel
+    Test check_can_sell_hotel_on_property
     """
-    mocker.patch("Player.check_can_sell_hotel", return_value=check_can_sell_hotel_value)
+    mocker.patch("Player.check_can_sell_hotel_on_property", return_value=check_can_sell_hotel_value)
     st_charles_place.owner = arvind
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place._hotel = True

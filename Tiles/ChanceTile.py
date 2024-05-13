@@ -1,4 +1,3 @@
-from Player_data import all_players_list
 from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
@@ -6,9 +5,9 @@ from Tiles_data.Property_data import boardwalk, illinois_avenue, st_charles_plac
 from Tiles_data.railroad_property_data import reading_railroad, railroad_properties_list
 from Tiles_data.special_tiles_data import go
 from Tiles_data.utilities_data import utilities_list
-from config import logger
+from config import printing_and_logging
 from errors import InsufficientFundsError, PropertyNotFreeError
-from utils import check_passing_go, check_player_has_color_set
+from utils import check_passing_go, check_can_buy_asset
 
 
 class ChanceTile(SpecialTiles):
@@ -23,51 +22,74 @@ class ChanceTile(SpecialTiles):
         :param player: Player who is picking up the chance card.
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
+        printing_and_logging(f'{player} picked chance card number {_card_no}')
         if _card_no == 1:
+            printing_and_logging(f'Advance to Boardwalk')
             player.move_to(boardwalk.tile_no, collect_go_cash_flag=False)
+            return True
         elif _card_no == 2:
-            player.move_to(go.tile_no, collect_go_cash_flag=False)
+            printing_and_logging(f'Advance to Go(collect 200)')
+            player.move_to(go.tile_no, collect_go_cash_flag=True)
+            return True
         elif _card_no == 3:
+            printing_and_logging(f'Advance to Illinois Avenue. If you pass Go, collect $200')
             player.move_to(illinois_avenue.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
+            return True
         elif _card_no == 4:
+            printing_and_logging(f'Advance to St. Charles Place. If you pass Go, collect $200')
             player.move_to(st_charles_place.tile_no, collect_go_cash_flag=check_passing_go(player, illinois_avenue))
-        elif _card_no == 5:
-            execute_chance_5(player)
-            current_railroad = railroad_properties_list[player.tile_no]
+            return True
+        elif _card_no == 5 or _card_no == 6:
+            printing_and_logging(f'Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled')
             try:
-                player.buy_asset(current_railroad)
+                execute_chance_5(player)
             except InsufficientFundsError as e:
-                logger.info(e.exc_message)
+                printing_and_logging(f'{player} cannot buy {railroad_properties_list[player.tile_no]}')
+                printing_and_logging(e.exc_message)
             except PropertyNotFreeError as e:
-                logger.info(e.exc_message)
-        elif _card_no == 6:
-            execute_chance_5(player)
-            current_railroad = railroad_properties_list[player.tile_no]
-            try:
-                player.buy_asset(current_railroad)
-            except InsufficientFundsError as e:
-                logger.info(e.exc_message)
-            except PropertyNotFreeError as e:
-                logger.info(e.exc_message)
+                printing_and_logging(e.exc_message)
+            else:
+                return True
         elif _card_no == 7:
-            execute_chance_7(player, kwargs['throw'])
+            printing_and_logging(f'Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.')
+            try:
+                execute_chance_7(player, kwargs['throw'])
+            except InsufficientFundsError as e:
+                printing_and_logging(f'{player} cannot buy {utilities_list[player.tile_no]}')
+                printing_and_logging(e.exc_message)
+            except PropertyNotFreeError as e:
+                printing_and_logging(e.exc_message)
+            else:
+                return True
         elif _card_no == 8:
+            printing_and_logging(f'Bank pays you dividend of $50')
             player.bank_transaction(50)
         elif _card_no == 9:
+            printing_and_logging(f'Get Out of Jail Free')
             player.get_out_of_jail_free_card += 1
         elif _card_no == 10:
+            printing_and_logging(f'Go Back 3 Spaces')
             player.move(-3)
+            printing_and_logging(f'{player} moved three steps back')
+            return player.tile_no
         elif _card_no == 11:
+            printing_and_logging(f'Go to Jail. Go directly to Jail, do not pass Go, do not collect $200')
             player.move_to(10, collect_go_cash_flag=False)
         elif _card_no == 12:
+            printing_and_logging(f'Make general repairs on all your property. For each house pay$25. For each hotel pay $100')
             execute_chance_12(player)
         elif _card_no == 13:
+            printing_and_logging(f'Speeding fine $15')
             player.bank_transaction(-15)
         elif _card_no == 14:
+            printing_and_logging(f'Take a trip to Reading Railroad. If you pass Go, collect $200')
             player.move_to(reading_railroad.tile_no, collect_go_cash_flag=True)
+            return True
         elif _card_no == 15:
-            execute_chance_15(player, all_players_list)
+            printing_and_logging(f'You have been elected Chairman of the Board. Pay each player $50')
+            execute_chance_15(player, kwargs['all_players_list'])
         elif _card_no == 16:
+            printing_and_logging(f'Your building loan matures. Collect $150')
             player.bank_transaction(150)
 
 
@@ -120,9 +142,14 @@ def execute_chance_5(player):
     """
     nearest_railroad = get_nearest_railroad(player)
     player.move_to(nearest_railroad.tile_no, collect_go_cash_flag=False)
-    if nearest_railroad not in player.player_portfolio and nearest_railroad.owner is not None:
+    try:
+        check_can_buy_asset(player, nearest_railroad)
+    except InsufficientFundsError:
+        pass
+    except PropertyNotFreeError as e:
         landlord = nearest_railroad.owner
-        player.pay_rent(landlord, nearest_railroad.rent * 2)
+        player.pay_rent(landlord, nearest_railroad.rent)
+        raise PropertyNotFreeError(nearest_railroad)
 
 def get_nearest_utility(player):
     """
@@ -140,7 +167,7 @@ def get_nearest_utility(player):
 
 def execute_chance_7(player, throw):
     """
-    Execute chance card no 5. Move the player to the nearest utility. If the utility is not owned, buy the property.
+    Execute chance card no 7. Move the player to the nearest utility. If the utility is not owned, buy the property.
     If the utility is owned by someone, pay twice the rent to them.
     :param throw: Throw that landed the player in Chance
     :param player: The player who landed on Chance and picked chance card no 5.
@@ -148,13 +175,10 @@ def execute_chance_7(player, throw):
     nearest_utility = get_nearest_utility(player)
     player.move_to(nearest_utility.tile_no, collect_go_cash_flag=False)
     try:
-        player.buy_asset(nearest_utility)
-    except InsufficientFundsError as e:
-        print(e.exc_message)
+        check_can_buy_asset(player, nearest_utility)
+    except InsufficientFundsError:
+        pass
     except PropertyNotFreeError as e:
-        print(e.exc_message)
         landlord = nearest_utility.owner
-        if check_player_has_color_set(landlord, "Utility"):
-            player.pay_rent(landlord, throw * 10)
-        else:
-            player.pay_rent(landlord, throw * 4)
+        player.pay_rent(landlord, nearest_utility.rent * 2)
+        raise PropertyNotFreeError(nearest_utility)

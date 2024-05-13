@@ -1,10 +1,11 @@
 import pytest
 
 from Player import Player
-from errors import InvalidPropertyTypeError, CannotSellHouseError
+from errors import InvalidPropertyTypeError, PropertyNotFreeError, SelfOwnedPropertyError
 from utils import calculate_networth, find_winner, get_positions, check_passing_go, check_player_has_color_set, \
-    check_property_can_be_developed, check_can_build_hotel, check_any_player_broke, set_color_set_value, \
-    check_can_sell_house, check_can_sell_hotel
+    check_can_build_house_on_property, check_can_build_hotel_on_property, check_any_player_broke, set_color_set_value, \
+    check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, InsufficientFundsError, \
+    get_display_options
 
 
 def test_calculate_networth(st_charles_place, states_avenue, virginia_avenue,
@@ -101,82 +102,58 @@ def test_check_player_has_color_set_utility(arvind, electric_company, water_work
     assert check_player_has_color_set(arvind, "Utility")
 
 
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (2, 1, 1, False)
+@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected_1, expected_2, expected_3", [
+    (2, 2, 1, False, False, True),
+    (2, 1, 1, False, True, True),
+    (2, 2, 2, True, True, True)
 ])
-def test_check_property_can_be_developed_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected):
-    st_charles_place._houses = property_1_house
-    states_avenue._houses = property_2_house
-    virginia_avenue._houses = property_3_house
-
-    assert check_property_can_be_developed(st_charles_place) == expected
-
-
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (2, 2, 2, False)
-])
-def test_check_property_can_be_developed_2(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected):
-    st_charles_place._houses = property_1_house
-    states_avenue._houses = property_2_house
-    virginia_avenue._houses = property_3_house
-
-    assert check_property_can_be_developed(st_charles_place) == expected
-
-
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (2, 2, 1, False)
-])
-def test_check_property_can_be_developed_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                           property_2_house, property_3_house, expected, pennsylvania_railroad):
+def test_check_can_build_house_1(mocker, arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
+                                 property_2_house, property_3_house, expected_1, expected_2, expected_3, pennsylvania_railroad):
+    arvind.cash = 500
+    pennsylvania_railroad.owner = arvind
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind
-    pennsylvania_railroad.owner = arvind
-    arvind.player_portfolio.append(st_charles_place)
-    arvind.player_portfolio.append(states_avenue)
-    arvind.player_portfolio.append(virginia_avenue)
-    arvind.player_portfolio.append(pennsylvania_railroad)
+
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
 
-    assert check_property_can_be_developed(st_charles_place) == expected
+    mocker.patch('utils.check_player_has_color_set', return_value=True)
 
+    assert check_can_build_house_on_property(arvind, st_charles_place) == expected_1
+    assert check_can_build_house_on_property(arvind, states_avenue) == expected_2
+    assert check_can_build_house_on_property(arvind, virginia_avenue) == expected_3
 
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (2, 2, 1, False)
+def test_check_can_build_house_2(arvind, pennsylvania_railroad, electric_company):
+    """
+    Test check_can_build_house_on_property when property is a railroad/utility
+    """
+    pennsylvania_railroad.owner = arvind
+    electric_company.owner = arvind
+
+    with pytest.raises(InvalidPropertyTypeError):
+        check_can_build_house_on_property(arvind, pennsylvania_railroad)
+
+    with pytest.raises(InvalidPropertyTypeError):
+        check_can_build_house_on_property(arvind, electric_company)
+
+@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected_1, expected_2, expected_3", [
+    (4, 4, 3, False, False, False),
+    (4, 4, 4, True, True, True)
 ])
 def test_check_can_build_hotel_1(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                 property_2_house, property_3_house, expected):
-    arvind.player_portfolio.append(st_charles_place)
-    arvind.player_portfolio.append(states_avenue)
-    arvind.player_portfolio.append(virginia_avenue)
+                                 property_2_house, property_3_house, expected_1, expected_2, expected_3, pennsylvania_railroad):
+    pennsylvania_railroad.owner = arvind
     st_charles_place.owner = arvind
     states_avenue.owner = arvind
     virginia_avenue.owner = arvind
     st_charles_place._houses = property_1_house
     states_avenue._houses = property_2_house
     virginia_avenue._houses = property_3_house
-    assert check_can_build_hotel(st_charles_place) == expected
-
-
-@pytest.mark.parametrize("property_1_house, property_2_house, property_3_house, expected", [
-    (4, 4, 4, True)
-])
-def test_check_can_build_hotel_2(arvind, mocker, st_charles_place, states_avenue, virginia_avenue, property_1_house,
-                                 property_2_house, property_3_house, expected, property_data_by_color):
-    arvind.player_portfolio.append(st_charles_place)
-    arvind.player_portfolio.append(states_avenue)
-    arvind.player_portfolio.append(virginia_avenue)
-    st_charles_place.owner = arvind
-    states_avenue.owner = arvind
-    virginia_avenue.owner = arvind
-    st_charles_place._houses = property_1_house
-    states_avenue._houses = property_2_house
-    virginia_avenue._houses = property_3_house
-    assert check_can_build_hotel(st_charles_place) == expected
+    assert check_can_build_hotel_on_property(arvind, st_charles_place) == expected_1
+    assert check_can_build_hotel_on_property(arvind, states_avenue) == expected_2
+    assert check_can_build_hotel_on_property(arvind, virginia_avenue) == expected_3
 
 
 @pytest.mark.parametrize("arvind_cash, arun_cash, padma_cash, adityam_cash, expected", [
@@ -185,7 +162,8 @@ def test_check_can_build_hotel_2(arvind, mocker, st_charles_place, states_avenue
     (-100, 100, 100, 100, True),
     (100, 100, 100, -100, True)
 ])
-def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_cash, adityam_cash, padma_cash, expected):
+def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_cash, adityam_cash, padma_cash,
+                                expected):
     arvind.cash = arvind_cash
     arun.cash = arun_cash
     adityam.cash = adityam_cash
@@ -193,6 +171,7 @@ def test_check_any_player_broke(arvind, arun, padma, adityam, arvind_cash, arun_
 
     player_list = [arvind, arun, adityam, padma]
     assert check_any_player_broke(player_list) == expected
+
 
 def test_set_color_set(arvind, st_charles_place, virginia_avenue, states_avenue):
     arvind.player_portfolio.append(states_avenue)
@@ -204,33 +183,36 @@ def test_set_color_set(arvind, st_charles_place, virginia_avenue, states_avenue)
     assert virginia_avenue._color_set == True
     assert states_avenue._color_set == True
 
+
 def test_check_can_sell_house_1(arvind, pennsylvania_railroad):
     """
-    Test check_can_sell_house when property is Railroad or Utility
+    Test check_can_sell_house_on_property when property is Railroad or Utility
     """
     pennsylvania_railroad.owner = arvind
     arvind.player_portfolio.append(pennsylvania_railroad)
     with pytest.raises(InvalidPropertyTypeError):
-        check_can_sell_house(pennsylvania_railroad)
+        check_can_sell_house_on_property(arvind, pennsylvania_railroad)
+
 
 def test_check_can_sell_house_2(arvind, st_charles_place):
     """
-    Test check_can_sell_house when property has hotel
+    Test check_can_sell_house_on_property when property has hotel
     """
     st_charles_place._hotel = True
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place.owner = arvind
-    with pytest.raises(CannotSellHouseError):
-        check_can_sell_house(st_charles_place)
+    assert check_can_sell_house_on_property(arvind, st_charles_place) == False
 
-@pytest.mark.parametrize("property_1_houses, property_2_houses, property_3_houses, expected",[
+
+@pytest.mark.parametrize("property_1_houses, property_2_houses, property_3_houses, expected", [
     (2, 2, 2, True),
     (1, 2, 2, False),
     (3, 2, 2, True)
 ])
-def test_check_can_sell_house_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_houses, property_2_houses, property_3_houses, expected):
+def test_check_can_sell_house_3(arvind, st_charles_place, states_avenue, virginia_avenue, property_1_houses,
+                                property_2_houses, property_3_houses, expected):
     """
-    Test check_can_sell_house
+    Test check_can_sell_house_on_property
     """
     st_charles_place._houses = property_1_houses
     states_avenue._houses = property_2_houses
@@ -242,27 +224,90 @@ def test_check_can_sell_house_3(arvind, st_charles_place, states_avenue, virgini
     st_charles_place.owner = arvind
     virginia_avenue.owner = arvind
 
-    assert check_can_sell_house(st_charles_place) == expected
+    assert check_can_sell_house_on_property(arvind, st_charles_place) == expected
+
 
 def test_check_can_sell_hotel_1(arvind, pennsylvania_railroad):
     """
-    Test check_can_sell_hotel when asset is a railroad/utility
+    Test check_can_sell_hotel_on_property when asset is a railroad/utility
     """
     pennsylvania_railroad.owner = arvind
     arvind.player_portfolio.append(pennsylvania_railroad)
 
     with pytest.raises(InvalidPropertyTypeError):
-        check_can_sell_hotel(pennsylvania_railroad)
+        check_can_sell_hotel_on_property(arvind, pennsylvania_railroad)
 
     assert arvind.cash == 200
 
+
 def test_check_can_sell_hotel_2(arvind, st_charles_place):
     """
-    Test check_can_sell_hotel
+    Test check_can_sell_hotel_on_property when there is a hotel on the property.
     """
 
     st_charles_place.owner = arvind
     arvind.player_portfolio.append(st_charles_place)
     st_charles_place._hotel = True
 
-    assert check_can_sell_hotel(st_charles_place) == True
+    assert check_can_sell_hotel_on_property(arvind, st_charles_place) == True
+
+
+@pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
+def test_check_can_buy_asset_1(arvind, arun, asset, request):
+    """
+    Test check_can_buy_asset when asset is owned by someone else
+    """
+    asset = request.getfixturevalue(asset)
+    arun.player_portfolio.append(asset)
+    asset.owner = arun
+
+    with pytest.raises(PropertyNotFreeError):
+        check_can_buy_asset(arvind, asset)
+
+
+@pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
+def test_check_can_buy_asset_2(arvind, asset, request):
+    """
+    Test check_can_buy_asset when asset is owned by the player trying to buy the asset.
+    """
+    asset = request.getfixturevalue(asset)
+    arvind.player_portfolio.append(asset)
+    asset.owner = arvind
+
+    with pytest.raises(SelfOwnedPropertyError):
+        check_can_buy_asset(arvind, asset)
+
+
+@pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
+def test_check_can_buy_asset_3(arvind, asset, request):
+    """
+    Test check_can_buy_asset when player does not have sufficient funds to buy the asset.
+    """
+    arvind.cash = 0
+    asset = request.getfixturevalue(asset)
+    assert asset.owner is None
+
+    with pytest.raises(InsufficientFundsError):
+        check_can_buy_asset(arvind, asset)
+
+
+@pytest.mark.parametrize("asset", ["st_charles_place", "pennsylvania_railroad", "electric_company"])
+def test_check_can_buy_asset_4(arvind, asset, request):
+    """
+    Test check_can_buy_asset when all conditions are true for buying asset
+    """
+    arvind.cash = 300
+    asset = request.getfixturevalue(asset)
+    assert asset.owner is None
+
+    assert check_can_buy_asset(arvind, asset) == True
+
+
+def test_get_display_options():
+    """
+    Test get_display_options
+    """
+    options_list = ['Buy property', 'Buy house', 'Buy hotel', 'Sell house', 'Sell hotel']
+    actual = get_display_options(options_list)
+    expected = '[0] Buy property    [1] Buy house    [2] Buy hotel    [3] Sell house    [4] Sell hotel    '
+    assert actual == expected

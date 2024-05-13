@@ -1,15 +1,18 @@
 import random
 
-from Board import max_tile_no, go_cash
+from Board import go_cash
 from TileIterators import TileList
 from Tiles.Property import Property
 from Tiles.Railroad import Railroad
 from Tiles.Utility import Utility
-from config import logger
-from errors import PlayerBrokeError, PropertyNotFreeError, InsufficientFundsError, CannotBuildHouseError, \
+from Tiles_data.all_tiles_data import all_tiles_list
+from config import logger, printing_and_logging
+from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
-from utils import check_player_has_color_set, check_property_can_be_developed, check_can_build_hotel, \
-    set_color_set_value, check_can_sell_house, check_can_sell_hotel
+from utils import check_player_has_color_set, check_can_build_hotel_on_property, \
+    set_color_set_value, check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, \
+    check_can_build_house_on_property, \
+    UnownedPropertyError, PropertyNotFreeError
 
 
 class Player:
@@ -25,15 +28,20 @@ class Player:
         self.get_out_of_jail_free_card = 0
         self.in_jail = False
         self.jail_throw_counter = 0
+        self._current_tile = all_tiles_list[self.tile_no]
 
+    @property
+    def current_tile(self):
+        return self._current_tile
+
+    @current_tile.setter
+    def current_tile(self, tile):
+        self._current_tile = tile
 
     @property
     def player_portfolio(self):
         return self._player_portfolio
 
-    @player_portfolio.setter
-    def player_portfolio(self, value):
-        self._player_portfolio.append(value)
 
     @property
     def railroads_owned(self):
@@ -59,14 +67,10 @@ class Player:
         Buy asset that the player lands on.
         :param asset: Property, Railroad or Utility.
         """
-        if asset.owner is not None and asset.owner is not self:
-            raise PropertyNotFreeError(asset)
-        if asset.cost <= self.cash:
-            self.cash -= asset.cost
-        else:
-            raise InsufficientFundsError(self)
-        self.player_portfolio.append(asset)
-        asset.owner = self
+        if check_can_buy_asset(self, asset):
+            self.bank_transaction(-asset.cost)
+            self.player_portfolio.append(asset)
+            asset.owner = self
         if type(asset) is Property:
             if check_player_has_color_set(self, asset.color):
                 set_color_set_value(self, asset)
@@ -80,24 +84,29 @@ class Player:
                 self.utilities_owned += 1
             if check_player_has_color_set(self, asset.color):
                 asset._color_set = True
-        logger.info(f'{self} bought {asset}.')
+        printing_and_logging(f'{self} bought {asset}.')
 
 
     def throw_one_dice(self):
         return random.randint(1, 6)
 
-    def throw_dice(self) -> int:
+    def throw_dice(self, ignore_double=False) -> int:
         """
         Simulates a two dice throw by generating a random number between 2 and 12.
         :return: Random integer between 2 and 12
         """
         dice1 = self.throw_one_dice()
         dice2 = self.throw_one_dice()
-        if dice1 == dice2:
-            self.double_counter += 1
-        else:
-            self.double_counter = 0
-        logger.info(f'{self} threw a {dice1 + dice2}')
+        if not ignore_double:
+            if dice1 == dice2:
+                self.double_counter += 1
+                printing_and_logging(f'{self} threw a double: {dice1} and {dice2}. Total: {dice1 + dice2}')
+            else:
+                self.double_counter = 0
+                printing_and_logging(f'{self} threw a {dice1 + dice2}')
+            if self.double_counter == 3:
+                self.move_to(10, collect_go_cash_flag=False)
+                printing_and_logging(f'{self} threw three doubles in a row.')
         return dice1 + dice2
 
     def move(self, throw: int) -> None:
@@ -106,17 +115,20 @@ class Player:
         :param throw: The dice throw
         """
         if not self.in_jail:
-            self.tile_no += throw
-            if self.tile_no == 30:
-                self.in_jail = True
-            if self.tile_no < 0:
-                self.tile_no = 40 + throw
-            if self.tile_no  > max_tile_no:
-                self.tile_no -= (max_tile_no + 1)
-                if self.tile_no == 0:
-                    pass
-                else:
-                    self.cash += go_cash
+            if self.tile_no == 0:
+                self.tile_no += throw
+                self.bank_transaction(go_cash)
+                printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+            elif self.tile_no + throw < 40:
+                self.tile_no += throw
+            elif self.tile_no + throw == 40:
+                self.tile_no = 0
+            else:
+                self.tile_no += throw - 40
+                self.bank_transaction(go_cash)
+                printing_and_logging(f'{self} collected {go_cash} for passing Go. Cash: {self.cash}')
+        self.current_tile = all_tiles_list[self.tile_no]
+        printing_and_logging(f'{self} landed on {all_tiles_list[self.tile_no]}')
 
     def move_to(self, tile_no, collect_go_cash_flag: bool=True) -> None:
         """
@@ -126,10 +138,12 @@ class Player:
         """
         self.tile_no = tile_no
         if collect_go_cash_flag:
-            self.cash += 200
+            self.bank_transaction(go_cash)
+            printing_and_logging(f'{self} collected {go_cash} for passing Go')
         if tile_no == 10:
             self.in_jail = True
-        logger.info(f'{self} moved to {tile_no}')
+        self.current_tile = all_tiles_list[self.tile_no]
+        printing_and_logging(f'{self} moved to {all_tiles_list[self.tile_no]}')
 
 #TODO: Change function such that it takes property as input instead of rent amount
     def pay_rent(self, player, rent: int) -> None:
@@ -138,12 +152,12 @@ class Player:
         :param player: The player to whom the rent has to be paid
         :param rent: The rent to be paid to the player
         """
+        if player == self:
+            return
         if self.cash - rent < 0:
-            print(f'{self} cannot pay {player} rent of {rent}')
-            raise PlayerBrokeError(player)
-        self.cash -= rent
-        player.cash += rent
-        logger.info(f'{self} paid {player} rent of amount {rent}')
+            raise PlayerBrokeError(self)
+        self.player_transaction(player, -rent)
+        printing_and_logging(f'{self} paid {player} rent of amount {rent}')
 
     def player_transaction(self, player, amount: int) -> None:
         """
@@ -152,28 +166,28 @@ class Player:
         :param amount: The amount being paid. Positive means collect from player. Negative means pay player.
         """
         if self.cash + amount < 0:
-            print(f'{self} cannot pay {player} amount of {-amount}')
+            printing_and_logging(f'{self} cannot pay {player} amount of {-amount}')
             raise PlayerBrokeError(self)
         self.cash += amount
         player.cash -= amount
         if amount > 0:
-            logger.info(f'{self} collected {amount} from the {player}')
+            printing_and_logging(f'{self} collected {amount} from {player}')
         else:
-            logger.info(f'{self} paid the {player} an amount of {amount}')
+            printing_and_logging(f'{self} paid {player} an amount of {-amount}')
 
-    def bank_transaction(self, amount: int) -> None:
+    def bank_transaction(self, amount: float) -> None:
         """
         Collect or pay the bank a certain amount.
         :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
         """
         if self.cash + amount < 0:
-            print(f'{self} cannot pay the bank amount of {-amount}')
+            printing_and_logging(f'{self} cannot pay the bank an amount of {-amount}')
             raise PlayerBrokeError(self)
         self.cash += amount
         if amount > 0:
-            logger.info(f'{self} collected {amount} from the the bank')
+            printing_and_logging(f'{self} collected {amount} from the the bank')
         else:
-            logger.info(f'{self} paid the the bank an amount of {amount}')
+            printing_and_logging(f'{self} paid the bank an amount of {-amount}')
 
 
     def build_house(self, asset):
@@ -181,24 +195,43 @@ class Player:
         Build a house in a property if player has the color set and the property can be developed.
         :param asset: A property where house is being built
         """
-        if asset.building_cost <= self.cash and check_player_has_color_set(self, asset.color) and check_property_can_be_developed(asset) and asset._houses <= 3 :
-            asset._houses += 1
-            self.cash -= asset.building_cost
-            logger.info(f'{self} built a house on {asset}')
-        else:
+        try:
+            if check_can_build_house_on_property(self, asset):
+                asset._houses += 1
+                self.bank_transaction(-asset.building_cost)
+                printing_and_logging(f'{self} built a house on {asset}')
+            else:
+                printing_and_logging(f'{self} cannot build a house on {asset}')
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message, exc_info=True)
             raise CannotBuildHouseError(self, asset)
-
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHouseError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHouseError(self, asset)
 
     def build_hotel(self, asset):
         """
         Build hotel in property
         :param asset: The tile where the hotel is being built
         """
-        if check_can_build_hotel(asset) and self.cash > asset.building_cost:
-            asset._hotel = True
-            self.cash -= asset.building_cost
-            logger.info(f'{self} built a hotel on {asset}')
-        else:
+        try:
+            if check_can_build_hotel_on_property(self, asset):
+                asset._hotel = True
+                self.bank_transaction(-asset.building_cost)
+                printing_and_logging(f'{self} built a hotel on {asset}')
+            else:
+                printing_and_logging(f'{self} cannot build a hotel on {asset}')
+        except InvalidPropertyTypeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHotelError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotBuildHotelError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
             raise CannotBuildHotelError(self, asset)
 
     def pay_jail_fine(self):
@@ -208,24 +241,31 @@ class Player:
         if self.cash > 50:
             self.bank_transaction(-50)
             self.in_jail = False
-            logger.info(f'{self} paid a fine and got out of jail')
+            printing_and_logging(f'{self} paid a fine and got out of jail')
 
     def try_jail_double_throw(self):
         """
         Try to throw a double to get out of jail. You get three turns to throw a double. After three turns, you pay the fine.
         """
         dice1 = self.throw_one_dice()
+        printing_and_logging(f'dice 1: {dice1} ')
         dice2 = self.throw_one_dice()
+        printing_and_logging(f'dice 2: {dice2} ')
         if dice1 == dice2:
             self.in_jail = False
-            logger.info(f'{self} threw a double and got out of jail')
-        self.jail_throw_counter += 1
-        logger.info(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
+            printing_and_logging(f'{self} threw a double and got out of jail')
+            self.jail_throw_counter = 0
+            return dice1 + dice2
+        else:
+            self.jail_throw_counter += 1
+            printing_and_logging(f'{self} tried to throw a double but failed. Chances left: {3 - self.jail_throw_counter}')
         if self.jail_throw_counter == 3:
             self.pay_jail_fine()
             self.in_jail = False
             self.jail_throw_counter = 0
-            logger.info(f'{self} used all of their three chances to throw a double.')
+            printing_and_logging(f'{self} used all of their three chances to throw a double.')
+            return dice1 + dice2
+        return dice1 + dice2
 
 
     def get_out_of_jail_free(self):
@@ -234,7 +274,7 @@ class Player:
         """
         self.get_out_of_jail_free_card -= 1
         self.in_jail = False
-        logger.info(f'{self} used a Get Out of Jail Free card')
+        printing_and_logging(f'{self} used a Get Out of Jail Free card')
 
     def sell_house(self, asset):
         """
@@ -242,13 +282,21 @@ class Player:
         :param asset: The asset with houses on it
         """
         try:
-            if asset in self.player_portfolio and check_can_sell_house(asset):
+            if check_can_sell_house_on_property(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._houses -= 1
-        except CannotSellHouseError as e:
-            logger.info(e.exc_message)
+                printing_and_logging(f'{self} sold a house on {asset}')
+            else:
+                printing_and_logging(f'{self} cannot sell the house on {asset}')
         except InvalidPropertyTypeError as e:
-            logger.error(e.exc_message)
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHouseError(self, asset)
 
     def sell_hotel(self, asset):
         """
@@ -256,10 +304,65 @@ class Player:
         :param asset: The property with hotel it
         """
         try:
-            if asset in self.player_portfolio and check_can_sell_hotel(asset):
+            if  check_can_sell_hotel_on_property(self, asset):
                 self.bank_transaction(asset._building_cost / 2)
                 asset._hotel = False
+                printing_and_logging(f'{self} sold the hotel on {asset}')
+            else:
+                printing_and_logging(f'{self} cannot sell the hotel on {asset}')
         except InvalidPropertyTypeError as e:
-            logger.error(e.exc_message)
-        except CannotSellHotelError as e:
-            logger.info(e.exc_message)
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
+        except UnownedPropertyError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
+        except PropertyNotFreeError as e:
+            logger.error(e.exc_message, exc_info=True)
+            raise CannotSellHotelError(self, asset)
+
+    def sell_all_hotels(self, color):
+        """
+        Sell hotels on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for each_property in property_list:
+                self.sell_hotel(each_property)
+
+    def sell_all_houses(self, color):
+        """
+        Sell all houses on all properties in the color set
+        :param color: The color of the color set
+        """
+        property_list = [asset for asset in self.player_portfolio if
+                         (asset.color == color and type(asset) not in [Railroad, Utility])]
+        for i in range(0, 4):
+            for each_property in property_list:
+                if each_property._houses != 0:
+                    if not self.sell_house(each_property):
+                        continue
+
+    def mortgage_property(self, asset):
+        """
+        Mortgage a property. Receive the mortgage value of the property. Rent cannot be collected on mortgaged property.
+        :param asset: The asset being mortgaged.
+        """
+        self.sell_all_hotels(asset.color)
+        self.sell_all_houses(asset.color)
+        self.bank_transaction(asset.mortgage_value)
+        asset.mortgaged = True
+        printing_and_logging(f'{self} mortgaged {asset}')
+
+    def unmortgage_property(self, asset):
+        """
+        Unmortgage a mortgaged property. Pay an additional 10% on top of the mortgage amount to unmortgage it. Rent can be collected once the property is unmortgaged.
+        :param asset: The asset being unmortgaged.
+        """
+        printing_and_logging(f'{self} unmortgaged {asset}')
+        self.bank_transaction(-asset.unmortgage_cost)
+        asset.mortgaged = False
+
+
+
+
+

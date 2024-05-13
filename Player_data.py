@@ -1,8 +1,9 @@
 from Player import Player
 
-arvind = Player("Arvind", 200)
-arun = Player("Arun", 200)
-adityam = Player("Adityam", 200)
-padma = Player("Padma", 200)
+arvind = Player("Arvind", 1300)
+arun = Player("Arun", 1300)
+adityam = Player("Adityam", 1300)
+padma = Player("Padma", 1300)
 
-all_players_list = [arvind, arun, adityam, padma]
+# all_players_list = [arvind, arun, adityam, padma]
+all_players_list = [arvind, arun]
