@@ -235,46 +235,6 @@ def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
     assert arvind.tile_no == 15
     assert pennsylvania_railroad in arvind.player_portfolio
 
-
-@pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test.")
-def test_play_turn_jail_5(mocker, arvind, pennsylvania_railroad, all_tiles_list):
-    """
-    Test play_turn_jail when the player fails to throw double in first try and pays fine in second try.
-    """
-    arvind.cash = 500
-    all_tiles_list.append(pennsylvania_railroad)
-    arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.input', side_effect=['1', '0', '0'])
-    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3])
-    mocker.patch('player_turn.current_tile', return_value=pennsylvania_railroad)
-    play_turn_jail(arvind)
-    play_turn_jail(arvind)
-
-    assert arvind.cash == 250
-    assert arvind.in_jail == False
-    assert arvind.tile_no == 15
-    assert pennsylvania_railroad in arvind.player_portfolio
-
-
-@pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test.")
-def test_play_turn_jail_6(mocker, arvind, pennsylvania_railroad):
-    """
-    Test play_turn_jail when the player uses get out of jail free card.
-    """
-    arvind.get_out_of_jail_free_card = 1
-    arvind.cash = 500
-    arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.input', side_effect=['2', '0'])
-    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3])
-
-    play_turn_jail(arvind)
-
-    assert arvind.cash == 300
-    assert arvind.in_jail == False
-    assert arvind.tile_no == 15
-    assert pennsylvania_railroad in arvind.player_portfolio
-
-
 def test_play_turn_1(mocker, arvind, chance_22):
     """
     Test play_turn when player lands on chance 22 and picks chance card 10
@@ -357,6 +317,7 @@ def test_play_turn_6(mocker, arvind, states_avenue, st_charles_place, virginia_a
 
     assert states_avenue._houses == 1
 
+@pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test")
 def test_play_turn_7(mocker, arvind, states_avenue, st_charles_place, virginia_avenue, all_tiles_list):
     """
     Test play_turn when player lands on chance tile and should have the option to build house
@@ -602,3 +563,40 @@ def test_get_properties_for_selling_hotels_3(arvind, states_avenue, st_charles_p
     assert st_james_place in properties_list
     assert new_york_avenue in properties_list
     assert tennessee_avenue in properties_list
+
+@pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test.")
+def test_play_turn_jail_5(mocker, arvind, pennsylvania_railroad):
+    """
+    Test play_turn_jail when the player fails to throw double in first try and pays fine in second try.
+    """
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.get_player_input', side_effect=[1, 0, 0, 0])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3])
+    mocker.patch()
+
+    play_turn_jail(arvind)
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 250
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 15
+    assert pennsylvania_railroad in arvind.player_portfolio
+
+@pytest.mark.skip(reason="properties inside all_tiles_list not getting reset after previous test")
+def test_play_turn_jail_6(mocker, arvind, pennsylvania_railroad):
+    """
+    Test play_turn_jail when the player uses get out of jail free card.
+    """
+    arvind.get_out_of_jail_free_card = 1
+    arvind.cash = 500
+    arvind.move_to(10, collect_go_cash_flag=False)
+    mocker.patch('player_turn.input', side_effect=['2', '0'])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3])
+
+    play_turn_jail(arvind)
+
+    assert arvind.cash == 300
+    assert arvind.in_jail == False
+    assert arvind.tile_no == 15
+    assert pennsylvania_railroad in arvind.player_portfolio
