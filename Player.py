@@ -166,14 +166,14 @@ class Player:
         :param amount: The amount being paid. Positive means collect from player. Negative means pay player.
         """
         if self.cash + amount < 0:
-            printing_and_logging(f'{self} cannot pay {player} amount of {-amount}')
+            printing_and_logging(f'{self} cannot pay {player} amount of {-amount}. Cash: {self.cash}')
             raise PlayerBrokeError(self)
         self.cash += amount
         player.cash -= amount
         if amount > 0:
-            printing_and_logging(f'{self} collected {amount} from {player}')
+            printing_and_logging(f'{self} collected {amount} from {player}. Cash: {self.cash}')
         else:
-            printing_and_logging(f'{self} paid {player} an amount of {-amount}')
+            printing_and_logging(f'{self} paid {player} an amount of {-amount}. Cash: {self.cash}')
 
     def bank_transaction(self, amount: float) -> None:
         """
@@ -181,13 +181,13 @@ class Player:
         :param amount: The amount being paid or collected. Amount is positive for collection. Negative for payment.
         """
         if self.cash + amount < 0:
-            printing_and_logging(f'{self} cannot pay the bank an amount of {-amount}')
+            printing_and_logging(f'{self} cannot pay the bank an amount of {-amount}. Cash: {self.cash}')
             raise PlayerBrokeError(self)
         self.cash += amount
         if amount > 0:
-            printing_and_logging(f'{self} collected {amount} from the the bank')
+            printing_and_logging(f'{self} collected {amount} from the bank. Cash: {self.cash}')
         else:
-            printing_and_logging(f'{self} paid the bank an amount of {-amount}')
+            printing_and_logging(f'{self} paid the bank an amount of {-amount} Cash: {self.cash}')
 
 
     def build_house(self, asset):
