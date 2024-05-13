@@ -1,3 +1,6 @@
+from Tiles.Property import Property
+from Tiles.Railroad import Railroad
+from Tiles.Utility import Utility
 from Tiles_data.all_tiles_data import all_tiles_list
 from config import printing_and_logging
 from errors import PlayerBrokeError
@@ -5,7 +8,15 @@ from player_turn import play_turn_jail, throw_move_and_play_turn
 from utils import print_player_summary
 
 
-def main(players, total_turns=1000, all_tiles_list=all_tiles_list):
+def main(players, total_turns=1000):
+    for each in all_tiles_list:
+        if type(each) == Property:
+            each._owner = None
+            each._houses = 0
+            each._hotel = False
+            each._mortgaged = False
+        elif type(each) in [Railroad, Utility]:
+            each._owner = None
     turn = 1
     player_broke = False
 
@@ -39,7 +50,9 @@ def main(players, total_turns=1000, all_tiles_list=all_tiles_list):
 
 if __name__ == "__main__":
     from Player_data import all_players_list as players
+
     main(players)
+
 #TODO Add trading properties
 #TODO Add mortgaging
 #TODO View player portfolio during game

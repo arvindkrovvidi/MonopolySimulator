@@ -8,9 +8,9 @@ class TileList(list):
 
     def __str__(self):
         return str(self.data)
-
-    def __repr__(self):
-        return f"TileList({repr(self.data)})"
+    #
+    # def __repr__(self):
+    #     return f"TileList({repr(self.data)})"
 
     def __getitem__(self, key: int):
         """

@@ -265,6 +265,7 @@ class Player:
             self.jail_throw_counter = 0
             printing_and_logging(f'{self} used all of their three chances to throw a double.')
             return dice1 + dice2
+        return dice1 + dice2
 
 
     def get_out_of_jail_free(self):

@@ -34,6 +34,8 @@ def play_turn(player, current_tile, throw=None):
             card_no = randint(1, 16)
             all_tiles_list[chance_return_value].execute(player, card_no, all_players_list=all_players_list)
             get_available_options_and_player_input(player, player.current_tile, throw)
+        elif chance_return_value is None:
+            get_available_options_and_player_input(player, player.current_tile, throw)
     elif type(current_tile) == CommunityChestTile:
         card_no = randint(1, 16)
         current_tile.execute(player, card_no, all_players_list=all_players_list)
