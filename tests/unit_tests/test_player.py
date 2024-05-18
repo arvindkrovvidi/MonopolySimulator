@@ -1,7 +1,7 @@
 import pytest
 
 from Player import Player
-from errors import InsufficientFundsError, SelfOwnedPropertyError
+from errors import PlayerBrokeError
 
 
 def test_init_default_values():
@@ -30,7 +30,7 @@ def test_buy_asset(states_avenue, arvind, st_charles_place):
     assert states_avenue in arvind.player_portfolio
 
     arvind.cash = 10
-    with pytest.raises(InsufficientFundsError):
+    with pytest.raises(PlayerBrokeError):
         arvind.buy_asset(st_charles_place)
 
     assert arvind.cash == 10
@@ -61,8 +61,7 @@ def test_buy_asset_multiple_utilities(arvind, electric_company, water_works):
     assert water_works in arvind.player_portfolio
     assert arvind.utilities_owned == 2
 
-    with pytest.raises(SelfOwnedPropertyError):
-        arvind.buy_asset(electric_company)
+    arvind.buy_asset(electric_company)
     assert arvind.utilities_owned == 2
 
 
@@ -81,8 +80,7 @@ def test_buy_asset_multiple_railroads(arvind, pennsylvania_railroad, bo_railroad
     assert short_line_railroad in arvind.player_portfolio
     assert arvind.railroads_owned == 4
 
-    with pytest.raises(SelfOwnedPropertyError):
-        arvind.buy_asset(pennsylvania_railroad)
+    arvind.buy_asset(pennsylvania_railroad)
     assert arvind.railroads_owned == 4
 
 

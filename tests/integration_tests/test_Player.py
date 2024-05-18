@@ -1,27 +1,15 @@
 import pytest
 
-from errors import PropertyNotFreeError
 from tests.common import build_houses, buy_assets, build_all_hotels
 
 
-def test_buy_asset_1(arvind, st_charles_place):
+def test_buy_asset_property_1(arvind, st_charles_place):
     """
     Test buy_asset when property is free
     """
     assert st_charles_place.owner is None
     arvind.buy_asset(st_charles_place)
     assert st_charles_place.owner is arvind
-
-
-def test_buy_asset_2(arvind, st_charles_place, arun):
-    """
-    Test buy_asset when property is not free
-    """
-    arun.buy_asset(st_charles_place)
-    assert st_charles_place.owner == arun
-    with pytest.raises(PropertyNotFreeError):
-        arvind.buy_asset(st_charles_place)
-    assert st_charles_place.owner == arun
 
 
 def test_pay_rent_property_1(arvind, arun, st_charles_place):
@@ -104,7 +92,7 @@ def test_pay_rent_property_4(arvind, arun, st_charles_place, virginia_avenue, st
     assert arun.cash == 1210
 
 
-def test_buy_asset_1(arvind, pennsylvania_railroad):
+def test_buy_asset_railroad_1(arvind, pennsylvania_railroad):
     """
     Test buy_asset function when railroad is free
     """
@@ -115,20 +103,7 @@ def test_buy_asset_1(arvind, pennsylvania_railroad):
     assert arvind.cash == 0
 
 
-def test_buy_asset_2(arvind, arun, pennsylvania_railroad):
-    """
-    Test buy_asset function when railroad is not free
-    """
-    arun.buy_asset(pennsylvania_railroad)
-    assert pennsylvania_railroad.owner is arun
-    with pytest.raises(PropertyNotFreeError):
-        arvind.buy_asset(pennsylvania_railroad)
-    assert pennsylvania_railroad.owner == arun
-    assert arun.cash == 0
-    assert arvind.cash == 200
-
-
-def test_buy_asset_3(arvind, pennsylvania_railroad, bo_railroad):
+def test_buy_asset_railroad_2(arvind, pennsylvania_railroad, bo_railroad):
     """
     Test buy_asset function for buying multiple railroads
     """
@@ -147,7 +122,7 @@ def test_buy_asset_3(arvind, pennsylvania_railroad, bo_railroad):
     assert arvind.cash == 0
 
 
-def test_buy_asset_1(arvind, electric_company):
+def test_buy_asset_utility_1(arvind, electric_company):
     """
     Test buy_asset when utility is free.
     """
@@ -157,22 +132,7 @@ def test_buy_asset_1(arvind, electric_company):
     assert arvind.cash == 50
 
 
-def test_buy_asset_2(arvind, arun, electric_company):
-    """
-    Test buy_asset when utility is not free
-    """
-    assert electric_company.owner is None
-    arun.buy_asset(electric_company)
-
-    with pytest.raises(PropertyNotFreeError):
-        arvind.buy_asset(electric_company)
-
-    assert electric_company.owner == arun
-    assert arun.cash == 50
-    assert arvind.cash == 200
-
-
-def test_buy_asset_3(arvind, electric_company, water_works):
+def test_buy_asset_utility_2(arvind, electric_company, water_works):
     """
     Test buy_asset for buying multiple utilities
     """

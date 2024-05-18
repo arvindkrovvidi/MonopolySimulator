@@ -61,28 +61,40 @@ def get_available_options_assets(current_tile, player, throw=None):
     :param throw: The dice throw
     """
     available_options = []
-    try:
-        check_can_buy_asset(player, current_tile)
-    except PropertyNotFreeError:
-        if type(current_tile) in [Property, Railroad]:
-            landlord = current_tile.owner
-            player.pay_rent(landlord, current_tile.rent)
-        elif type(current_tile) == Utility:
-            landlord = current_tile.owner
-            if check_player_has_color_set(landlord, "Utility"):
-                player.pay_rent(landlord, current_tile.get_rent(throw))
-            else:
-                player.pay_rent(landlord, current_tile.get_rent(throw))
-    except InsufficientFundsError as e:
-        printing_and_logging(f'{player} cannot buy {current_tile}')
-        printing_and_logging(e.exc_message)
-    except SelfOwnedPropertyError as e:
-        printing_and_logging(e.exc_message)
-    except InvalidPropertyTypeError as e:
-        printing_and_logging(e.exc_message)
+    if type(current_tile) in [Property, Railroad, Utility]:
+        try:
+            check_can_buy_asset(player, current_tile)
+        except PropertyNotFreeError:
+            if type(current_tile) in [Property, Railroad]:
+                landlord = current_tile.owner
+                player.pay_rent(landlord, current_tile.rent)
+            elif type(current_tile) == Utility:
+                landlord = current_tile.owner
+                if check_player_has_color_set(landlord, "Utility"):
+                    player.pay_rent(landlord, current_tile.get_rent(throw))
+                else:
+                    player.pay_rent(landlord, current_tile.get_rent(throw))
+        except InsufficientFundsError as e:
+            printing_and_logging(f'{player} cannot buy {current_tile}')
+            printing_and_logging(e.exc_message)
+        except SelfOwnedPropertyError as e:
+            printing_and_logging(e.exc_message)
+        except InvalidPropertyTypeError as e:
+            printing_and_logging(e.exc_message)
+        else:
+            available_options.append('Buy property')
+        finally:
+            if len(get_properties_for_building_houses(player)) != 0:
+                available_options.append('Build house')
+            if len(get_properties_for_selling_houses(player)) != 0:
+                available_options.append('Sell house')
+            if len(get_properties_for_building_hotels(player)) != 0:
+                available_options.append('Build hotel')
+            if len(get_properties_for_selling_hotels(player)) != 0:
+                available_options.append('Sell hotel')
+            available_options.append('End turn')
+        return available_options
     else:
-        available_options.append('Buy property')
-    finally:
         if len(get_properties_for_building_houses(player)) != 0:
             available_options.append('Build house')
         if len(get_properties_for_selling_houses(player)) != 0:
