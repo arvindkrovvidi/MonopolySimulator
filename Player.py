@@ -10,7 +10,7 @@ from config import logger, printing_and_logging
 from errors import PlayerBrokeError, CannotBuildHouseError, \
     CannotBuildHotelError, CannotSellHouseError, InvalidPropertyTypeError, CannotSellHotelError
 from utils import check_player_has_color_set, check_can_build_hotel_on_property, \
-    set_color_set_value, check_can_sell_house_on_property, check_can_sell_hotel_on_property, check_can_buy_asset, \
+    set_color_set_value, check_can_sell_house_on_property, check_can_sell_hotel_on_property, \
     check_can_build_house_on_property, \
     UnownedPropertyError, PropertyNotFreeError
 
@@ -67,10 +67,9 @@ class Player:
         Buy asset that the player lands on.
         :param asset: Property, Railroad or Utility.
         """
-        if check_can_buy_asset(self, asset):
-            self.bank_transaction(-asset.cost)
-            self.player_portfolio.append(asset)
-            asset.owner = self
+        self.bank_transaction(-asset.cost)
+        self.player_portfolio.append(asset)
+        asset.owner = self
         if type(asset) is Property:
             if check_player_has_color_set(self, asset.color):
                 set_color_set_value(self, asset)
