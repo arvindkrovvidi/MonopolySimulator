@@ -1,3 +1,5 @@
+from typing import Any
+
 from Tiles.Property import Property
 from Tiles.SpecialTiles import SpecialTiles
 from Tiles.Tile import Tile
@@ -16,9 +18,10 @@ class ChanceTile(SpecialTiles):
         Tile.__init__(self, tile_no, name)
 
 
-    def execute(self, player, _card_no, **kwargs):
+    def execute(self, player, _card_no, **kwargs) -> Any:
         """
         Main function that executes chance tile cards based on card number.
+        :rtype: Bool - if player moves to a different tile, None - if the player makes a transaction, int - if the player moves back three spaces
         :param player: Player who is picking up the chance card.
         :param _card_no: The card number that the player picks. Ranges between 1 and 16.
         """
