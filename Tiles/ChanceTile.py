@@ -32,7 +32,7 @@ class ChanceTile(SpecialTiles):
             return True
         elif _card_no == 2:
             printing_and_logging(f'Advance to Go(collect 200)')
-            player.move_to(go.tile_no, collect_go_cash_flag=True)
+            player.move_to(go.tile_no, collect_go_cash_flag=False)
             return True
         elif _card_no == 3:
             printing_and_logging(f'Advance to Illinois Avenue. If you pass Go, collect $200')

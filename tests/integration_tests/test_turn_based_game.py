@@ -147,3 +147,20 @@ def test_main_10(mocker, arvind):
 
     assert arvind.cash == 700
 
+def test_main_11(mocker, arvind, st_charles_place):
+    """
+    Test main
+    1. Player throws a 2 and lands on Community chest
+    2. Player picks card 1
+    3. Player moves to go and collects 200 as the card says
+    4. Player throws again.
+    5. Player throws again, lands in St. Charles place. Player collects 200 for passing go.
+    """
+    arvind.cash = 1300
+    mocker.patch('player_turn.get_player_input', side_effect=[1, 2])
+    mocker.patch('player_turn.randint', return_value=1)
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[1, 1, 5, 6])
+    main([arvind], total_turns=1)
+
+    assert arvind.cash == 1900
+    assert arvind.current_tile == st_charles_place

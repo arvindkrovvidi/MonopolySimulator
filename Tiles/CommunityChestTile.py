@@ -19,7 +19,7 @@ class CommunityChestTile(SpecialTiles):
         printing_and_logging(f'{player} picked community chest card number {_card_no}')
         if _card_no == 1:
             printing_and_logging(f'Advance to Go (Collect $200)')
-            player.move_to(go.tile_no, collect_go_cash_flag=True)
+            player.move_to(go.tile_no, collect_go_cash_flag=False)
             player.bank_transaction(200)
         elif _card_no == 2:
             printing_and_logging(f'Bank error in your favor. Collect $200')
