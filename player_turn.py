@@ -61,7 +61,7 @@ def get_available_options_assets(current_tile, player, throw=None):
     :param player: Player playing the turn
     :param throw: The dice throw
     """
-    available_options = []
+    available_options = ['End turn', 'Check portfolio']
     if type(current_tile) in [Property, Railroad, Utility]:
         try:
             check_can_buy_asset(player, current_tile)
@@ -93,8 +93,6 @@ def get_available_options_assets(current_tile, player, throw=None):
                 available_options.append('Build hotel')
             if len(get_properties_for_selling_hotels(player)) != 0:
                 available_options.append('Sell hotel')
-            available_options.append('Check my portfolio')
-            available_options.append('End turn')
         return available_options
     else:
         if len(get_properties_for_building_houses(player)) != 0:
@@ -105,8 +103,6 @@ def get_available_options_assets(current_tile, player, throw=None):
             available_options.append('Build hotel')
         if len(get_properties_for_selling_hotels(player)) != 0:
             available_options.append('Sell hotel')
-        available_options.append('Check my portfolio')
-        available_options.append('End turn')
     return available_options
 
 def run_player_option(player, current_tile, user_input_function):
@@ -135,7 +131,7 @@ def run_player_option(player, current_tile, user_input_function):
         print(get_display_options(eligible_properties))
         player_choice_property = get_player_input('Select the property to sell house', dict(enumerate(eligible_properties)).keys())
         player.sell_hotel(eligible_properties[player_choice_property])
-    elif user_input_function == 'Check my portfolio':
+    elif user_input_function == 'Check portfolio':
         display_assets(player)
     elif user_input_function == 'End turn':
         printing_and_logging(f'{player} ended their turn')
