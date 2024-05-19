@@ -296,3 +296,18 @@ def get_player_input(text, available_options):
             continue
         else:
             return player_input
+
+def display_assets(player):
+    """
+    Display the list of properties owned by a player
+    :param player:
+    """
+    assets_table = PrettyTable()
+    assets_table.field_names = ['S.No', 'Property', 'Cost', 'Houses', 'Hotel']
+
+    for no, each_asset in enumerate(player.player_portfolio, start=1):
+        if type(each_asset) == Property:
+            assets_table.add_row([no, str(each_asset), each_asset.cost, each_asset._houses, 'Yes' if each_asset._hotel else 'No'])
+        else:
+            assets_table.add_row([no, str(each_asset), each_asset.cost, '-', '-'])
+    print(assets_table)

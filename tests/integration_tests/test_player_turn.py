@@ -168,7 +168,7 @@ def test_get_available_options_assets_6(mocker, arvind, arun, st_charles_place, 
     available_options = get_available_options_assets(current_tile, arvind, throw)
 
     assert arvind.cash == cash
-    assert available_options == ['End turn']
+    assert available_options == ['End turn', 'Check portfolio']
 
 
 def test_play_turn_jail_1(mocker, arvind, states_avenue):
@@ -176,7 +176,7 @@ def test_play_turn_jail_1(mocker, arvind, states_avenue):
     Test play_turn_jail when the player chooses to pay the fine
     """
     arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.get_player_input', return_value=0)
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 2, 0])
     mocker.patch.object(arvind, 'throw_dice', return_value=3)
     play_turn_jail(arvind)
     assert arvind.cash == 10
@@ -191,7 +191,7 @@ def test_play_turn_jail_2(mocker, arvind, virginia_avenue):
     """
     arvind.cash = 500
     arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.get_player_input', side_effect=[1, 0, 0])
+    mocker.patch('player_turn.get_player_input', side_effect=[1, 2, 0])
     mocker.patch.object(arvind, 'throw_one_dice', return_value=2)
     mocker.patch.object(arvind, 'throw_dice', return_value=2)
     play_turn_jail(arvind)
@@ -223,7 +223,7 @@ def test_play_turn_jail_4(mocker, arvind, pennsylvania_railroad):
     """
     arvind.cash = 500
     arvind.move_to(10, collect_go_cash_flag=False)
-    mocker.patch('player_turn.get_player_input', side_effect=[1, 1, 1, 0, 0])
+    mocker.patch('player_turn.get_player_input', side_effect=[1, 1, 1, 2, 0])
     mocker.patch.object(arvind, 'throw_one_dice', side_effect=[2, 3, 2, 3, 2, 3])
 
     play_turn_jail(arvind)
@@ -242,7 +242,7 @@ def test_play_turn_1(mocker, arvind, chance_22):
     arvind.move_to(22, collect_go_cash_flag=False)
     mocker.patch('player_turn.randint', return_value=10)
     current_tile = chance_22
-    mocker.patch('player_turn.get_player_input', return_value=0)
+    mocker.patch('player_turn.get_player_input', side_effect=[2, 0])
     play_turn(arvind, current_tile)
 
     assert arvind.tile_no == 19
@@ -279,7 +279,7 @@ def test_play_turn_4(mocker, arvind, states_avenue, st_charles_place, virginia_a
     Test play_turn when player builds 2 houses in the same turn
     """
     arvind.cash = 2000
-    mocker.patch('player_turn.get_player_input', side_effect=[1, 0, 1, 2, 3])
+    mocker.patch('player_turn.get_player_input', side_effect=[3, 0, 3, 2, 0])
     build_houses(arvind, [states_avenue, st_charles_place, virginia_avenue], 1)
     arvind.build_house(states_avenue)
     arvind.build_house(st_charles_place)
@@ -299,7 +299,7 @@ def test_play_turn_5(mocker, arvind, states_avenue, st_charles_place, virginia_a
     arvind.cash = 1500
     buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
     arvind.move_to(tile_no)
-    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2])
+    mocker.patch('player_turn.get_player_input', side_effect=[2, 0, 0])
     play_turn(arvind, all_tiles_list[tile_no])
 
     assert states_avenue._houses == 1
@@ -312,7 +312,7 @@ def test_play_turn_6(mocker, arvind, states_avenue, st_charles_place, virginia_a
     buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
     arvind.move_to(2)
     mocker.patch('player_turn.randint', return_value=2)
-    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2])
+    mocker.patch('player_turn.get_player_input', side_effect=[2, 0, 0])
     play_turn(arvind, all_tiles_list[2])
 
     assert states_avenue._houses == 1
