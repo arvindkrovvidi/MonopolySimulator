@@ -53,14 +53,4 @@ if __name__ == "__main__":
 
     main(players)
 
-#TODO Add trading properties
-#TODO Add mortgaging
-#TODO Add "purchase get out of jail free card from another player" function
-#TODO "No more houses to sell" remove this print statement
-#TODO Arvind does not have enough cash to build a house on States Avenue printing twice
-#TODO Have one main execute function for all kinds of tiles in the base class. Override this function in the child classes.
-#TODO Print messages can be a second return variable from the check functions that can be printed when required.
-#TODO Jail double throws going negative. Check when two players are in jail at the same time.
-#TODO Fix bug when player starts the game, falls on community chest, picks card 1 and move to Go. Cash should be 1700 if starting with 1500. Instead it is 2100.
-#TODO Fix bug where player collects 200 as soon as they start the game.
 
