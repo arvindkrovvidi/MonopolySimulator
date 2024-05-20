@@ -25,7 +25,6 @@ def test_main_2(mocker, arvind, arun):
     """
     all_players_list = [arun, arvind]
     mocker.patch.object(arun, 'throw_dice', side_effect=[10, 10, 5])
-    mocker.patch('player_turn.get_player_input', return_value=0)
     mocker.patch.object(arvind, 'throw_dice', side_effect=[10, 10, 2])
     mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 0, 0, 2, 0, 0])
     mocker.patch('player_turn.randint', return_value=5)
@@ -148,7 +147,34 @@ def test_main_10(mocker, arvind):
 
     assert arvind.cash == 700
 
-def test_main_11(mocker, arvind, st_charles_place):
+def test_main_11(mocker, arvind, arun):
+    """
+    Test main when player lands on Chance 22, picks chance card 7, moves to Water Works that is already owned by another player
+    """
+    all_players_list = [arun, arvind]
+    mocker.patch.object(arun, 'throw_dice', side_effect=[10, 10, 8])
+    mocker.patch.object(arvind, 'throw_dice', side_effect=[10, 10, 2])
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 0, 0, 2, 0, 0])
+    mocker.patch('player_turn.randint', return_value=7)
+    main(players=all_players_list, total_turns=3)
+
+    assert arvind.cash == 384
+    assert arun.cash == 266
+    assert arvind.tile_no == 28
+
+def test_main_12(mocker, arvind):
+    """
+    Test main when player lands on Chance 22, picks chance card 7, moves to Water Works that is not owned by another player
+    """
+    mocker.patch.object(arvind, 'throw_dice', side_effect=[10, 10, 2])
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0, 2, 0])
+    mocker.patch('player_turn.randint', return_value=7)
+    main(players=[arvind], total_turns=3)
+
+    assert arvind.cash == 250
+    assert arvind.tile_no == 28
+
+def test_main_13(mocker, arvind, st_charles_place):
     """
     Test main
     1. Player throws a 2 and lands on Community chest
@@ -165,3 +191,4 @@ def test_main_11(mocker, arvind, st_charles_place):
 
     assert arvind.cash == 1900
     assert arvind.current_tile == st_charles_place
+
