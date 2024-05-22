@@ -303,11 +303,11 @@ def display_assets(player):
     :param player:
     """
     assets_table = PrettyTable()
-    assets_table.field_names = ['S.No', 'Property', 'Cost', 'Houses', 'Hotel']
+    assets_table.field_names = ['S.No', 'Property', 'Cost', 'Houses', 'Hotel', 'Status']
 
     for no, each_asset in enumerate(player.player_portfolio, start=1):
         if type(each_asset) == Property:
-            assets_table.add_row([no, str(each_asset), each_asset.cost, each_asset._houses, 'Yes' if each_asset._hotel else 'No'])
+            assets_table.add_row([no, str(each_asset), each_asset.cost, each_asset._houses, 'Yes' if each_asset._hotel else 'No', 'Mortgaged' if each_asset.mortgaged else 'Active'])
         else:
-            assets_table.add_row([no, str(each_asset), each_asset.cost, '-', '-'])
+            assets_table.add_row([no, str(each_asset), each_asset.cost, '-', '-', 'Mortgaged' if each_asset.mortgaged else 'Active'])
     print(assets_table)
