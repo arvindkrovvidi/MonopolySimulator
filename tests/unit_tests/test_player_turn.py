@@ -1,4 +1,4 @@
-from player_turn import get_properties_for_mortgaging
+from player_turn import get_properties_for_mortgaging, get_properties_for_unmortgaging
 from tests.common import buy_assets
 
 
@@ -110,3 +110,17 @@ def test_get_properties_for_mortgaging_2(arvind, states_avenue, st_charles_place
     unmortgaged_properties_list = get_properties_for_mortgaging(arvind)
     for each in unmortgaged_properties_list:
         assert each in expected
+
+def test_get_properties_for_unmortgaging(arvind, states_avenue, st_charles_place, st_james_place, bo_railroad, water_works):
+    """
+    Test get_properties_for_unmortgaging when some of the properties are unmortgaged
+    :param arvind: The player trying to get the list of properties that can be unmortgaged
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, st_james_place, bo_railroad, water_works])
+    arvind.mortgage_property(states_avenue)
+    arvind.mortgage_property(bo_railroad)
+    arvind.mortgage_property(water_works)
+    mortgaged_properties_list = get_properties_for_unmortgaging(arvind)
+    for each in mortgaged_properties_list:
+        assert each in [states_avenue, bo_railroad, water_works]

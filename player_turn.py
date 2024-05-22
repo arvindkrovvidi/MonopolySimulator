@@ -242,4 +242,9 @@ def get_properties_for_mortgaging(player):
     """
     return [asset for asset in player.player_portfolio if not asset.mortgaged]
 
-
+def get_properties_for_unmortgaging(player):
+    """
+    Get list of properties from the player's portfolio that can be mortgaged
+    :param player:
+    """
+    return [asset for asset in player.player_portfolio if asset.mortgaged]
