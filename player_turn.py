@@ -1,6 +1,7 @@
 from random import randint
 
 from Player_data import all_players_list
+from TileIterators import TileList
 from Tiles.ChanceTile import ChanceTile
 from Tiles.CommunityChestTile import CommunityChestTile
 from Tiles.FreeParkingTile import FreeParkingTile
@@ -225,3 +226,12 @@ def get_properties_for_selling_hotels(player):
             if check_can_sell_hotel_on_property(player, asset):
                 eligible_properties_list.append(asset)
     return eligible_properties_list
+
+def get_properties_for_mortgaging(player):
+    """
+    Get list of properties from the player's portfolio that can be mortgaged
+    :param player:
+    """
+    return TileList([asset for asset in player.player_portfolio if asset.mortgaged])
+
+

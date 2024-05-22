@@ -1,3 +1,8 @@
+from TileIterators import TileList
+from player_turn import get_properties_for_mortgaging
+from tests.common import buy_assets
+
+
 # import pytest
 #
 # from player_turn import run_player_option
@@ -80,3 +85,24 @@
 #     asset._hotel = True
 #     mocker.patch.object(arvind, 'sell_house', side_effect=mock_sell_hotel(asset))
 #     run_player_option(arvind, asset, option_function_dict[option])
+
+def test_get_properties_for_mortgaging_1(arvind, states_avenue, st_charles_place, st_james_place):
+    """
+    Test get_properties_for_mortgaging when some of the properties are mortgaged
+    :param arvind: The player trying to get the list of properties that can be mortgaged
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, st_james_place])
+    arvind.mortgage_property(states_avenue)
+    assert get_properties_for_mortgaging(arvind) == TileList([st_charles_place, st_james_place])
+
+def test_get_properties_for_mortgaging_2(arvind, states_avenue, st_charles_place, st_james_place):
+    """
+    Test get_properties_for_mortgaging when none of the properties are mortgaged
+    :param arvind: The player trying to get the list of properties that can be mortgaged
+    """
+    arvind.cash = 1500
+    buy_assets(arvind, [states_avenue, st_charles_place, st_james_place])
+    expected = []
+    actual = get_properties_for_mortgaging(arvind)
+    assert actual == expected
