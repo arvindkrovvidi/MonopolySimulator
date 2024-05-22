@@ -8,7 +8,7 @@ class Railroad(Tile):
         self.color = color
         self.mortgaged = False
         self.mortgage_value = self.cost / 2
-        self.unmortgage_cost = (self.cost / 2) * 1.1
+        self.unmortgage_cost = round((self.cost / 2) * 1.1, 1)
 
     @property
     def owner(self):
