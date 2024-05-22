@@ -95,6 +95,8 @@ def get_available_options_assets(current_tile, player, throw=None):
                 available_options.append('Sell hotel')
             if len(get_properties_for_mortgaging(player)) != 0:
                 available_options.append('Mortgage asset')
+            if len(get_properties_for_unmortgaging(player)) != 0:
+                available_options.append('Unmortgage asset')
         return available_options
     else:
         if len(get_properties_for_building_houses(player)) != 0:
@@ -107,6 +109,8 @@ def get_available_options_assets(current_tile, player, throw=None):
             available_options.append('Sell hotel')
         if len(get_properties_for_mortgaging(player)) != 0:
             available_options.append('Mortgage asset')
+        if len(get_properties_for_unmortgaging(player)) != 0:
+            available_options.append('Unmortgage asset')
     return available_options
 
 def run_player_option(player, current_tile, user_input_function):
@@ -136,10 +140,15 @@ def run_player_option(player, current_tile, user_input_function):
         player_choice_property = get_player_input('Select the property to sell house', dict(enumerate(eligible_properties)).keys())
         player.sell_hotel(eligible_properties[player_choice_property])
     elif user_input_function == 'Mortgage asset':
-        eligible_properties = get_properties_for_mortgaging(player)
-        print(get_display_options(eligible_properties))
-        player_choice_property = get_player_input('Select the property to mortgage', dict(enumerate(eligible_properties)).keys())
-        player.mortgage_property(eligible_properties[player_choice_property])
+        eligible_assets = get_properties_for_mortgaging(player)
+        print(get_display_options(eligible_assets))
+        player_choice_asset = get_player_input('Select the asset to mortgage', dict(enumerate(eligible_assets)).keys())
+        player.mortgage_property(eligible_assets[player_choice_asset])
+    elif user_input_function == 'Unmortgage asset':
+        eligible_assets = get_properties_for_unmortgaging(player)
+        print(get_display_options(eligible_assets))
+        player_choice_asset = get_player_input('Select the asset to unmortgage', dict(enumerate(eligible_assets)).keys())
+        player.unmortgage_property(eligible_assets[player_choice_asset])
     elif user_input_function == 'Check portfolio':
         display_assets(player)
     elif user_input_function == 'End turn':
