@@ -232,6 +232,6 @@ def get_properties_for_mortgaging(player):
     Get list of properties from the player's portfolio that can be mortgaged
     :param player:
     """
-    return TileList([asset for asset in player.player_portfolio if asset.mortgaged])
+    return [asset for asset in player.player_portfolio if not asset.mortgaged]
 
 
