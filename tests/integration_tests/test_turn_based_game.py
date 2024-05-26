@@ -127,7 +127,7 @@ def test_main_9(mocker, arvind, states_avenue, st_charles_place, virginia_avenue
     """
     arvind.cash = 1500
     buy_assets(arvind, [states_avenue, st_charles_place, virginia_avenue])
-    mocker.patch.object(arvind, 'throw_dice', return_value=7)
+    mocker.patch.object(arvind, 'throw_dice', return_value=2)
     mocker.patch('player_turn.randint', return_value=2)
     mocker.patch('player_turn.get_player_input', side_effect=[2, 0, 0])
     main([arvind], total_turns=1)
@@ -184,7 +184,7 @@ def test_main_13(mocker, arvind, st_charles_place):
     5. Player throws again, lands in St. Charles place. Player collects 200 for passing go.
     """
     arvind.cash = 1300
-    mocker.patch('player_turn.get_player_input', side_effect=[1, 2])
+    mocker.patch('player_turn.get_player_input', side_effect=[0, 0])
     mocker.patch('player_turn.randint', return_value=1)
     mocker.patch.object(arvind, 'throw_one_dice', side_effect=[1, 1, 5, 6])
     main([arvind], total_turns=1)
@@ -192,3 +192,16 @@ def test_main_13(mocker, arvind, st_charles_place):
     assert arvind.cash == 1900
     assert arvind.current_tile == st_charles_place
 
+def test_main_14(mocker, arvind, arun, st_charles_place):
+    """
+    Test main when a player mortgages a property and is not able to collect rent on it.
+    """
+    arvind.cash = 300
+    arun.cash = 300
+    mocker.patch('player_turn.get_player_input', side_effect=[2, 2, 0, 0, 0])
+    mocker.patch.object(arvind, 'throw_one_dice', side_effect=[6, 5])
+    mocker.patch.object(arun, 'throw_one_dice', side_effect=[6,5])
+    main([arvind, arun], total_turns=1)
+
+    assert arvind.cash == 430
+    assert arun.cash == 500

@@ -16,7 +16,7 @@ class Property(Tile):
         self._building_cost = building_cost
         self.mortgaged = False
         self.mortgage_value = self.cost / 2
-        self.unmortgage_cost = (self.cost / 2) * 1.1
+        self.unmortgage_cost = round((self.cost / 2) * 1.1, 1)
 
     def __eq__(self, other):
         if self.name == other.name and self.tile_no == other.tile_no and self.cost == other.cost and self.color == other.color:

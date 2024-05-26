@@ -197,13 +197,15 @@ def check_can_sell_hotel_on_property(player, asset):
         return True
     return False
 
-def check_can_mortgage_asset(player, asset):
+def check_can_mortgage_asset(asset):
     """
     Check whether the property can be mortgaged
     """
-    if asset.owner is None:
-        raise UnownedPropertyError(asset)
-    elif asset.owner is not player:
+    # if asset.owner is None:
+    #     raise UnownedPropertyError(asset)
+    if not asset._hotel:
+        return False
+    if asset._houses != 0:
         return False
     return True
 
@@ -211,11 +213,11 @@ def check_can_unmortgage_asset(player, asset):
     """
     Check whether the property can be unmortgaged
     """
-    if asset.owner is None:
-        return False
-    elif asset.owner is not player:
-        return False
-    elif player.cash < asset.unmortgage_cost:
+    # if asset.owner is None:
+    #     return False
+    # elif asset.owner is not player:
+    #     return False
+    if player.cash < asset.unmortgage_cost:
         return False
     return True
 
@@ -303,11 +305,11 @@ def display_assets(player):
     :param player:
     """
     assets_table = PrettyTable()
-    assets_table.field_names = ['S.No', 'Property', 'Cost', 'Houses', 'Hotel']
+    assets_table.field_names = ['S.No', 'Property', 'Cost', 'Houses', 'Hotel', 'Status']
 
     for no, each_asset in enumerate(player.player_portfolio, start=1):
         if type(each_asset) == Property:
-            assets_table.add_row([no, str(each_asset), each_asset.cost, each_asset._houses, 'Yes' if each_asset._hotel else 'No'])
+            assets_table.add_row([no, str(each_asset), each_asset.cost, each_asset._houses, 'Yes' if each_asset._hotel else 'No', 'Mortgaged' if each_asset.mortgaged else 'Active'])
         else:
-            assets_table.add_row([no, str(each_asset), each_asset.cost, '-', '-'])
+            assets_table.add_row([no, str(each_asset), each_asset.cost, '-', '-', 'Mortgaged' if each_asset.mortgaged else 'Active'])
     print(assets_table)
