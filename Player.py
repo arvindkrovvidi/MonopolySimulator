@@ -346,8 +346,10 @@ class Player:
         Mortgage a property. Receive the mortgage value of the property. Rent cannot be collected on mortgaged property.
         :param asset: The asset being mortgaged.
         """
-        self.sell_all_hotels(asset.color)
-        self.sell_all_houses(asset.color)
+        if type(asset) is Property and asset._hotel:
+            self.sell_all_hotels(asset.color)
+        if type(asset) is Property and asset._houses != 0:
+            self.sell_all_houses(asset.color)
         self.bank_transaction(asset.mortgage_value)
         asset.mortgaged = True
         printing_and_logging(f'{self} mortgaged {asset}')
