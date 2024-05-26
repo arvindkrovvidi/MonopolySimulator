@@ -197,13 +197,15 @@ def check_can_sell_hotel_on_property(player, asset):
         return True
     return False
 
-def check_can_mortgage_asset(player, asset):
+def check_can_mortgage_asset(asset):
     """
     Check whether the property can be mortgaged
     """
-    if asset.owner is None:
-        raise UnownedPropertyError(asset)
-    elif asset.owner is not player:
+    # if asset.owner is None:
+    #     raise UnownedPropertyError(asset)
+    if not asset._hotel:
+        return False
+    if asset._houses != 0:
         return False
     return True
 
@@ -211,11 +213,11 @@ def check_can_unmortgage_asset(player, asset):
     """
     Check whether the property can be unmortgaged
     """
-    if asset.owner is None:
-        return False
-    elif asset.owner is not player:
-        return False
-    elif player.cash < asset.unmortgage_cost:
+    # if asset.owner is None:
+    #     return False
+    # elif asset.owner is not player:
+    #     return False
+    if player.cash < asset.unmortgage_cost:
         return False
     return True
 
